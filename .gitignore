@@ -24,3 +24,6 @@ real_data/Klein/
 real_data/expression_mRNA_17-Aug-2014.txt
 real_data/patel/
 real_data/retina/
+.*.sw*
+*.pdf
+*.log

@@ -104,8 +104,10 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
   if (!file.exists(fileZinb)){
     print('run ZINB')
     if (is.null(ncores)) ncores = max(1, detectCores() - 1)
-    zinb <- zinbFit(core, ncores = ncores, K = 2, commondispersion = FALSE,
-                    epsilon = ngenes)
+#    zinb <- zinbFit(core, ncores = ncores, K = 2, commondispersion = FALSE,
+#                    epsilon = ngenes)
+
+    zinb <- zinbFit(core, K = 2, commondispersion = FALSE, epsilon = ngenes)
     save(zinb, file = fileZinb)
   }else{
     load(fileZinb)
@@ -131,7 +133,8 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
     simData = zinbSim(simModel, seed = 1, no_cores=ncores)
   } else{
     simData = lapply(seq_len(B), function(j){
-      zinbSim(simModel, seed = j, no_cores=ncores)
+#      zinbSim(simModel, seed = j, no_cores=ncores)
+      zinbSim(simModel, seed = j)
     })
   }
   
@@ -263,6 +266,3 @@ for (nc in c(50, 100, 500, 1000, 5000, 10000)){
   }
   save(bio, simModel, simData, keep, file = ff)
 }
-
-
-
