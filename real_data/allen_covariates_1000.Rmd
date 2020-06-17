@@ -39,12 +39,23 @@ Here, I will explore the relation between the expression values and some covaria
 
 ```{r datain}
 data("allen")
-allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE),
-                    which(colData(allen)$Core.Type=="Core" &
-                            !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
+
+# Data without spike-ins, core only 
+allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE), which(colData(allen)$Core.Type=="Core" & !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
 
 filter <- rowSums(assay(allen_core)>10)>=10
 ```
+
+Making sure that `allen_core` and `allen_sce` are comparable.
+
+```{r comparingData}
+allen_sce<-ReprocessedAllenData()
+allen_sce
+
+allen_core
+```
+
+What are the extra samples in `allen_core`?
 
 # Comparison of methods
 

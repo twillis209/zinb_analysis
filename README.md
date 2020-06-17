@@ -1,5 +1,7 @@
 # Data analysis and simulations for the ZINB-WaVE paper
 
+*A fork of the repo to the end of reproducing the results of Risso et al.*
+
 This repository is designed to allow interested people to reproduce the results and figures of the paper:
 
 Risso D, Perraudeau F, Gribkova S, Dudoit S, Vert JP. ZINB-WaVE: A general and flexible method for signal extraction from single-cell RNA-seq data. bioRxiv. doi: https://doi.org/10.1101/125112

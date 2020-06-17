@@ -24,24 +24,6 @@ Datasets (from Methods section):
 		* Kolodziejczyk et al.
 		* Downloaded.
 		* May now be in `scRNAseq`
-	* Glioblastoma data set:
-		* Patel et al.
-		* From the paper, it's not clear that the counts have been made available (paper talks only of downloading the 'raw data', presumably the FASTQ files)	
-		* Will not be able to reproduce Risso's analysis of this data as I do not have the computing resources for alignment etc.
-	* OE data set:
-		* Fletcher et al.
-		* Downloaded.
-	* PBMC data set:
-		* Zheng et al.
-		* Downloaded.
-
-Results (by heading in the section of the same name): 
-	* ZINB-WaVE leads to biologically meaningful clusters
-		* Correlation of components/factors from PC, ZIFA, ZINB with technical features in V1 data set:
-		* Figure 2
-		* Analysis was repeated on the S1/CA1 data set
-		* supp. figs 1-3
-	* ZINB-WaVE leads to novel biological insights
 		* Identifying developmental trajectories of OE cells
 		* Figure 3
 		* Clustering of PBMCs
