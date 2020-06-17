@@ -166,7 +166,7 @@ pairs(zifa_fq, pch=19, col=colMerged, main="ZIFA FQ")
 
 ```{r zinb}
 raw <- as.matrix(raw)
-zinb <- zinbFit(raw[vargenes,], ncores = ncores, K = 2, epsilon=1e3)
+zinb <- zinbFit(raw[vargenes,], K = 2, epsilon=1e3)
 plot(zinb@W, pch=19, col=colMerged, main="ZINB")
 ```
 
@@ -180,7 +180,7 @@ names(vars) <- rownames(tc)
 vars <- sort(vars, decreasing = TRUE)
 vargenes2 <- names(vars)[1:1000]
 
-zinb_batch <- zinbFit(raw[vargenes2, subset], ncores = ncores, K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
+zinb_batch <- zinbFit(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
 plot(zinb_batch@W, pch=19, col=colMerged[subset], main="ZINB")
 plot(zinb_batch@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 ```
@@ -193,11 +193,11 @@ names(vars) <- rownames(tc)
 vars <- sort(vars, decreasing = TRUE)
 vargenes2 <- names(vars)[1:1000]
 
-zinb_sub1 <- zinbFit(raw[vargenes2, subset], ncores = ncores, K = 2, epsilon=1e3)
+zinb_sub1 <- zinbFit(raw[vargenes2, subset], K = 2, epsilon=1e3)
 plot(zinb_sub1@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
 plot(zinb_sub1@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 
-zinb_sub2 <- zinbFit(raw[vargenes2, subset], ncores = ncores, K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
+zinb_sub2 <- zinbFit(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
 plot(zinb_sub2@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
 plot(zinb_sub2@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 ```

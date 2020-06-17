@@ -9,22 +9,31 @@ Trying to install the version of zinbwave contemporary with the paper (0.1.1):
 
 There are neither tags nor releases at `drisso/zinbwave`, so I assume they have since removed access to v0.1.1.
 
-We have the following to work with: to which analyses do these correspond in the paper?
+Analyses do these correspond in the paper?
 
 Datasets (from Methods section):
 
 	* V1 data set:
 		* Tasic et al. 
+		* Available in `scRNAseq` package
+		* The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
 	* S1/CA1 data set:
 		* Zeisel et al.
+		* Downloaded.
 	* mESC data set:
 		* Kolodziejczyk et al.
+		* Downloaded.
+		* May now be in `scRNAseq`
 	* Glioblastoma data set:
 		* Patel et al.
+		* From the paper, it's not clear that the counts have been made available (paper talks only of downloading the 'raw data', presumably the FASTQ files)	
+		* Will not be able to reproduce Risso's analysis of this data as I do not have the computing resources for alignment etc.
 	* OE data set:
 		* Fletcher et al.
+		* Downloaded.
 	* PBMC data set:
 		* Zheng et al.
+		* Downloaded.
 
 Results (by heading in the section of the same name): 
 	* ZINB-WaVE leads to biologically meaningful clusters
@@ -50,13 +59,9 @@ Results (by heading in the section of the same name):
 	* ZINB-WaVE is more accurate than state-of-the-art methods
 		* Simulated data:
 			* ZINB model
-			* Lun and Marioni model
+			* Lun and Marioni model (`cputime.R`)
 
-	
-
-
-
-Analyses in the paper:
+R files in this repo:
 
 	real_data/allen_covariates_1000.Rmd
 	real_data/goodness_of_fit_allen.Rmd (running)
@@ -66,6 +71,23 @@ Analyses in the paper:
 	real_data/goodness_of_fit_espresso.Rmd
 	real_data/goodness_of_fit_zeisel.Rmd
 	real_data/zeisel_covariates.Rmd
+	real_data/zeisel_plots.R
+	real_data/espresso_plots.R
+	real_data/patel_plots.R
+	real_data/allen_plots.R
+	real_data/silhouette.R
+	sims/figures/simFunction.R
+	sims/figures/fig6e-g/lunSim.R
+	sims/figures/fig6e-g/fitZinbLun.R
+	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R
+	sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R
+	sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
+	sims/figures/fig6ad-S13-S14/fitZifa.R
+	sims/figures/fig6ad-S13-S14/fitZinb_corSilh.R
+	sims/figures/fig6ad-S13-S14/fitZinb10000.R
+	sims/cputime/cputime.R
 
 Let's proceed with the current version. Starting by installing missing packages required for `allen_covariates_1000.Rmd`.
 
@@ -78,13 +100,9 @@ So far, calls to the zifa wrapper function take the longest, it seems.
 The chunk `zinb_check_batch` in `allen_covariates_1000.Rmd` references relative paths to directories not created during execution of the preceding chunks.
 
 Issues (gathered):
-
 	* Old parallelism used arguments like `ncores`, now using `BiocParallel`
 	* `allen_covariates_1000.Rmd` is referencing non-existent relative paths as noted above
 	
-
-
-
 # 16/6/20
 
 Trying to generate the simulated dataset. Get the following error with simFunction:
@@ -96,4 +114,5 @@ Trying to generate the simulated dataset. Get the following error with simFuncti
 	  cannot open compressed file 'fig6ad-S13-S14/simAllen_nc100_ratio1_offs0.rda', probable reason 'No such file or directory'
 	Execution halted
 
-
+It's clear that the Rscripts and Rmd files are not sufficient to reproduce the analysis: the data is not to be found in the libraries they use (as is sometimes the case).	
+Patel is out as we can't repeat the alignment. Let's look at Allen again. Need to get the metadata from somewhere. The library function being used to access the data is deprecated, so perhaps there are new ways to access the metadata.

@@ -298,6 +298,8 @@ plot(zinb_bio@W[-outliers,], col=col1[pamres$clustering], pch=19)
 ```
 
 ```{r zinb_check_batch}
+
+
 metadata <- read.csv("../../scone_analysis/data/allen_metadata.csv", stringsAsFactors = FALSE)
 ids <- read.table("../../scone_analysis/data/allen_ids.txt", stringsAsFactors = FALSE, header = TRUE)
 
