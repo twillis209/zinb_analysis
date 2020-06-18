@@ -26,7 +26,7 @@ nc = 1000
 b2 = 1
 offs = 2
 
-pp = sprintf('fig5-S10-S11-S15-S9/sim%s_nc%s_ratio%s_offs%s', ds, nc, b2, offs)
+pp = sprintf('sim%s_nc%s_ratio%s_offs%s', ds, nc, b2, offs)
 load(paste0(pp,".rda"))
 fittedSim = lapply(K, function(k){
   lapply(Vintercept, function(Vint){

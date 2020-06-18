@@ -45,17 +45,7 @@ allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE), which(colDat
 
 filter <- rowSums(assay(allen_core)>10)>=10
 ```
-
-Making sure that `allen_core` and `allen_sce` are comparable.
-
-```{r comparingData}
-allen_sce<-ReprocessedAllenData()
-allen_sce
-
-allen_core
-```
-
-What are the extra samples in `allen_core`?
+We should end up with 285 cells as per the paper but we have 283 here.
 
 # Comparison of methods
 
@@ -309,8 +299,6 @@ plot(zinb_bio@W[-outliers,], col=col1[pamres$clustering], pch=19)
 ```
 
 ```{r zinb_check_batch}
-
-
 metadata <- read.csv("../../scone_analysis/data/allen_metadata.csv", stringsAsFactors = FALSE)
 ids <- read.table("../../scone_analysis/data/allen_ids.txt", stringsAsFactors = FALSE, header = TRUE)
 

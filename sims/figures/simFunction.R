@@ -99,7 +99,9 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
   
   # fit zinb (if you already fitted zinb, it is cached)
   d = digest(core, "md5")
+
   tmp = paste0(tempdir(), '/', d)
+
   fileZinb = sprintf("%s_zinb.rda", tmp)
   if (!file.exists(fileZinb)){
     print('run ZINB')
@@ -130,7 +132,7 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
   
   # sim data
   if (B == 1){
-    simData = zinbSim(simModel, seed = 1, no_cores=ncores)
+    simData = zinbSim(simModel, seed = 1)
   } else{
     simData = lapply(seq_len(B), function(j){
 #      zinbSim(simModel, seed = j, no_cores=ncores)
@@ -182,7 +184,7 @@ for (nc in c(100, 1000, 10000)){
 ##########
 ## ZEISEL
 ##########
-data <- read.table("../datasets/expression_mRNA_17-Aug-2014.txt", sep='\t',
+data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
                    stringsAsFactors = FALSE, comment.char = '%')
 counts <- as.matrix(data[12:NROW(data),-(1:2)])
 counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
@@ -237,8 +239,7 @@ simData$counts = simData$counts[,keep]
 save(bio, simModel, simData, keep, file = ff)
 
 # fit
-fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE,
-                    ncores = 2, epsilon = ncol(simData$counts))
+fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE, epsilon = ncol(simData$counts))
 save(fittedSim, file = gsub('.rda', '_fitted.rda', ff))
 
 

@@ -45,9 +45,9 @@ Datasets (from Methods section):
 
 R files in this repo:
 
-	real_data/allen_covariates_1000.Rmd
+	real_data/allen_covariates_1000.Rmd (problem with absent files in batch effect analysis)
 	real_data/goodness_of_fit_allen.Rmd (running)
-	real_data/goodness_of_fit_patel.Rmd
+	real_data/goodness_of_fit_patel.Rmd 
 	real_data/patel_covariates.Rmd
 	real_data/espresso_covariates.Rmd
 	real_data/goodness_of_fit_espresso.Rmd
@@ -96,5 +96,14 @@ Trying to generate the simulated dataset. Get the following error with simFuncti
 	  cannot open compressed file 'fig6ad-S13-S14/simAllen_nc100_ratio1_offs0.rda', probable reason 'No such file or directory'
 	Execution halted
 
-It's clear that the Rscripts and Rmd files are not sufficient to reproduce the analysis: the data is not to be found in the libraries they use (as is sometimes the case).	
+It's clear that the Rscripts and Rmd files are not sufficient to reproduce the analysis: the data is not to be found in the libraries they use (i.e. it doesn't all come from `scRNAseq`).	
+
 Patel is out as we can't repeat the alignment. Let's look at Allen again. Need to get the metadata from somewhere. The library function being used to access the data is deprecated, so perhaps there are new ways to access the metadata.
+
+Spent some time looking at the `SingleCellExperiment` class and its interface. The Allen metadata we need, the 'collection date', is absent from both the old version of the Allen dataset (accessed with `data("allen")`) and the new version (accessed with `ReprocessedAllenData()`) in `scRNAseq`. Risso loaded it from some file I don't have.
+
+Note that `simFunction.R` takes a long time to run and depends on the data sets.
+
+# 18/6/20
+
+Ran `simFunction.R`. 
