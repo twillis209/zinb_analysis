@@ -1,5 +1,7 @@
 library(zinbwave)
 
+# Writes out simZeisel_nc1000_ratio1_offs2_fittedAll.rda
+
 makeZinbFit <- function(Xintercept = T, Vintercept = T, K = 2,
                         commondispersion = T, ngenes = 1000, ncells = 100){
   # X intercept or not

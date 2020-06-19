@@ -1,6 +1,17 @@
 library(zinbwave)
 library(EDASeq)
 
+# Writes out 
+# simLun_100_ziadd0.rda
+# simLun_100_ziadd0.33.rda
+# simLun_100_ziadd0.67.rda
+# simLun_1000_ziadd0.rda
+# simLun_1000_ziadd0.33.rda
+# simLun_1000_ziadd0.67.rda
+# simLun_10000_ziadd0.rda
+# simLun_10000_ziadd0.33.rda
+# simLun_10000_ziadd0.67.rda
+
 COUNT_GEN <- readRDS("function.rds")
 ngenes <- 1000
 B <- 10
@@ -32,8 +43,3 @@ lapply(c(0,.33,.67), function(x){
     sum(cc == 0)/(ncol(cc)*nrow(cc))
   })
 })
-
-
-
-
-

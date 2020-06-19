@@ -5,7 +5,16 @@ library(EDASeq)
 library(digest)
 library(edgeR)
 #library(DESeq2)
+# Depends on
+# zinb_analysis/real_data/run_zifa.py
 
+# Writes out 
+# simAllen_nc10000_ratio5_offs5_zifa.rda
+# simAllen_nc10000_ratio5_offs5_zifaTC.rda
+# simAllen_nc10000_ratio5_offs5_zifaFQ.rda
+# simAllen_nc10000_ratio5_offs5_zifaTMM.rda
+
+# TODO: Want to rewrite this so it just looks in the working directory
 wrapRzifa <- function(Y, block = T){
   # wrapper R function for ZIFA.
   # md5 hashing and temporary files are used not to re-run zifa 
@@ -17,7 +26,6 @@ wrapRzifa <- function(Y, block = T){
   if (!file.exists(paste0(tmp, '_zifa.csv'))){
     print('run ZIFA')
     bb = ifelse(block, '-b ', '')
-    #cmd = sprintf('python real_data/run_zifa.py %s%s.csv %s_zifa.csv', bb, tmp, tmp)
     cmd = sprintf('python ../../real_data/run_zifa.py %s%s.csv %s_zifa.csv', bb, tmp, tmp)
     system(cmd)
   }
@@ -96,6 +104,5 @@ b2 = 5
 offs = 5
 pref = sprintf('simAllen_nc10000_ratio%s_offs%s', b2, offs)
 load(paste0(pref, '.rda'))
+# `load` puts the simulated data into the list `simData` 
 mclapply(list(zifa_raw, zifa_tmm, zifa_tc, zifa_fq), function(x) x(simData), mc.cores = 8)
-
-

@@ -1,3 +1,74 @@
+# Should produce 62 files, checked with: for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
+
+# Writes out:
+# Allen 
+# fig6ad-S13-S14/simAllen_nc100_ratio1_offs0.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio1_offs2.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio1_offs5.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio5_offs0.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio5_offs2.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio5_offs5.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio50_offs0.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio50_offs2.rda
+# fig6ad-S13-S14/simAllen_nc100_ratio50_offs5.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio1_offs0.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio1_offs2.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio1_offs5.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio5_offs0.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio5_offs2.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio5_offs5.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio50_offs0.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio50_offs2.rda
+# fig6ad-S13-S14/simAllen_nc1000_ratio50_offs5.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio1_offs0.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio1_offs2.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio1_offs5.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio5_offs0.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio5_offs2.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio5_offs5.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio50_offs0.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio50_offs2.rda
+# fig6ad-S13-S14/simAllen_nc10000_ratio50_offs5.rda
+# Zeisel
+# fig6ad-S13-S14/simZeisel_nc100_ratio1_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio1_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio1_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio5_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio5_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio5_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio10_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio10_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc100_ratio10_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio1_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio1_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio1_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio5_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio5_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio5_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio10_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio10_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc1000_ratio10_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio1_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio1_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio1_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio10_offs-1.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio10_offs0.5.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio10_offs2.rda
+#
+# figS12/simZeisel_nc1000_ratio1_offs2.rda
+# figS12/simZeisel_nc1000_ratio1_offs2_fitted.rda
+#
+# fig5-S10-S11-S15-S9/simZeisel_nc50_ratio1_offs2.rda
+# fig5-S10-S11-S15-S9/simZeisel_nc100_ratio1_offs2.rda
+# fig5-S10-S11-S15-S9/simZeisel_nc500_ratio1_offs2.rda
+# fig5-S10-S11-S15-S9/simZeisel_nc1000_ratio1_offs2.rda
+# fig5-S10-S11-S15-S9/simZeisel_nc5000_ratio1_offs2.rda
+# fig5-S10-S11-S15-S9/simZeisel_nc10000_ratio1_offs2.rda
+
+
 simulateW <- function(zinb, ncells = 100, nclust = 3, ratioSSW_SSB = 1, colIni = 1){
   par(mfrow = c(2,2))
   # zinbW
@@ -89,9 +160,7 @@ simulateGamma <- function(zinb, ncells = 100, gammapiOffset = 0, colIni = 1,
   return(simGamma)
 }
 
-zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3, 
-                           ratioSSW_SSB = 1, gammapiOffset = 0, B = 1, ncores = NULL,
-                           fileName = 'zinbSim.rda'){
+zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3, ratioSSW_SSB = 1, gammapiOffset = 0, B = 1, fileName = 'zinbSim.rda'){
   # sample ngenes 
   set.seed(9128)
   if (ngenes > nrow(core)) repl = T else repl = F
@@ -105,9 +174,6 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
   fileZinb = sprintf("%s_zinb.rda", tmp)
   if (!file.exists(fileZinb)){
     print('run ZINB')
-    if (is.null(ncores)) ncores = max(1, detectCores() - 1)
-#    zinb <- zinbFit(core, ncores = ncores, K = 2, commondispersion = FALSE,
-#                    epsilon = ngenes)
 
     zinb <- zinbFit(core, K = 2, commondispersion = FALSE, epsilon = ngenes)
     save(zinb, file = fileZinb)
@@ -135,7 +201,6 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
     simData = zinbSim(simModel, seed = 1)
   } else{
     simData = lapply(seq_len(B), function(j){
-#      zinbSim(simModel, seed = j, no_cores=ncores)
       zinbSim(simModel, seed = j)
     })
   }
@@ -174,7 +239,7 @@ for (nc in c(100, 1000, 10000)){
       ff = sprintf('fig6ad-S13-S14/simAllen_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
       zinbSimWrapper(core = core, colIni = colIni, ncells = nc, nclust = 3, 
                      ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-                     fileName = ff, ncores = 2)
+                     fileName = ff)
     }
   }
 }
@@ -210,7 +275,7 @@ for (nc in c(100, 1000, 10000)){
       ff = sprintf('fig6ad-S13-S14/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
       zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
                      ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-                     fileName = ff, ncores = 2)
+                     fileName = ff)
     }
   }
 }
@@ -228,8 +293,7 @@ ff = sprintf('figS12/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
 
 ## simulate
 zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
-               ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, ncores = 2,
-               fileName = ff)
+               ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, fileName = ff)
 
 # remove genes with only zeros and keep track of removed genes for mean diff
 load(ff)
@@ -253,7 +317,7 @@ for (nc in c(50, 100, 500, 1000, 5000, 10000)){
   ff = sprintf('fig5-S10-S11-S15-S9/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
   zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
                  ratioSSW_SSB = b2, gammapiOffset = offs, B = 10,
-                 fileName = ff, ncores = 2)
+                 fileName = ff)
   
   # remove genes with only zeros in at least one of the B simulated ds
   load(ff)

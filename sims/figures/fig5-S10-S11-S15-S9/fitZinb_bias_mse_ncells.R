@@ -1,5 +1,14 @@
 library(zinbwave)
 
+# Writes out: 
+# 
+# simZeisel_nc10000_ratio1_offs2_fitted.rda
+# simZeisel_nc1000_ratio1_offs2_fitted.rda
+# simZeisel_nc100_ratio1_offs2_fitted.rda
+# simZeisel_nc5000_ratio1_offs2_fitted.rda
+# simZeisel_nc500_ratio1_offs2_fitted.rda
+# simZeisel_nc50_ratio1_offs2_fitted.rda
+
 ncores = c(1, 5, 5, 10, 20, 20)
 nc = c(50, 100, 500, 1000, 5000, 10000)
 ds = 'Zeisel'
@@ -19,4 +28,3 @@ lapply(1:length(nc), function(i){
   out = paste0(pp, '_fitted.rda')
   save(fittedSim, file = out)
 })
-

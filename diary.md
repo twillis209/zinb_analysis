@@ -58,12 +58,13 @@ R files in this repo:
 	real_data/patel_plots.R
 	real_data/allen_plots.R
 	real_data/silhouette.R
-	sims/figures/simFunction.R
-	sims/figures/fig6e-g/lunSim.R
-	sims/figures/fig6e-g/fitZinbLun.R
-	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R
+	sims/figures/simFunction.R (complete)
+	sims/figures/figuresPaper.Rmd
+	sims/figures/fig6e-g/lunSim.R (complete)
+	sims/figures/fig6e-g/fitZinbLun.R (running)
+	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R (not running; taking too long)
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R (complete)
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R (complete)
 	sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa.R
@@ -82,7 +83,7 @@ So far, calls to the zifa wrapper function take the longest, it seems.
 The chunk `zinb_check_batch` in `allen_covariates_1000.Rmd` references relative paths to directories not created during execution of the preceding chunks.
 
 Issues (gathered):
-	* Old parallelism used arguments like `ncores`, now using `BiocParallel`
+	* Old parallelism used arguments like `ncores`, now using `BiocParallel`. I've used `htop` to confirm that jobs are using multiple cores.
 	* `allen_covariates_1000.Rmd` is referencing non-existent relative paths as noted above
 	
 # 16/6/20
@@ -107,3 +108,29 @@ Note that `simFunction.R` takes a long time to run and depends on the data sets.
 # 18/6/20
 
 Ran `simFunction.R`. 
+ 
+`sims/figures/fig5-S10-S11-S15-S9/timeZinb.R` takes hours and hours to run, and was not completed when I terminated it, so I must investigate that 
+
+# 19/6/20
+
+Prepended `sim` scripts with comments detailing the files they are intended to write out.
+
+Working on running `fig6ad-S13-14` atm
+
+	zinb_analysis/sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R : not running atm, problems with zifa.py paths
+	zinb_analysis/sims/figures/fig6ad-S13-S14/fitZifa.R
+	zinb_analysis/sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
+	zinb_analysis/sims/figures/fig6ad-S13-S14/fitZinb10000.R
+	zinb_analysis/sims/figures/fig6ad-S13-S14/fitZinb_corSilh.R
+
+Might be worth looking into caching of results and putting them somewhere in this project (rather than in `tmp` where they seem never to be found again).
+
+`simFunction.log` shows that `zinbSimWrapper` only ran three times, rather than four as expected. Perhaps when it did run, it did make use of a cached result? All the files expected to be there, are there. 
+
+Used:
+
+	for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
+
+to check that all files listed in `simFunction.R` comment were indeed created.
+
+

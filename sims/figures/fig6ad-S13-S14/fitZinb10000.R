@@ -1,5 +1,12 @@
 library(zinbwave)
 
+# Writes out (depending on CL args)
+# fig6ad-S13-S14/sim(ds)_nc(nc)_ratio(b2)_offs(offs)_k1.rda
+# fig6ad-S13-S14/sim(ds)_nc(nc)_ratio(b2)_offs(offs)_k2.rda
+# fig6ad-S13-S14/sim(ds)_nc(nc)_ratio(b2)_offs(offs)_k3.rda
+# fig6ad-S13-S14/sim(ds)_nc(nc)_ratio(b2)_offs(offs)_k4.rda
+# fig6ad-S13-S14/sim(ds)_nc(nc)_ratio(b2)_offs(offs)_fitted.rda
+
 options(echo=TRUE)
 args <- commandArgs(trailingOnly = TRUE)
 ds = args[1]
@@ -17,7 +24,7 @@ fittedSim = lapply(1:4, function(k){
     counts = t(simData[[i]]$counts)
     counts = counts[rowSums(counts) != 0, ]
     ngenes = nrow(counts)
-    zinbFit(counts, K = k, commondispersion = FALSE, verbose = T, epsilon = ngenes, ncores = 8)
+    zinbFit(counts, K = k, commondispersion = FALSE, verbose = T, epsilon = ngenes)
   })
   save(aa, file = sprintf('%s_k%s.rda', ff, k))
   aa

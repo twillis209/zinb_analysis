@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-sys.path.insert(1, '/usr/local/lib/python2.7/site-packages/') ##change the path if needed
+#sys.path.insert(1, '/usr/local/lib/python2.7/site-packages/') ##change the path if needed
 
 from argparse import ArgumentParser
 from pandas import read_csv

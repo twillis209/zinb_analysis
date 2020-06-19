@@ -6,6 +6,12 @@ library(digest)
 library(edgeR)
 #library(DESeq2)
 
+# Writes out 
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2_zifa.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2_zifaTC.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2_zifaFQ.rda
+# fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2_zifaTMM.rda
+
 wrapRzifa <- function(Y, block = T){
   # wrapper R function for ZIFA.
   # md5 hashing and temporary files are used not to re-run zifa 
