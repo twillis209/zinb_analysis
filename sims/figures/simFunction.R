@@ -1,6 +1,7 @@
 # Should produce 62 files, checked with: for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
 
 # Writes out:
+
 # Allen 
 # fig6ad-S13-S14/simAllen_nc100_ratio1_offs0.rda
 # fig6ad-S13-S14/simAllen_nc100_ratio1_offs2.rda
@@ -29,6 +30,7 @@
 # fig6ad-S13-S14/simAllen_nc10000_ratio50_offs0.rda
 # fig6ad-S13-S14/simAllen_nc10000_ratio50_offs2.rda
 # fig6ad-S13-S14/simAllen_nc10000_ratio50_offs5.rda
+
 # Zeisel
 # fig6ad-S13-S14/simZeisel_nc100_ratio1_offs-1.5.rda
 # fig6ad-S13-S14/simZeisel_nc100_ratio1_offs0.5.rda

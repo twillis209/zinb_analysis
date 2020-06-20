@@ -7,6 +7,7 @@ library(edgeR)
 #library(DESeq2)
 # Depends on
 # zinb_analysis/real_data/run_zifa.py
+# Simulated data csv file
 
 # Writes out 
 # simAllen_nc10000_ratio5_offs5_zifa.rda
@@ -14,24 +15,22 @@ library(edgeR)
 # simAllen_nc10000_ratio5_offs5_zifaFQ.rda
 # simAllen_nc10000_ratio5_offs5_zifaTMM.rda
 
-# TODO: Want to rewrite this so it just looks in the working directory
 wrapRzifa <- function(Y, block = T){
   # wrapper R function for ZIFA.
   # md5 hashing and temporary files are used not to re-run zifa 
   # if it has already be run on this computer.
   d = digest(Y, "md5")
-  tmp = paste0(tempdir(), '/', d)
-  write.csv(Y, paste0(tmp, '.csv'))
+  # Presumably writes out csv for the sake of passing it to the zifa script
+  write.csv(Y, paste0(d, '.csv'))
   
-  if (!file.exists(paste0(tmp, '_zifa.csv'))){
+  if (!file.exists(paste0(d, '_zifa.csv'))){
     print('run ZIFA')
     bb = ifelse(block, '-b ', '')
-    cmd = sprintf('python ../../real_data/run_zifa.py %s%s.csv %s_zifa.csv', bb, tmp, tmp)
+    cmd = sprintf('python ../../../real_data/run_zifa.py %s%s.csv %s_zifa.csv', bb, d, d)
     system(cmd)
   }
-  read.csv(sprintf("%s_zifa.csv", tmp), header=FALSE)
+  read.csv(sprintf("%s_zifa.csv", d), header=FALSE)
 }
-
 
 zifa_raw <- function(simData){
   print('zifa raw')
