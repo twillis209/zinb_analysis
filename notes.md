@@ -290,6 +290,14 @@ Assuming that
 
 ### fig6ad-S13-S14
 
+`time`'d `fitZinbLun.R`:
+
+real    2790m39.814s
+user    4076m18.857s
+sys     1292m50.092s
+
+And it still didn't complete!
+
 ### fig6e-g
 
 ### figS12

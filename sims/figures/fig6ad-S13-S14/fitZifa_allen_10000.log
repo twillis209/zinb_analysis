@@ -1,0 +1,280 @@
+Loading required package: SummarizedExperiment
+Loading required package: GenomicRanges
+Loading required package: stats4
+Loading required package: BiocGenerics
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: ‘matrixStats’
+
+The following objects are masked from ‘package:Biobase’:
+
+    anyMissing, rowMedians
+
+Loading required package: BiocParallel
+
+Attaching package: ‘DelayedArray’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following objects are masked from ‘package:base’:
+
+    aperm, apply, rowsum
+
+Loading required package: SingleCellExperiment
+Loading required package: ShortRead
+Loading required package: Biostrings
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+Loading required package: Rsamtools
+Loading required package: GenomicAlignments
+Loading required package: limma
+
+Attaching package: ‘limma’
+
+The following object is masked from ‘package:BiocGenerics’:
+
+    plotMA
+
+
+Attaching package: ‘edgeR’
+
+The following object is masked from ‘package:SingleCellExperiment’:
+
+    cpm
+
+[1] "zifa raw"
+[1] 1
+[1] "zifa tmm"
+[1] 1
+[1] "zifa tc"
+[1] 1
+[1] "zifa fq"
+[1] 1
+[1] "run ZIFA"
+[1] "run ZIFA"
+[1] "run ZIFA"
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:514: RuntimeWarning: invalid value encountered in less
+  Y = Y[:, (np.abs(Y) < 1e-6).mean(axis = 0) <= p0_thresh]
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:415: RuntimeWarning: invalid value encountered in less
+  Y_is_zero = np.abs(Y) < 1e-6
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:418: RuntimeWarning: invalid value encountered in less
+  if (Y < 0).sum() > 0:
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:321: RuntimeWarning: invalid value encountered in greater
+  non_zero_idxs = np.abs(Y[:, j]) > 1e-6
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 20
+Running block zero-inflated factor analysis with N = 1000, D = 10000, K = 2, n_blocks = 20
+Block sizes [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 442, in runEMAlgorithm
+    A, mus, sigmas, decay_coef = initializeParams(Y, K, singleSigma = singleSigma)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 324, in initializeParams
+    model.fit(zeroedY)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/decomposition/_factor_analysis.py", line 173, in fit
+    X = self._validate_data(X, copy=self.copy, dtype=np.float64)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/base.py", line 420, in _validate_data
+    X = check_array(X, **check_params)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 73, in inner_f
+    return f(**kwargs)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 645, in check_array
+    _assert_all_finite(array,
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 97, in _assert_all_finite
+    raise ValueError(
+ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
+[1] 2
+[1] "run ZIFA"
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:514: RuntimeWarning: invalid value encountered in less
+  Y = Y[:, (np.abs(Y) < 1e-6).mean(axis = 0) <= p0_thresh]
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:415: RuntimeWarning: invalid value encountered in less
+  Y_is_zero = np.abs(Y) < 1e-6
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:418: RuntimeWarning: invalid value encountered in less
+  if (Y < 0).sum() > 0:
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:321: RuntimeWarning: invalid value encountered in greater
+  non_zero_idxs = np.abs(Y[:, j]) > 1e-6
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 20
+Running block zero-inflated factor analysis with N = 1000, D = 10000, K = 2, n_blocks = 20
+Block sizes [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 442, in runEMAlgorithm
+    A, mus, sigmas, decay_coef = initializeParams(Y, K, singleSigma = singleSigma)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 324, in initializeParams
+    model.fit(zeroedY)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/decomposition/_factor_analysis.py", line 173, in fit
+    X = self._validate_data(X, copy=self.copy, dtype=np.float64)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/base.py", line 420, in _validate_data
+    X = check_array(X, **check_params)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 73, in inner_f
+    return f(**kwargs)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 645, in check_array
+    _assert_all_finite(array,
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 97, in _assert_all_finite
+    raise ValueError(
+ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
+[1] 3
+[1] "run ZIFA"
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:514: RuntimeWarning: invalid value encountered in less
+  Y = Y[:, (np.abs(Y) < 1e-6).mean(axis = 0) <= p0_thresh]
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:415: RuntimeWarning: invalid value encountered in less
+  Y_is_zero = np.abs(Y) < 1e-6
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:418: RuntimeWarning: invalid value encountered in less
+  if (Y < 0).sum() > 0:
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:321: RuntimeWarning: invalid value encountered in greater
+  non_zero_idxs = np.abs(Y[:, j]) > 1e-6
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 20
+Running block zero-inflated factor analysis with N = 1000, D = 10000, K = 2, n_blocks = 20
+Block sizes [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 442, in runEMAlgorithm
+    A, mus, sigmas, decay_coef = initializeParams(Y, K, singleSigma = singleSigma)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 324, in initializeParams
+    model.fit(zeroedY)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/decomposition/_factor_analysis.py", line 173, in fit
+    X = self._validate_data(X, copy=self.copy, dtype=np.float64)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/base.py", line 420, in _validate_data
+    X = check_array(X, **check_params)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 73, in inner_f
+    return f(**kwargs)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 645, in check_array
+    _assert_all_finite(array,
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/sklearn/utils/validation.py", line 97, in _assert_all_finite
+    raise ValueError(
+ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
+[1] 4
+[1] "run ZIFA"
+
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 20
+Running block zero-inflated factor analysis with N = 1000, D = 10000, K = 2, n_blocks = 20
+Block sizes [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 466, in runEMAlgorithm
+    block_EZ, block_EZZT, block_EX, block_EXZ, block_EX2 = Estep(np.array([Y_to_use]), A_to_use, mus_to_use, sigmas_to_use, decay_coef)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 106, in Estep
+    matrixToInvert = computeMatrixInLastStep(A, np.abs(Y[i, :]) < 1e-6, sigmas, K, sigma_c, decay_coef, sigma_22_inv)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 158, in computeMatrixInLastStep
+    inv_matrix = (1 / (2. * decay_coef)) * (E_00_prime_inv - (E_00_prime_inv * A_0)*(A_plus.T * innermost_inverse * A_plus)*(A_0.T * E_00_prime_inv))
+KeyboardInterrupt
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 1
+Running block zero-inflated factor analysis with N = 1000, D = 406, K = 2, n_blocks = 1
+Block sizes [406]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 466, in runEMAlgorithm
+    block_EZ, block_EZZT, block_EX, block_EXZ, block_EX2 = Estep(np.array([Y_to_use]), A_to_use, mus_to_use, sigmas_to_use, decay_coef)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 106, in Estep
+    matrixToInvert = computeMatrixInLastStep(A, np.abs(Y[i, :]) < 1e-6, sigmas, K, sigma_c, decay_coef, sigma_22_inv)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 158, in computeMatrixInLastStep
+    inv_matrix = (1 / (2. * decay_coef)) * (E_00_prime_inv - (E_00_prime_inv * A_0)*(A_plus.T * innermost_inverse * A_plus)*(A_0.T * E_00_prime_inv))
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/numpy/matrixlib/defmatrix.py", line 220, in __mul__
+    return N.dot(self, asmatrix(other))
+  File "<__array_function__ internals>", line 5, in dot
+KeyboardInterrupt
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:514: RuntimeWarning: invalid value encountered in less
+  Y = Y[:, (np.abs(Y) < 1e-6).mean(axis = 0) <= p0_thresh]
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:415: RuntimeWarning: invalid value encountered in less
+  Y_is_zero = np.abs(Y) < 1e-6
+/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py:418: RuntimeWarning: invalid value encountered in less
+  if (Y < 0).sum() > 0:
+Filtering out all genes which are zero in more than 95.0% of samples. To change this, change p0_thresh.
+Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.
+Number of blocks has been set to 20
+Running block zero-inflated factor analysis with N = 1000, D = 10000, K = 2, n_blocks = 20
+Block sizes [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+Traceback (most recent call last):
+  File "../../../real_data/run_zifa.py", line 35, in <module>
+    main()
+  File "../../../real_data/run_zifa.py", line 27, in main
+    Z, model_params  = block_ZIFA.fitModel(Y, args.dimensions)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 515, in fitModel
+    results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 438, in runEMAlgorithm
+    y_indices_to_use = generateIndices(n_blocks, N, D) 
+  File "/home/tom/.conda/envs/diss/lib/python3.8/site-packages/ZIFA/block_ZIFA.py", line 372, in generateIndices
+    partition.append(sorted(idxs_in_block))
+KeyboardInterrupt
+Execution halted
