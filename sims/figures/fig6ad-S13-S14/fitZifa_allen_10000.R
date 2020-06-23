@@ -9,7 +9,7 @@ library(edgeR)
 # zinb_analysis/real_data/run_zifa.py
 # Simulated data csv file
 
-# Writes out 
+# Writes out (for the currently specified file)
 # simAllen_nc10000_ratio5_offs5_zifa.rda
 # simAllen_nc10000_ratio5_offs5_zifaTC.rda
 # simAllen_nc10000_ratio5_offs5_zifaFQ.rda

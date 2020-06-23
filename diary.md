@@ -33,3 +33,15 @@ Might be worth looking into caching of results and putting them somewhere in thi
 It's clear at this point that this repo is far from being a 'one push-button' means of reproducing the analysis in the Risso paper. There is not a script for every figure or analysis as some scripts indicate that some parameters need to be changed and the script rerun in order to produce the entirety of what was presented in the paper. I'm not sure how to go about this. 
 
 Might be worth extending the lists of output files we expect from each script. Could do so by examining the script but we could also list all the figures and analyses in the paper and supplement...
+
+# 21/6/20
+
+`fitZinbLun.R` terminated today after a couple of days of wall time and that with termination in an error condition!
+
+# 22/6/20
+
+What would it mean to reproduce this paper? Surely not everything? Should think about what we need to do as part of the reproduction.
+
+We also need to think about what the current scope of the dissertation is: reproduce (some of) Risso 18 then look at what use it makes of ZI in light of Svensson's conclusions. Should not forget that writing the review section of the dissertation is an opportunity to clarify my thinking and what should be done. 
+
+

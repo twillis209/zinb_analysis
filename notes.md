@@ -70,7 +70,7 @@ R files in this repo:
 	sims/figures/simFunction.R (complete)
 	sims/figures/figuresPaper.Rmd
 	sims/figures/fig6e-g/lunSim.R (complete)
-	sims/figures/fig6e-g/fitZinbLun.R (running)
+	sims/figures/fig6e-g/fitZinbLun.R (terminated in error condition)
 	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R (not running; taking too long)
 	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R (complete)
 	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R (complete)
@@ -83,19 +83,47 @@ R files in this repo:
 
 ## Scripts for data analysis
 
+`run_zifa.py` provides a command line interface to ZIFA.
+
+`silhouette.R` does silhouette calculations for the data sets in this directory.
+
 ### Patel
 
 Can't actually repeat this analysis as it requires alignment of the raw reads with TopHat etc. Don't have the resources for this at the moment.
+
+#### `goodness_of_fit_patel.Rmd`
+
+#### `patel_covariates.Rmd`
+
+#### `patel_plots.R`
 
 ### Allen
 
 Missing metadata not accessible from the library `scRNAseq`, which is providing the rest. The `allen_covariates_1000.Rmd` references `collection_date` which is not part of the metadata of the `SingleCellExperiment` object provided by `scRNAseq`.
 
-The chunk `zinb_check_batch` in `allen_covariates_1000.Rmd` references relative paths to directories not created during execution of the preceding chunks.
+#### `goodness_of_fit_allen.Rmd`
+
+#### `allen_covariates_1000.Rmd`
+
+The chunk `zinb_check_batch` references relative paths to directories not created during execution of the preceding chunks.
+
+#### `allen_plots.R`
 
 ### Zeisel
 
+#### `goodness_of_fit_zeisel.Rmd`
+
+#### `zeisel_covariates.Rmd`
+
+#### `zeisel_plots.R`
+	
 ### Espresso
+
+#### `espresso_covariates.Rmd`
+
+#### `espresso_plots.R`
+
+#### `goodness_of_fit_espresso.Rmd`
 
 ## Simulation scripts
 
@@ -111,6 +139,13 @@ to check that all files listed in `simFunction.R` comment were indeed created.
 
 ### `figuresPaper.Rmd`
 
+Produces the following figures:
+	* Figures 5, S10, S11
+	* Figure S12
+	* Figure S9
+	* Figures 6a-d, S13, S14
+	* Figures 6e-g
+	
 Data files required:
 
 	fig5-S10-S11-S15-S9/simZeisel_nc1000_ratio1_offs2_fittedAll.rda
@@ -284,11 +319,113 @@ Assuming that
 
 ### fig5-S10-S11-S15-S9
 
+Figures 5a-d relate to the mESC data. Fig 5a and b depict two-dimensional plots of mESC cells after ZINB-WaVE has been used for DR:
+
+	Figure 5a: default ZINB-WaVE with sample-level intercept
+
+	Figure 5b: ZINB-WaVE with batch as known sample-level covariate
+
+	Figure 5c: average silhouette widths by biological condition for ZINB-WaVE with and without batch covariate
+
+	Figure 5d: average silhouette widths by batch for ZINB-WaVE with and without batch covariate
+
+Figures 5e and f relate to the glioblastoma dataset:
+
+	Figure 5e: default ZINB-WaVE with sample-level intercept
+
+	Figure 5f: ZINB-WaVE with total no. of expressed genes as sample-level covariate
+
+Figure S9 depicts two factors from ZIFA applied to the V1 dataset with: 
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
+
+Figure S10 depicts the first two PCs for the S1/CA1 dataset with:
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
+
+Figure S11 depicts the first two factors (i.e. of FA) for the S1/CA1 dataset with:
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
+
+Figure S15 depicts two factors from ZIFA applied to the glioblastoma dataset with: 
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
+
+#### `timeZinb.R`
+
 `timeZinb.R` takes hours and hours to run, and was not completed when I terminated it, so I must investigate that 
+
+#### `fitZinb_bias_mse_ncells.R`
+
+Complete but must check output.
+
+#### `fitZinb_bias_mse_allParam.R`
+
+Complete but must check output.
+
+### fig6ad-S13-S14
+
+Figure 6 depicts bias and MSE estimates for the ZINB-WaVE estimation procedure as a function of the number of unknown covariates, K, with and without sample-level intercepts, and with common and genewise dispersion parameters. 10 bootstrap datasets were generated from data simulated from the ZINB-WaVE model based on the S1/CA1 data set with 1000 cells and 1000 genes.
+
+	Figure 6a: bias of log(mu) estimate
+
+	Figure 6b: bias of pi estimate
+
+	Figure 6c: MSE of log(mu) estimate
+
+	Figure 6d: MSE of pi estimate
+
+Figure S13 depicts two factors from ZIFA applied to the mESC data set with: 
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
+
+Figure S14 depicts the first two PCs for the glioblastoma data set with:
+
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 
 
 #### `fitZifa_allen_10000.R`
 
-### fig6ad-S13-S14
+Running ZIFA is computationally intensive, finished with many errors.
+
+#### `fitZifa_zeisel_10000.R`
+
+Outcome is likely to be the same as the allen script.
+
+#### `fitZifa.R`
+
+As above, but not a single input file, many, many files instead.
+
+#### `fitZinb_corSilh.R`
+
+#### `fitZinb10000.R`
+
+### fig6e-g
+
+Figure 6e-g is actually 7e-g in the publication.
+
+#### `lunSim.R`
+
+Appears to have run to completion.
+
+#### `fitZinbLun.R`
 
 `time`'d `fitZinbLun.R`:
 
@@ -296,10 +433,33 @@ real    2790m39.814s
 user    4076m18.857s
 sys     1292m50.092s
 
-And it still didn't complete!
+And it still didn't complete! From `fitZinbLun.log`:
 
-### fig6e-g
+	Error in result[[njob]] <- value : 
+	  attempt to select less than one element in OneIndex
+	Calls: lapply ... unlist -> bplapply -> bplapply -> bploop -> bploop.lapply
+	In addition: There were 12 warnings (use warnings() to see them)
+	Execution halted
+
+On the last execution, wrote out
+
+	simLun_100_ziadd0_fitted.rda
+	simLun_100_ziadd0.33_fitted.rda
+	simLun_100_ziadd0.67_fitted.rda
+	simLun_1000_ziadd0_fitted.rda
+	simLun_1000_ziadd0.33_fitted.rda
+	simLun_1000_ziadd0.67_fitted.rda
+	simLun_10000_ziadd0_fitted.rda
+
+But it is not clear that procedure was completed for the last file, so I consider only the first six files written out to completion.
+
+What difference would it make if we did not use the 10000 results?
 
 ### figS12
 
+Figure S12 depicts the first two PCs for the mESC data set with:
 
+	a) no normalisation
+	b) TC
+	c) FQ 
+	d) TMM 

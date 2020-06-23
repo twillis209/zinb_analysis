@@ -102,6 +102,3 @@ offs = 2
 pref = sprintf('fig6ad-S13-S14/simZeisel_nc10000_ratio%s_offs%s', b2, offs)
 load(paste0(pref, '.rda'))
 mclapply(list(zifa_raw, zifa_tmm, zifa_tc, zifa_fq), function(x) x(simData), mc.cores = 2)
-
-
-
