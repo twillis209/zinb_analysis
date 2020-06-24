@@ -18,6 +18,35 @@ Ok, installed `zifa` under the `diss` environment. May be necessary to rename `d
 
 So far, calls to the zifa wrapper function take the longest, it seems.
 
+# Parallel code
+
+Not entirely sure we are making full use of ZINB-WaVE's parallel implementation. Will use the vignette example and the Allen data set to time execution of the `zinbwave` function.
+
+Seems to be no difference between `MulticoreParam(1)` and `MulticoreParam(2)` in terms of execution time, at least for the data and parameters chosen. Of course, we have no idea what the parallel fraction is and whether it would differ on a different data set.
+
+...so we are no further forward in knowing whether `zinbwave` is runnning in parallel!
+
+The zinbwave vignette states that one needs to either:
+
+1. invoke `register()`; or
+2. pass a BPPARAM object to the zinbwave functions
+
+Got the following output after running `time Rscript parallelTest.R`:
+
+	real    3m6.920s
+	user    4m3.574s
+	sys     1m14.575s
+
+As user+sys > real, we clearly had some parallel execution.
+
+This was with `register(MulticoreParam(2))` at the top of the file. Let's see if it is necessary to specify this or if we can just rely on the default arguments to the zinbwave functions:
+
+	real    1m22.070s
+	user    1m39.792s
+	sys     0m30.182s
+
+Again user+sys > real, so we have parallel execution.
+
 # Analyses
 
 Datasets (from Methods section):
@@ -37,6 +66,12 @@ Datasets (from Methods section):
 		* Figure 3
 		* Clustering of PBMCs
 		* Figure 3
+	* OE data set:
+		* Fletcher et al.
+		* Downloaded
+	* PBMC data set:
+		* Zheng et al.
+		* Downloaded.
 	* Impact of normalization methods
 		* All four data sets
 		* Figure 4
