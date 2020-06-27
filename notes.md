@@ -51,41 +51,49 @@ Again user+sys > real, so we have parallel execution.
 
 Datasets (from Methods section):
 
-	* V1 data set:
-		* Tasic et al. 
-		* Available in `scRNAseq` package
-		* The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
-	* S1/CA1 data set:
-		* Zeisel et al.
-		* Downloaded.
-	* mESC data set:
-		* Kolodziejczyk et al.
-		* Downloaded.
-		* May now be in `scRNAseq`
-		* Identifying developmental trajectories of OE cells
-		* Figure 3
-		* Clustering of PBMCs
-		* Figure 3
-	* OE data set:
-		* Fletcher et al.
-		* Downloaded
-	* PBMC data set:
-		* Zheng et al.
-		* Downloaded.
-	* Impact of normalization methods
-		* All four data sets
-		* Figure 4
-	* Accounting for batch effects
-		* mESC and glioblastome data sets
-		* Figure 5
-	* Goodness-of-fit of the ZINB-WaVE model
-		* All four data sets 
-	* ZINB-WaVE estimators are asymptotically unbiased and robust
-		* Simulated data
-	* ZINB-WaVE is more accurate than state-of-the-art methods
-		* Simulated data:
-			* ZINB model
-			* Lun and Marioni model (`cputime.R`)
+* V1 data set:
+	* Tasic et al. 
+	* Available in `scRNAseq` package
+	* The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
+	* Plate-based: sorted by FACS into a 96-well plate and amplified using the SMARTer kit
+* S1/CA1 data set:
+	* Zeisel et al.
+	* Downloaded.
+	* Fluidigm C1 microfluidics cell capture platform
+* mESC data set:
+	* Kolodziejczyk et al.
+	* Downloaded.
+	* May now be in `scRNAseq`
+	* Fluidigm C1 microfluidics cell capture platform
+* OE data set:
+	* Fletcher et al.
+	* Downloaded
+	* Identifying developmental trajectories of OE cells
+	* Figure 3
+	* FACS then Fluidigm C1 microfluidics cell capture platform
+* PBMC data set:
+	* Zheng et al.
+	* Downloaded.
+	* Clustering of PBMCs
+	* Figure 3
+	* Droplet-based 10x Genomics platform 
+* Glioblastoma data set:
+	* Patel et al.
+	* SMART-Seq
+* Impact of normalization methods
+	* All four data sets
+	* Figure 4
+* Accounting for batch effects
+	* mESC and glioblastoma data sets
+	* Figure 5
+* Goodness-of-fit of the ZINB-WaVE model
+	* All four data sets 
+* ZINB-WaVE estimators are asymptotically unbiased and robust
+	* Simulated data
+* ZINB-WaVE is more accurate than state-of-the-art methods
+	* Simulated data:
+		* ZINB model
+		* Lun and Marioni model (`cputime.R`)
 
 R files in this repo:
 
@@ -115,6 +123,83 @@ R files in this repo:
 	sims/figures/fig6ad-S13-S14/fitZinb_corSilh.R
 	sims/figures/fig6ad-S13-S14/fitZinb10000.R
 	sims/cputime/cputime.R
+
+R files by paper section:
+
+### Leads to biologically meaningful clusters
+
+* Figure 2: Three DR techniques applied to the V1 data set (Allen) and correlation of components with QC measures
+	* Figure 2a-b: PCA (TC)
+	* Figure 2c-d: ZIFA (TC)
+	* Figure 2e-f: ZINB-WaVE	
+* sFigure 1: Fig 2 analysis on S1/CA1 data set (Zeisel)
+* sFigure 2: Fig 2 analysis on mESC data set (Kolodziejczyk/Espresso)
+* sFigure 3: Fig 2 analysis on glioblastoma data set (Patel)
+* sFigure 4: ZW-derived 2D representation of V1 data set (Allen) using 500, 2000, 5000, 10000 most variable genes
+* sFigure 5: Average silhouette widths for clusters produced with PCA, ZIFA, and ZW in V1, S1/CA1, glioblastoma, mESC data sets
+
+R files:
+
+	real_data/zeisel_plots.R
+	real_data/espresso_plots.R
+	real_data/patel_plots.R
+	real_data/allen_plots.R
+
+### Leads to novel biological insights
+
+* Figure 3a-c: lineage inference on the OE data set (Fletcher) with Slingshot 
+	* Figure 3a: PCA without endpoint supervision 
+	* Figure 3b: PCA with endpoint supervision 
+	* Figure 3b: ZINB-WaVE without endpoint supervision 
+* Figure 3d-e: PBMC data set (Zheng)
+	* Figure 3d: 2D t-SNE depiction of clusters obtained from ZW-derived 10D representation of PBMC cells
+	* Figure 3e: Heatmap of expression of marker genes for the 18 clusters identified
+* sFigure 6: t-SNE representation of results of sequential k-means clustering on ZW-derived 10D representation of PBMC cells
+* sFigure 7: Sequential k-means clustering on ZW-derived 2D representation of PBMC cells
+	* sFigure 7a: 2D ZW plot
+	* sFigure 7b: 2D PCA plot
+
+### Impact of normalisation
+
+* Figure 4: average silhouette width in the real data sets by DR and normalisation technique and 
+	* Figure 4a: V1
+	* Figure 4b: S1/CA1
+	* Figure 4c: glioblastoma
+	* Figure 4d: mESC
+* sFigure 8: PCA on V1 data set 
+* sFigure 9: ZIFA on V1 data set 
+* sFigure 10: PCA on S1/CA1 data set 
+* sFigure 11: ZIFA on S1/CA1 data set 
+* sFigure 12: PCA on mESC data set 
+* sFigure 13: ZIFA on mESC data set 
+* sFigure 14: PCA on glioblastoma data set 
+* sFigure 15: ZIFA on glioblastoma data set 
+
+### Accounting for batch effects
+
+* Figure 5: Accounting for batch effects with ZW:
+	* Figure 5a-d: mESC data set (Espresso)
+		* Figure 5a: 2D ZW DR with sample-level intercept
+		* Figure 5b: 2D ZW DR with batch as sample-level covariate
+		* Figure 5c: silhouette widths for medium clusters with and without batch covariate
+		* Figure 5d: silhouette widths for batch clusters with and without batch covariate
+	* Figure 5e-f: glioblastoma data set (Patel)
+		* Figure 5e: 2D ZW with sample-level intercept
+		* Figure 5f: 2D ZW with total no. of expressed genes as sample-level intercept
+* sFigure 16: DR on mESC data set (Espresso), 'ZINB-WaVE and ComBat', comparing ZW to remove batch effect with normalisation method, ComBat:
+	* sFigure 16a: PCA on FQ-normalised counts
+	* sFigure 16b: PCA on ComBat-normalised counts
+	* sFigure 16c: silhouette widths by medium and choice of PCA with raw, TC, and FQ, and with/out ComBat, ZW with/out batch covariate
+	* sFigure 16d: silhouette widths by batch and choice of PCA with raw, TC, and FQ, and with/out ComBat, ZW with/out batch covariate
+* sFigure 17: DR on glioblastoma data set (Patel):
+	* sFigure 17a: PCA with FQ and ComBat 
+	* sFigure 17b: ZW with batch as sample-level covariate (not satisfactory separation)
+
+### Goodness-of-fit of ZINB-WaVE model
+
+### ZINB-WaVE estimators are asymptotically unbiased and robust
+
+### ZINB-WaVE is more accurate than state-of-the-art methods
 
 ## Scripts for data analysis
 
@@ -175,11 +260,12 @@ to check that all files listed in `simFunction.R` comment were indeed created.
 ### `figuresPaper.Rmd`
 
 Produces the following figures:
-	* Figures 5, S10, S11
-	* Figure S12
-	* Figure S9
-	* Figures 6a-d, S13, S14
-	* Figures 6e-g
+
+* Figures 5, S10, S11
+* Figure S12
+* Figure S9
+* Figures 6a-d, S13, S14
+* Figures 6e-g
 	
 Data files required:
 

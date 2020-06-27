@@ -44,4 +44,6 @@ What would it mean to reproduce this paper? Surely not everything? Should think 
 
 We also need to think about what the current scope of the dissertation is: reproduce (some of) Risso 18 then look at what use it makes of ZI in light of Svensson's conclusions. Should not forget that writing the review section of the dissertation is an opportunity to clarify my thinking and what should be done. 
 
+# 27/6/20
 
+Once we have things working (or some of the things...), we could repeat the GOF comparisons with the droplet-based data set from the paper (PBMCS, Zheng) as the V1 data (Allen) set was processed using a plate-based protocol. We have any number of other droplet-based data sets for use, too.
