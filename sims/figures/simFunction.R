@@ -139,7 +139,7 @@ simulateGamma <- function(zinb, ncells = 100, gammapiOffset = 0, colIni = 1,
                      gammaPi = zinb@gamma_pi[1, ])
   # mclustW
   mclustGamma = Mclust(gamma, G = 1)
-  
+
   # multivar gaussian
   simGamma = mvrnorm(n = ncells,
                      mu = mclustGamma$parameters$mean[,1] + c(0, gammapiOffset), 
@@ -162,6 +162,26 @@ simulateGamma <- function(zinb, ncells = 100, gammapiOffset = 0, colIni = 1,
   return(simGamma)
 }
 
+fitZINBandCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000) {
+  # fit zinb (if you already fitted zinb, it is cached)
+  d = digest(core, "md5")
+
+  cachePath = paste0(cacheDirPath, '/', d)
+
+  fileZinb = sprintf("%s_zinb.rda", cachePath)
+  if (!file.exists(fileZinb)){
+    print('run ZINB')
+
+    zinb <- zinbFit(core, K = K, commondispersion = FALSE, epsilon = epsilon)
+    save(zinb, file = fileZinb)
+  }else{
+    load(fileZinb)
+  }
+  return(zinb)
+	
+}
+
+# Fits ZINB to data in core, then simulates data using the specified parameters and produces B replicates
 zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3, ratioSSW_SSB = 1, gammapiOffset = 0, B = 1, fileName = 'zinbSim.rda'){
   # sample ngenes 
   set.seed(9128)
@@ -221,115 +241,173 @@ library(MASS)
 ##########
 ## ALLEN
 ##########
-data("allen")
-cols = brewer.pal(8, "Set1")
-prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
-                   which(colData(allen)$Core.Type=="Core")]
-filterGenes = apply(assay(prefilter) > 5, 1, sum) >= 5
-postfilter = prefilter[filterGenes, ]
-bioIni =  as.factor(colData(postfilter)$driver_1_s)
-core = assay(postfilter)
-colIni = cols[bioIni]
 
-
-###########################################################################
-## Correlation and Silhouette plot
-## Figures 6, S13, S14 
-for (nc in c(100, 1000, 10000)){
-  for (b2 in c(1, 5, 50)){
-    for (offs in c(0, 2, 5)){
-      ff = sprintf('fig6ad-S13-S14/simAllen_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
-      zinbSimWrapper(core = core, colIni = colIni, ncells = nc, nclust = 3, 
-                     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-                     fileName = ff)
-    }
-  }
+loadAndFilterAllen<-function() {
+	# Loads Allen data into a SummarizedExperiment object and assigns to variable `allen`
+	data("allen")
+	cols = brewer.pal(8, "Set1")
+	prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
+			   which(colData(allen)$Core.Type=="Core")]
+	filterGenes = apply(assay(prefilter) > 5, 1, sum) >= 5
+	postfilter = prefilter[filterGenes, ]
+	bioIni =  as.factor(colData(postfilter)$driver_1_s)
+	core = assay(postfilter)
+	colIni = cols[bioIni]
 }
 
+# Loads the V1 data set and filters as specified in the paper
+simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5)) {
+	data("allen")
+	cols = brewer.pal(8, "Set1")
+	prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
+			   which(colData(allen)$Core.Type=="Core")]
+	filterGenes = apply(assay(prefilter) > 5, 1, sum) >= 5
+	postfilter = prefilter[filterGenes, ]
+	bioIni =  as.factor(colData(postfilter)$driver_1_s)
+	core = assay(postfilter)
+	colIni = cols[bioIni]
+
+	# core, colIni are used elsewhere
+
+	## Simulates data sets based on Allen V1 data set
+	## Correlation and Silhouette plot
+	## Figures 6, S13, S14 
+	for (nc in ncells){
+	  for (b2 in ratioSSW_SSB){
+	    for (offs in gammapiOffset){
+	      ff = sprintf('fig6ad-S13-S14/simAllen_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+	      zinbSimWrapper(core = core, colIni = colIni, ncells = nc, nclust = 3, 
+			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
+			     fileName = ff)
+	    }
+	  }
+	}
+}
 
 
 ##########
 ## ZEISEL
 ##########
-data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
-                   stringsAsFactors = FALSE, comment.char = '%')
-counts <- as.matrix(data[12:NROW(data),-(1:2)])
-counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
-rownames(counts) <- data[12:NROW(data),1]
-colnames(counts) <- data[8, -(1:2)]
-level1 <- as.factor(as.matrix(data)[9,-(1:2)])
-set.seed(21986)
-filter = sample(1:ncol(counts), 2000, replace = F)
-counts = counts[, filter]
-level1 = droplevels(level1[filter])
-filterGenes = apply(counts > 5, 1, sum) >= 5
-counts <- counts[filterGenes, ]
-col <- brewer.pal(8, "Set2")
-colIni <- col[level1]
 
-###################################################################
-## Correlation and Silhouette plots
-# Figures 6, S13, S14 
-###################################
-for (nc in c(100, 1000, 10000)){
-  for (b2 in c(1, 5, 10)){
-    for (offs in c(-1.5, 0.5, 2)){
-      ff = sprintf('fig6ad-S13-S14/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
-      zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
-                     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-                     fileName = ff)
-    }
-  }
+# Loads the S1/CA1 data set and filters as specified in the paper
+
+simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2)) {
+	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
+			   stringsAsFactors = FALSE, comment.char = '%')
+	counts <- as.matrix(data[12:NROW(data),-(1:2)])
+	counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
+	rownames(counts) <- data[12:NROW(data),1]
+	colnames(counts) <- data[8, -(1:2)]
+	level1 <- as.factor(as.matrix(data)[9,-(1:2)])
+	set.seed(21986)
+	filter = sample(1:ncol(counts), 2000, replace = F)
+	counts = counts[, filter]
+	level1 = droplevels(level1[filter])
+	filterGenes = apply(counts > 5, 1, sum) >= 5
+	counts <- counts[filterGenes, ]
+	col <- brewer.pal(8, "Set2")
+	colIni <- col[level1]
+
+	## Correlation and Silhouette plots
+	# Figures 6, S13, S14 
+	for (nc in ncells){
+	  for (b2 in ratioSSW_SSB){
+	    for (offs in gammapiOffset){
+	      ff = sprintf('fig6ad-S13-S14/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+	      zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
+			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
+			     fileName = ff)
+	    }
+	  }
+	}
+}
+
+#######################################################################
+# Mean-Difference plot
+# Figure S26
+######################
+zeiselMeanDifferencesS26<-function() {
+	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
+			   stringsAsFactors = FALSE, comment.char = '%')
+	counts <- as.matrix(data[12:NROW(data),-(1:2)])
+	counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
+	rownames(counts) <- data[12:NROW(data),1]
+	colnames(counts) <- data[8, -(1:2)]
+	level1 <- as.factor(as.matrix(data)[9,-(1:2)])
+	set.seed(21986)
+	filter = sample(1:ncol(counts), 2000, replace = F)
+	counts = counts[, filter]
+	level1 = droplevels(level1[filter])
+	filterGenes = apply(counts > 5, 1, sum) >= 5
+	counts <- counts[filterGenes, ]
+	col <- brewer.pal(8, "Set2")
+	colIni <- col[level1]
+
+	nc = 1000
+	b2 = 1
+	offs = 2
+
+	system('mkdir figS12')
+	ff = sprintf('figS12/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+
+	## simulate
+	zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
+		       ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, fileName = ff)
+
+	# remove genes with only zeros and keep track of removed genes for mean diff
+	load(ff)
+	counts = t(simData$counts)
+	keep = rowSums(counts) > 0
+	simData$counts = simData$counts[,keep] 
+	save(bio, simModel, simData, keep, file = ff)
+
+	# fit
+	fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE, epsilon = ncol(simData$counts))
+	save(fittedSim, file = gsub('.rda', '_fitted.rda', ff))
 }
 
 
 #######################################################################
-# Mean-Difference plot
-# Figure S12
-######################
-nc = 1000
-b2 = 1
-offs = 2
-system('mkdir figS12')
-ff = sprintf('figS12/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
-
-## simulate
-zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
-               ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, fileName = ff)
-
-# remove genes with only zeros and keep track of removed genes for mean diff
-load(ff)
-counts = t(simData$counts)
-keep = rowSums(counts) > 0
-simData$counts = simData$counts[,keep] 
-save(bio, simModel, simData, keep, file = ff)
-
-# fit
-fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE, epsilon = ncol(simData$counts))
-save(fittedSim, file = gsub('.rda', '_fitted.rda', ff))
-
-
-
-#######################################################################
-# bias_mse_allParam (figures 5, S10, S11) + bias_mse_ncells (figure S9) + cpuTime (figure S15)
+# bias_mse_allParam (figures 5, S10, S11) + bias_mse_ncells (figure S9) + cpuTime (figure S30)
 ################
-b2 = 1
-offs = 2
-for (nc in c(50, 100, 500, 1000, 5000, 10000)){
-  ff = sprintf('fig5-S10-S11-S15-S9/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
-  zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
-                 ratioSSW_SSB = b2, gammapiOffset = offs, B = 10,
-                 fileName = ff)
-  
-  # remove genes with only zeros in at least one of the B simulated ds
-  load(ff)
-  keep = lapply(1:length(simData), function(i){
-    counts = t(simData[[i]]$counts)
-    rowSums(counts) != 0
-  })
-  keep = Reduce('+', keep) == 10
-  for (i in 1:length(simData)){
-    simData[[i]]$counts = simData[[i]]$counts[,keep] 
-  }
-  save(bio, simModel, simData, keep, file = ff)
+
+# This and the previous function were previously not inside a function, so it's not clear what filtering of the counts performed for the sake of the previous simulation should be carried over to this one. Review the git diff if things do not work out.
+
+zeiselBiasMSECpuTime<-function() {
+	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
+			   stringsAsFactors = FALSE, comment.char = '%')
+	counts <- as.matrix(data[12:NROW(data),-(1:2)])
+	counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
+	rownames(counts) <- data[12:NROW(data),1]
+	colnames(counts) <- data[8, -(1:2)]
+	level1 <- as.factor(as.matrix(data)[9,-(1:2)])
+	set.seed(21986)
+	filter = sample(1:ncol(counts), 2000, replace = F)
+	counts = counts[, filter]
+	level1 = droplevels(level1[filter])
+	filterGenes = apply(counts > 5, 1, sum) >= 5
+	counts <- counts[filterGenes, ]
+	col <- brewer.pal(8, "Set2")
+	colIni <- col[level1]
+
+	b2 = 1
+	offs = 2
+	for (nc in c(50, 100, 500, 1000, 5000, 10000)){
+	  ff = sprintf('fig5-S10-S11-S15-S9/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+	  zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
+			 ratioSSW_SSB = b2, gammapiOffset = offs, B = 10,
+			 fileName = ff)
+	  
+	  # remove genes with only zeros in at least one of the B simulated ds
+	  load(ff)
+	  keep = lapply(1:length(simData), function(i){
+	    counts = t(simData[[i]]$counts)
+	    rowSums(counts) != 0
+	  })
+	  keep = Reduce('+', keep) == 10
+	  for (i in 1:length(simData)){
+	    simData[[i]]$counts = simData[[i]]$counts[,keep] 
+	  }
+	  save(bio, simModel, simData, keep, file = ff)
+	}
 }
