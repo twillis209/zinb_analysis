@@ -22,7 +22,7 @@ makeZinbFit <- function(Xintercept = T, Vintercept = T, K = 2,
 K = 1:4
 Vintercept = c(TRUE, FALSE)
 commondispersion = c(TRUE, FALSE)
-ncores = 10
+ncores = 2
 ds = 'Zeisel'
 nc = 1000
 b2 = 1
@@ -50,11 +50,10 @@ fittedSim = lapply(K, function(k){
                                 K = k, commondispersion = commondisp,
                                 ngenes = nrow(counts), 
                                 ncells = ncol(counts))
-        myZinbFit(counts, ncores = ncores)
+        myZinbFit(counts)
       },mc.cores =  ncores)
     })
   })
 })
 out = paste0(pp, '_fittedAll.rda')
 save(fittedSim, file = out)
-

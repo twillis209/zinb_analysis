@@ -16,7 +16,7 @@ library(zinbwave)
 library(cluster)
 library(RColorBrewer)
 library(ggplot2)
-library(reshape)
+library(reshape2)
 library(EDASeq)
 library(edgeR)
 library(dplyr)
@@ -63,8 +63,7 @@ computeVarianceList <- function(fittedSim, simModel, keep){
       tmp <- lapply(1:2, function(commondisp){
         
         mm <- lapply(seq_along(simData), function(i) {
-          (getLogMu(fittedSim[[k]][[Vint]][[commondisp]][[i]]) -
-             getLogMu(simModel)[,keep])^2
+          (getLogMu(fittedSim[[k]][[Vint]][[commondisp]][[i]]) -getLogMu(simModel)[,keep])^2
         })
         mu <- Reduce("+", mm)/(length(mm) - 1)
         

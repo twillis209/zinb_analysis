@@ -264,7 +264,6 @@ simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5,
 	}
 }
 
-
 ##########
 ## ZEISEL
 ##########
@@ -355,7 +354,8 @@ zeiselBiasMSECpuTime<-function() {
 	offs = 2
 	for (nc in c(50, 100, 500, 1000, 5000, 10000)){
 	  ff = sprintf('fig5-S10-S11-S15-S9/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
-	  zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
+	
+ zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
 			 ratioSSW_SSB = b2, gammapiOffset = offs, B = 10,
 			 fileName = ff)
 	  

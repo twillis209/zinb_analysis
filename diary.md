@@ -47,3 +47,9 @@ We also need to think about what the current scope of the dissertation is: repro
 # 27/6/20
 
 Once we have things working (or some of the things...), we could repeat the GOF comparisons with the droplet-based data set from the paper (PBMCS, Zheng) as the V1 data (Allen) set was processed using a plate-based protocol. We have any number of other droplet-based data sets for use, too.
+
+# 28/6/20
+
+Currently running `testSimFunctionChanges.R` to fit ZINB to the Zeisel data set.
+
+Need to fix `fitZinb_bias_mse_allParam.R` and `fitZinb_bias_mse_ncells.R`.

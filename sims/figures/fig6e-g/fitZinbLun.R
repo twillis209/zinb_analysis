@@ -11,8 +11,15 @@ library(zinbwave)
 # fig6e-g/simLun_10000_ziadd0.33_fitted.rda
 # fig6e-g/simLun_10000_ziadd0.67_fitted.rda
 
-for (ncells in c(100, 1000, 10000)){
-  for (add in c('_ziadd0', '_ziadd0.33', '_ziadd0.67')){
+fitAllSimLun<-function() {
+	for (ncells in c(100, 1000, 10000)){
+	  for (add in c('_ziadd0', '_ziadd0.33', '_ziadd0.67')){
+		fitSimData(ncells, add)
+	  }
+	}
+}
+
+fitSimData<-function(ncells, add) {
     fileName = sprintf('simLun_%s%s', ncells, add)
     load(paste0(fileName, '.rda'))
     fittedSim = lapply(1:length(simData), function(i){
@@ -22,5 +29,6 @@ for (ncells in c(100, 1000, 10000)){
     })
     out = paste0(fileName, '_fitted.rda')
     save(fittedSim, file = out)
-  }
 }
+
+fitSimData(10000, '_ziadd0')

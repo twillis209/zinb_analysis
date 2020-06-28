@@ -115,8 +115,8 @@ R files in this repo:
 	sims/figures/fig6e-g/lunSim.R (complete)
 	sims/figures/fig6e-g/fitZinbLun.R (terminated in error condition)
 	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R (not running; taking too long)
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R (complete)
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R (complete)
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R (terminated in error condition)
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R (terminated in error condition)
 	sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa.R
@@ -256,6 +256,29 @@ Used:
 	for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
 
 to check that all files listed in `simFunction.R` comment were indeed created.
+
+`zinbSimWrapper` simulates B data sets from a real data set and for a particular combination of parameters. Note that all B data sets are written out to one `rda` file.
+
+One of the b^2 values used to generate Allen data set-based simulated data is 50, when it is given as 10 in the paper (and the corresponding value of b^2 used for the Zeisel data set is 10, too). 
+
+Things left to test:
+
+* fitZinbAndCache
+* zinbSimWrapper 
+* simulateFromAllenData
+* loadAndFilterZeiselData
+* simulateFromZeiselData
+* zeiselMeanDifferencesS26
+* zeiselBiasMSECpuTime
+
+Fitting ZINB to the Allen data set: 
+
+	real    82m6.631s
+	user    124m44.392s
+	sys     24m15.627s
+
+Fitting ZINB to the Zeisel data set: 
+
 
 ### `figuresPaper.Rmd`
 
@@ -490,11 +513,11 @@ Figure S15 depicts two factors from ZIFA applied to the glioblastoma dataset wit
 
 #### `fitZinb_bias_mse_ncells.R`
 
-Complete but must check output.
+Completed with error conditions relating to zero counts in samples.
 
 #### `fitZinb_bias_mse_allParam.R`
 
-Complete but must check output.
+Completed apparently without error but on inspection the `ncores` argument had caused the `myZinbFit` function to return errors.
 
 ### fig6ad-S13-S14
 
