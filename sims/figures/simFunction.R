@@ -162,7 +162,7 @@ simulateGamma <- function(zinb, ncells = 100, gammapiOffset = 0, colIni = 1,
   return(simGamma)
 }
 
-fitZINBandCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000) {
+fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=F) {
   # fit zinb (if you already fitted zinb, it is cached)
   d = digest(core, "md5")
 
@@ -172,13 +172,13 @@ fitZINBandCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000) {
   if (!file.exists(fileZinb)){
     print('run ZINB')
 
-    zinb <- zinbFit(core, K = K, commondispersion = FALSE, epsilon = epsilon)
+    zinb <- zinbFit(core, K = K, commondispersion = commonDispersion, epsilon = epsilon)
+    assign("zinb", zinb, envir=parent.frame())
     save(zinb, file = fileZinb)
   }else{
-    load(fileZinb)
+    load(fileZinb, envir=parent.frame())
   }
-  return(zinb)
-	
+  return(zinb)	
 }
 
 # Fits ZINB to data in core, then simulates data using the specified parameters and produces B replicates
@@ -188,20 +188,7 @@ zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3
   if (ngenes > nrow(core)) repl = T else repl = F
   core = core[sample(1:nrow(core), ngenes, repl = repl),]
   
-  # fit zinb (if you already fitted zinb, it is cached)
-  d = digest(core, "md5")
-
-  tmp = paste0(tempdir(), '/', d)
-
-  fileZinb = sprintf("%s_zinb.rda", tmp)
-  if (!file.exists(fileZinb)){
-    print('run ZINB')
-
-    zinb <- zinbFit(core, K = 2, commondispersion = FALSE, epsilon = ngenes)
-    save(zinb, file = fileZinb)
-  }else{
-    load(fileZinb)
-  }
+  fitZinbAndCache(core, K=2, epsilon=ngenes, commonDispersion=F)
   
   # sim W
   w = simulateW(zinb, ncells, nclust, ratioSSW_SSB, colIni)
@@ -242,9 +229,10 @@ library(MASS)
 ## ALLEN
 ##########
 
-loadAndFilterAllen<-function() {
+# Using this like a subroutine to get core, colIni, and allen into the global environment. Hacky but I don't want to rewrite this entire program.
+loadAndFilterAllenData<-function() {
 	# Loads Allen data into a SummarizedExperiment object and assigns to variable `allen`
-	data("allen")
+	data("allen", envir=environment())
 	cols = brewer.pal(8, "Set1")
 	prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
 			   which(colData(allen)$Core.Type=="Core")]
@@ -253,21 +241,13 @@ loadAndFilterAllen<-function() {
 	bioIni =  as.factor(colData(postfilter)$driver_1_s)
 	core = assay(postfilter)
 	colIni = cols[bioIni]
+
+	out<-mapply(assign, c("core", "colIni"), list(core, colIni), MoreArgs=list(envir=.GlobalEnv))
 }
 
 # Loads the V1 data set and filters as specified in the paper
 simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5)) {
-	data("allen")
-	cols = brewer.pal(8, "Set1")
-	prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
-			   which(colData(allen)$Core.Type=="Core")]
-	filterGenes = apply(assay(prefilter) > 5, 1, sum) >= 5
-	postfilter = prefilter[filterGenes, ]
-	bioIni =  as.factor(colData(postfilter)$driver_1_s)
-	core = assay(postfilter)
-	colIni = cols[bioIni]
-
-	# core, colIni are used elsewhere
+	loadAndFilterAllenData() 
 
 	## Simulates data sets based on Allen V1 data set
 	## Correlation and Silhouette plot
@@ -291,7 +271,8 @@ simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5,
 
 # Loads the S1/CA1 data set and filters as specified in the paper
 
-simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2)) {
+# Using this like a subroutine to get core, colIni, and allen into the global environment. Hacky but I don't want to rewrite this entire program.
+loadAndFilterZeiselData<-function() {
 	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
 			   stringsAsFactors = FALSE, comment.char = '%')
 	counts <- as.matrix(data[12:NROW(data),-(1:2)])
@@ -308,6 +289,12 @@ simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5
 	col <- brewer.pal(8, "Set2")
 	colIni <- col[level1]
 
+	out<-mapply(assign, c("counts", "colIni"), list(counts, colIni), MoreArgs=list(envir=.GlobalEnv))
+}
+
+simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2)) {
+	loadAndFilterZeiselData()
+	
 	## Correlation and Silhouette plots
 	# Figures 6, S13, S14 
 	for (nc in ncells){
@@ -327,21 +314,7 @@ simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5
 # Figure S26
 ######################
 zeiselMeanDifferencesS26<-function() {
-	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
-			   stringsAsFactors = FALSE, comment.char = '%')
-	counts <- as.matrix(data[12:NROW(data),-(1:2)])
-	counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
-	rownames(counts) <- data[12:NROW(data),1]
-	colnames(counts) <- data[8, -(1:2)]
-	level1 <- as.factor(as.matrix(data)[9,-(1:2)])
-	set.seed(21986)
-	filter = sample(1:ncol(counts), 2000, replace = F)
-	counts = counts[, filter]
-	level1 = droplevels(level1[filter])
-	filterGenes = apply(counts > 5, 1, sum) >= 5
-	counts <- counts[filterGenes, ]
-	col <- brewer.pal(8, "Set2")
-	colIni <- col[level1]
+	loadAndFilterZeiselData()
 
 	nc = 1000
 	b2 = 1
@@ -359,6 +332,8 @@ zeiselMeanDifferencesS26<-function() {
 	counts = t(simData$counts)
 	keep = rowSums(counts) > 0
 	simData$counts = simData$counts[,keep] 
+
+	# All these variables enter the environment after `load(ff)`
 	save(bio, simModel, simData, keep, file = ff)
 
 	# fit
@@ -374,21 +349,7 @@ zeiselMeanDifferencesS26<-function() {
 # This and the previous function were previously not inside a function, so it's not clear what filtering of the counts performed for the sake of the previous simulation should be carried over to this one. Review the git diff if things do not work out.
 
 zeiselBiasMSECpuTime<-function() {
-	data <- read.table("../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t',
-			   stringsAsFactors = FALSE, comment.char = '%')
-	counts <- as.matrix(data[12:NROW(data),-(1:2)])
-	counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
-	rownames(counts) <- data[12:NROW(data),1]
-	colnames(counts) <- data[8, -(1:2)]
-	level1 <- as.factor(as.matrix(data)[9,-(1:2)])
-	set.seed(21986)
-	filter = sample(1:ncol(counts), 2000, replace = F)
-	counts = counts[, filter]
-	level1 = droplevels(level1[filter])
-	filterGenes = apply(counts > 5, 1, sum) >= 5
-	counts <- counts[filterGenes, ]
-	col <- brewer.pal(8, "Set2")
-	colIni <- col[level1]
+	loadAndFilterZeiselData()
 
 	b2 = 1
 	offs = 2
