@@ -53,3 +53,37 @@ Once we have things working (or some of the things...), we could repeat the GOF 
 Currently running `testSimFunctionChanges.R` to fit ZINB to the Zeisel data set.
 
 Need to fix `fitZinb_bias_mse_allParam.R` and `fitZinb_bias_mse_ncells.R`.
+
+# 29/6/20
+
+Useful tidbit for `vim`: `s/.*\/\([^\/]*\.R\)/\1` replaces full path with Rscript filename
+
+Simulation-related scripts to fix:
+
+* `fitZinb_bias_mse_allParam.R`
+* `fitZinb_bias_mse_ncells.R`
+* `fitZinbLun.R` (last few files take a long time to fit):
+	* `fig6e-g/simLun_10000_ziadd0_fitted.rda` (running)
+	* `fig6e-g/simLun_10000_ziadd0.33_fitted.rda`
+	* `fig6e-g/simLun_10000_ziadd0.67_fitted.rda`
+* `timeZinb.R` (not running; taking too long)
+* `fitZifa_allen_10000.R`
+* `fitZifa_zeisel_10000.R`
+* `fitZifa.R`
+* `fitZinb_corSilh.R`
+* `fitZinb10000.R`
+* `cputime.R`
+
+Got a response from Risso about the Patel counts:
+
+	I just added a file with the data at https://github.com/drisso/zinb_analysis/blob/master/real_data/GSE57872_GBM_data_matrix.txt.gz
+
+	I am almost sure that these are the data that we used for the paper, but in case you see some discrepancies please re-open this and I will double check.
+
+Unfortunately, these are the counts provided by Patel, not those obtained by Risso et al. through the use of TopHat and htseq-count.
+
+## AWS
+
+Not sure if it will be worth it, but will experiment with AWS today and see if it is worthwhile... No it's not! Free-tier only offers 1 vCPU, 1 GiB RAM. Nowhere near enough to improve on my current workflow. 
+
+

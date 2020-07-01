@@ -169,6 +169,7 @@ fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, co
   cachePath = paste0(cacheDirPath, '/', d)
 
   fileZinb = sprintf("%s_zinb.rda", cachePath)
+
   if (!file.exists(fileZinb)){
     print('run ZINB')
 
@@ -178,7 +179,6 @@ fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, co
   }else{
     load(fileZinb, envir=parent.frame())
   }
-  return(zinb)	
 }
 
 # Fits ZINB to data in core, then simulates data using the specified parameters and produces B replicates
@@ -246,7 +246,7 @@ loadAndFilterAllenData<-function() {
 }
 
 # Loads the V1 data set and filters as specified in the paper
-simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5)) {
+simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5), outDir="fig6ad-S13-S14") {
 	loadAndFilterAllenData() 
 
 	## Simulates data sets based on Allen V1 data set
@@ -255,7 +255,7 @@ simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5,
 	for (nc in ncells){
 	  for (b2 in ratioSSW_SSB){
 	    for (offs in gammapiOffset){
-	      ff = sprintf('fig6ad-S13-S14/simAllen_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+	      ff = sprintf(paste(outDir, 'simAllen_nc%s_ratio%s_offs%s.rda', sep="/"), nc, b2, offs)
 	      zinbSimWrapper(core = core, colIni = colIni, ncells = nc, nclust = 3, 
 			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
 			     fileName = ff)
@@ -291,7 +291,7 @@ loadAndFilterZeiselData<-function() {
 	out<-mapply(assign, c("counts", "colIni"), list(counts, colIni), MoreArgs=list(envir=.GlobalEnv))
 }
 
-simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2)) {
+simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2), outDir="fig6ad-S13-S14") {
 	loadAndFilterZeiselData()
 	
 	## Correlation and Silhouette plots
@@ -299,7 +299,7 @@ simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5
 	for (nc in ncells){
 	  for (b2 in ratioSSW_SSB){
 	    for (offs in gammapiOffset){
-	      ff = sprintf('fig6ad-S13-S14/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
+	      ff = sprintf(paste(outDir, 'simZeisel_nc%s_ratio%s_offs%s.rda', sep="/"), nc, b2, offs)
 	      zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
 			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
 			     fileName = ff)

@@ -26,3 +26,4 @@ real_data/patel/
 real_data/retina/
 .*.sw*
 *.pdf
+*/*/*.rda

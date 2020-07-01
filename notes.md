@@ -110,7 +110,7 @@ R files in this repo:
 	real_data/patel_plots.R
 	real_data/allen_plots.R
 	real_data/silhouette.R
-	sims/figures/simFunction.R (complete)
+	sims/figures/simFunction.R (testing)
 	sims/figures/figuresPaper.Rmd
 	sims/figures/fig6e-g/lunSim.R (complete)
 	sims/figures/fig6e-g/fitZinbLun.R (terminated in error condition)
@@ -263,11 +263,6 @@ One of the b^2 values used to generate Allen data set-based simulated data is 50
 
 Things left to test:
 
-* fitZinbAndCache
-* zinbSimWrapper 
-* simulateFromAllenData
-* loadAndFilterZeiselData
-* simulateFromZeiselData
 * zeiselMeanDifferencesS26
 * zeiselBiasMSECpuTime
 
@@ -279,6 +274,32 @@ Fitting ZINB to the Allen data set:
 
 Fitting ZINB to the Zeisel data set: 
 
+	real    185m17.744s
+	user    292m20.967s
+	sys     35m31.413s
+
+Simulating data for the file `benchmark_simZeisel_nc%s_ratio%s_offs%s.rda` (test of `zinbSimWrapper`): 
+
+	real    10m24.311s
+	user    15m1.607s
+	sys     1m0.416s
+
+Testing `simulateFromAllenData`: `simulateFromAllenData(ncells=100, ratioSSW_SSB=1, gammapiOffset=0)`
+
+Trying to run again and getting `Execution halted`. Tried
+
+	loadAndFilterAllenData()
+
+	zinbSimWrapper(...)
+
+and got the error:
+
+	Error in fitZinbAndCache(core, K = 2, epsilon = ngenes, commonDispersion = F) :
+	  object 'zinb' not found
+	Calls: zinbSimWrapper -> fitZinbAndCache
+	Execution halted
+
+Fiddled with the calls to `assign` and to `load`, `zinb` appears in the correct environment now.
 
 ### `figuresPaper.Rmd`
 
@@ -598,6 +619,40 @@ On the last execution, wrote out
 But it is not clear that procedure was completed for the last file, so I consider only the first six files written out to completion.
 
 What difference would it make if we did not use the 10000 results?
+
+Running `fitSimData(10000, '_ziadd0')`:
+
+	real    1217m59.326s
+	user    1921m18.701s
+	sys     472m29.077s
+
+Over 20 hours for a single file!
+
+Running `fitSimData(10000, '_ziadd0.33')`, ran out of memory. Terminated with: 
+
+	Error in mcfork(detached) :
+	  unable to fork, possible reason: Cannot allocate memory
+	Calls: fitSimData ... bploop.lapply -> .send_to -> .send_to -> <Anonymous> -> mcfork
+	Execution halted
+	Error while shutting down parallel: unable to terminate some child processes
+
+and ran for:
+
+	real    1094m51.486s
+	user    1657m22.648s
+	sys     372m50.779s
+
+12 GB of RAM is clearly not enough, although I was running the `ziadd0.67` run at the same time, so it is possible that running these serially would work.
+
+Running `fitSimData(10000, '_ziadd0.67')`:
+
+real    1295m21.258s
+user    1882m26.426s
+sys     555m38.486s
+
+Seems to have run to completion.
+
+Tried again with `_ziadd0.33`, but terminated it earlier as I now have an ARC account. Running this will be my first job.
 
 ### figS12
 

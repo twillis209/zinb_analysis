@@ -31,4 +31,4 @@ fitSimData<-function(ncells, add) {
     save(fittedSim, file = out)
 }
 
-fitSimData(10000, '_ziadd0')
+fitSimData(10000, '_ziadd0.33')

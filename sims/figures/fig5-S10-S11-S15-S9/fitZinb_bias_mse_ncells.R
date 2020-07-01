@@ -9,7 +9,7 @@ library(zinbwave)
 # simZeisel_nc500_ratio1_offs2_fitted.rda
 # simZeisel_nc50_ratio1_offs2_fitted.rda
 
-ncores = c(1, 5, 5, 10, 20, 20)
+#ncores = c(1, 5, 5, 10, 20, 20)
 nc = c(50, 100, 500, 1000, 5000, 10000)
 ds = 'Zeisel'
 b2 = 1
