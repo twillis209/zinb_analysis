@@ -27,3 +27,4 @@ real_data/retina/
 .*.sw*
 *.pdf
 */*/*.rda
+*.log
