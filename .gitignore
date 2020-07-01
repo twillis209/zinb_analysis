@@ -28,3 +28,9 @@ real_data/retina/
 *.pdf
 */*/*.rda
 *.log
+diary.md
+notes.md
+paper
+sticker
+test
+docker
