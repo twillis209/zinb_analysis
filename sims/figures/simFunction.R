@@ -224,15 +224,16 @@ library(mclust)
 library(digest)
 library(RColorBrewer)
 library(MASS)
+library(magrittr)
 
 ##########
 ## ALLEN
 ##########
 
 # Using this like a subroutine to get core, colIni, and allen into the global environment. Hacky but I don't want to rewrite this entire program.
+# Reading Allen from this file rather than using the scRNAseq function as it will be quite a lot of work to recover the original Allen data from the new ReprocessedAllenData() data set and the former is no longer available in newer version of scRNAseq.
 loadAndFilterAllenData<-function() {
-	# Loads Allen data into a SummarizedExperiment object and assigns to variable `allen`
-	data("allen", envir=environment())
+	load("../../real_data/allen/allen.rda")
 	cols = brewer.pal(8, "Set1")
 	prefilter = allen[grep("^ERCC-", rownames(allen), invert = TRUE),
 			   which(colData(allen)$Core.Type=="Core")]
@@ -243,6 +244,19 @@ loadAndFilterAllenData<-function() {
 	colIni = cols[bioIni]
 
 	out<-mapply(assign, c("core", "colIni"), list(core, colIni), MoreArgs=list(envir=.GlobalEnv))
+}
+
+loadAndFilterAllenData2<-function() {
+	# Loads Allen data into a SCE object and assigns to variable `allen`
+	ReprocessedAllenData() %>% 
+		subset(., metadata(.)$SuppInfo$Core.Type=="Core") %>% 
+		subset(., apply(assay(.)> 5, 1, sum) >= 5) -> allen
+	cols = brewer.pal(8, "Set1")
+	bioIni =  as.factor(colData(allen)$driver_1_s)
+	core = assay(allen)
+	colIni = cols[bioIni]
+
+	out<-mapply(assign, c("core2", "colIni2"), list(core, colIni), MoreArgs=list(envir=.GlobalEnv))
 }
 
 # Loads the V1 data set and filters as specified in the paper
