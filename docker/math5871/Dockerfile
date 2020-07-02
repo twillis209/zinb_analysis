@@ -10,7 +10,4 @@ RUN git clone https://github.com/epierson9/ZIFA \
 	&& cd ZIFA \
 	&& python setup.py install
 
-COPY /home/tom/diss/zinb_analysis 
-
-
 RUN R -e 'BiocManager::install("zinbwave")'

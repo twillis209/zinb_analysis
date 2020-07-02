@@ -86,8 +86,12 @@ Unfortunately, these are the counts provided by Patel, not those obtained by Ris
 
 Not sure if it will be worth it, but will experiment with AWS today and see if it is worthwhile... No it's not! Free-tier only offers 1 vCPU, 1 GiB RAM. Nowhere near enough to improve on my current workflow. 
 
-# 1//7/20
+# 1/7/20
 
 ZIFA is not working in my 'fork' of the `bioconductor/bioconductor_docker:devel` image. Must remember to run the unit tests before using it on ARC.
 
 Got another response from Patel. He and the team are looking into the real counts.
+
+# 2/7/20
+
+Contents of the Singularity container are read-only, so perhaps it would be better to clone my `zinb_analysis` into home as I will be modifying the scripts therein.
