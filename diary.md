@@ -95,3 +95,7 @@ Got another response from Patel. He and the team are looking into the real count
 # 2/7/20
 
 Contents of the Singularity container are read-only, so perhaps it would be better to clone my `zinb_analysis` into home as I will be modifying the scripts therein.
+
+# 4/7/20
+
+Having difficulties running the code in `simFunction.R` in parallel, fitting ZINB to the Allen data set is taking far too long despite running the job on 8 cores with 32GB. 

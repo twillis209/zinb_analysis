@@ -47,6 +47,14 @@ This was with `register(MulticoreParam(2))` at the top of the file. Let's see if
 
 Again user+sys > real, so we have parallel execution.
 
+## Running scripts on ARC
+
+Testing my use of the `BiocParallel::BatchtoolsParam` class by fitting ZINB to the Allen data set on the cluster, but it is taking far too long, which suggests it is probably running serially.
+
+Could 
+
+
+
 # Analyses
 
 Datasets (from Methods section):
