@@ -70,6 +70,7 @@
 # fig5-S10-S11-S15-S9/simZeisel_nc5000_ratio1_offs2.rda
 # fig5-S10-S11-S15-S9/simZeisel_nc10000_ratio1_offs2.rda
 
+library(BiocParallel)
 
 simulateW <- function(zinb, ncells = 100, nclust = 3, ratioSSW_SSB = 1, colIni = 1){
   par(mfrow = c(2,2))
@@ -162,7 +163,7 @@ simulateGamma <- function(zinb, ncells = 100, gammapiOffset = 0, colIni = 1,
   return(simGamma)
 }
 
-fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=F) {
+fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=F, BPPARAM=BiocParallel::bpparam()) {
   # fit zinb (if you already fitted zinb, it is cached)
   d = digest(core, "md5")
 
@@ -173,7 +174,7 @@ fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, co
   if (!file.exists(fileZinb)){
     print('run ZINB')
 
-    zinb <- zinbFit(core, K = K, commondispersion = commonDispersion, epsilon = epsilon)
+    zinb <- zinbFit(core, K = K, commondispersion = commonDispersion, epsilon = epsilon, BPPARAM=BPPARAM)
     assign("zinb", zinb, envir=parent.frame())
     save(zinb, file = fileZinb)
   }else{

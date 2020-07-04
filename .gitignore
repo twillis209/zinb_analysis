@@ -28,3 +28,16 @@ real_data/retina/
 *.pdf
 */*/*.rda
 *.log
+diary.md
+notes.md
+paper
+sticker
+test
+docker
+/fletcher/GSE95601_oeHBCdiff_Cufflinks_eSet_counts_table.txt.gz
+/kolodziejczyk/counttable_es.csv
+/kolodziejczyk/counttable_es_norm.csv
+/zeisel/expression_mRNA_17-Aug-2014.txt
+/zeisel/expression_spikes_17-Aug-2014.txt
+/zheng/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz
+/zheng/fresh_68k_pbmc_donor_a_raw_gene_bc_matrices.tar.gz
