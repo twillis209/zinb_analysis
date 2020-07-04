@@ -12,3 +12,4 @@ RUN git clone https://github.com/epierson9/ZIFA \
 
 RUN R -e 'BiocManager::install(c("zinbwave", "mclust", "scRNAseq"))'
 RUN R -e 'install.packages("RColorBrewer")'
+RUN R -e 'install.packages("batchtools")'
