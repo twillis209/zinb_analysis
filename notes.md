@@ -51,9 +51,7 @@ Again user+sys > real, so we have parallel execution.
 
 Testing my use of the `BiocParallel::BatchtoolsParam` class by fitting ZINB to the Allen data set on the cluster, but it is taking far too long, which suggests it is probably running serially.
 
-Could 
-
-
+I was able to get a simple `bplapply` function running in parallel or at least it seemed so, as the wall time was less than the some of the reported user+sys time. The scripts that matter are apparently not running in parallel, though.
 
 # Analyses
 
@@ -118,13 +116,13 @@ R files in this repo:
 	real_data/patel_plots.R
 	real_data/allen_plots.R
 	real_data/silhouette.R
-	sims/figures/simFunction.R (testing)
+	sims/figures/simFunction.R
 	sims/figures/figuresPaper.Rmd
-	sims/figures/fig6e-g/lunSim.R (complete)
-	sims/figures/fig6e-g/fitZinbLun.R (terminated in error condition)
-	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R (not running; taking too long)
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R (terminated in error condition)
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R (terminated in error condition)
+	sims/figures/fig6e-g/lunSim.R
+	sims/figures/fig6e-g/fitZinbLun.R
+	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R
 	sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa.R
@@ -132,7 +130,7 @@ R files in this repo:
 	sims/figures/fig6ad-S13-S14/fitZinb10000.R
 	sims/cputime/cputime.R
 
-R files by paper section:
+## 
 
 ### Leads to biologically meaningful clusters
 
@@ -255,6 +253,30 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 
 ## Simulation scripts
 
+## Workflow
+
+* simFunction.R:
+	1. fit ZINB to Allen data
+	1. fit ZINB to Zeisel data
+	2. simulate from Allen data 
+	2. simulate from Zeisel data 
+	3. zeiselBiasMSECpuTime	
+	3. zeiselMeanDifferencesS26	
+* fig5-S10-S11-S15-S9:
+	* fitZinb_bias_mse_allParam.R
+	* fitZinb_bias_mse_ncells.R
+	* timeZinb.R
+* fig6ad-S13-S14:
+	* fitZifa_allen_10000.R
+	* fitZifa.R
+	* fitZifa_zeisel_10000.R
+	* fitZinb10000.R
+	* fitZinb_corSilh.R
+* fig6e-g:
+	* fitZinbLun.R
+	* lunSim.R
+* figS12:
+
 ### `simFunction.R`
 
 `simFunction.log` shows that `zinbSimWrapper` only ran three times, rather than four as expected. Perhaps when it did run, it did make use of a cached result? All the files expected to be there, are there. 
@@ -268,11 +290,6 @@ to check that all files listed in `simFunction.R` comment were indeed created.
 `zinbSimWrapper` simulates B data sets from a real data set and for a particular combination of parameters. Note that all B data sets are written out to one `rda` file.
 
 One of the b^2 values used to generate Allen data set-based simulated data is 50, when it is given as 10 in the paper (and the corresponding value of b^2 used for the Zeisel data set is 10, too). 
-
-Things left to test:
-
-* zeiselMeanDifferencesS26
-* zeiselBiasMSECpuTime
 
 Fitting ZINB to the Allen data set: 
 
@@ -308,6 +325,12 @@ and got the error:
 	Execution halted
 
 Fiddled with the calls to `assign` and to `load`, `zinb` appears in the correct environment now.
+
+#### `zeiselMeanDifferencesS26`
+
+This function's memory usage keeps blowing up. 72GB at the last count. 
+
+Ran to completion with max. mem. usage of 86.252GB.
 
 ### `figuresPaper.Rmd`
 
@@ -540,13 +563,38 @@ Figure S15 depicts two factors from ZIFA applied to the glioblastoma dataset wit
 
 `timeZinb.R` takes hours and hours to run, and was not completed when I terminated it, so I must investigate that 
 
+Killed on cluster for exceeding requested 32GB. Now trying 64GB. Now trying 96GB.
+
 #### `fitZinb_bias_mse_ncells.R`
 
 Completed with error conditions relating to zero counts in samples.
 
+Now running on ARC4, get
+
+	Error: BiocParallel errors
+	  element index: 1, 2, 3, 4, 5, 6, ...
+	  first error: Sample 2 has only 0 counts!
+	Execution halted
+
+This is 'thrown' (actually just calls `stop`) in `zinbInitialize`. Presumably something has changed in the codebase since the code in the paper repo was written. Perhaps we should filter it manually? `fitZinb_bias_mse_allParam` filters the counts, manually.
+
 #### `fitZinb_bias_mse_allParam.R`
 
-Completed apparently without error but on inspection the `ncores` argument had caused the `myZinbFit` function to return errors.
+	Error: BiocParallel errors
+	  element index: 1, 2, 3, 4, 5, 6, ...
+	  first error: Registry must be writeable. See ?loadRegistry.
+	Execution halted
+
+Trying it serially (on a single core), instead.
+
+Encountered the following error:
+
+	Loading required package: SingleCellExperiment
+	Error in zinbInitialize(m, Y, nb.repeat = nb.repeat.initialize, BPPARAM = BPPARAM) : 
+	  Sample 770 has only 0 counts!
+	Calls: source ... myZinbFit -> zinbFit -> zinbFit -> .local -> zinbInitialize
+	Execution halted
+
 
 ### fig6ad-S13-S14
 

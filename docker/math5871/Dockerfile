@@ -11,5 +11,6 @@ RUN git clone https://github.com/epierson9/ZIFA \
 	&& python setup.py install
 
 RUN R -e 'BiocManager::install(c("zinbwave", "mclust", "scRNAseq"))'
+RUN R -e 'BiocManager::install("EDASeq")'
 RUN R -e 'install.packages("RColorBrewer")'
 RUN R -e 'install.packages("batchtools")'
