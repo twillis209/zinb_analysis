@@ -53,6 +53,8 @@ Testing my use of the `BiocParallel::BatchtoolsParam` class by fitting ZINB to t
 
 I was able to get a simple `bplapply` function running in parallel or at least it seemed so, as the wall time was less than the some of the reported user+sys time. The scripts that matter are apparently not running in parallel, though.
 
+Tried using `mclapply` and it runs in parallel only on the head node, not when submitted using SGE.
+
 # Analyses
 
 Datasets (from Methods section):
@@ -644,7 +646,7 @@ Figure 6e-g is actually 7e-g in the publication.
 
 #### `lunSim.R`
 
-Appears to have run to completion.
+Appears to have run to completion on the cluster, all files expected are present.
 
 #### `fitZinbLun.R`
 
@@ -709,6 +711,8 @@ sys     555m38.486s
 Seems to have run to completion.
 
 Tried again with `_ziadd0.33`, but terminated it earlier as I now have an ARC account. Running this will be my first job.
+
+On the cluster on one core, the script ran for 8 hours without completion. Really will need to parallelise it.
 
 ### figS12
 
