@@ -261,7 +261,7 @@ loadAndFilterAllenData2<-function() {
 }
 
 # Loads the V1 data set and filters as specified in the paper
-simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5), outDir="fig6ad-S13-S14", BPPARAM=BiocParallel:bpparam()) {
+simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5), outDir="fig6ad-S13-S14", BPPARAM=BiocParallel::bpparam()) {
 	loadAndFilterAllenData() 
 
 	## Simulates data sets based on Allen V1 data set
@@ -334,7 +334,10 @@ zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
 	b2 = 1
 	offs = 2
 
-	system('mkdir figS12')
+	if(!file.exists("figS12")) {
+		system("mkdir figS12")
+	}
+
 	ff = sprintf('figS12/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
 
 	## simulate
