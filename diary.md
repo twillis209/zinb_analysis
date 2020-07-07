@@ -128,3 +128,9 @@ Might be worth trying the MPI example featured near the end of the `BiocParallel
 Ok, I have gotten jobs to run in parallel (albeit by abandoning Singularity), but memory usage is blowing up with `MulticoreParam`. I will try `BatchtoolsParam` instead.
 
 # 7/7/20
+
+Spent whole day working on getting jobs parallelised on the cluster to some avail.
+
+# 8/7/20
+
+Check on most recent jobs on cluster with `exam`.

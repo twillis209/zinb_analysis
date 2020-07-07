@@ -256,17 +256,17 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 
 ## Workflow
 
-* simFunction.R:
-	1. fit ZINB to Allen data
-	1. fit ZINB to Zeisel data
+* simFunction.R: (apparently complete)
+	1. fit ZINB to Allen data (complete)
+	1. fit ZINB to Zeisel data (complete)
 	2. simulate from Allen data 
-	2. simulate from Zeisel data 
-	3. zeiselBiasMSECpuTime	
-	3. zeiselMeanDifferencesS26	
+	2. simulate from Zeisel data (apparently complete)
+	3. zeiselBiasMSECpuTime	(complete)
+	3. zeiselMeanDifferencesS26 (complete)
 * fig5-S10-S11-S15-S9:
 	* fitZinb_bias_mse_allParam.R (not running)
 	* fitZinb_bias_mse_ncells.R (not running)
-	* timeZinb.R (not running)
+	* timeZinb.R (need to inspect output on cluster)
 * fig6ad-S13-S14:
 	* fitZifa_allen_10000.R
 	* fitZifa.R
@@ -275,7 +275,7 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 	* fitZinb_corSilh.R
 * fig6e-g:
 	* fitZinbLun.R
-	* lunSim.R
+	* lunSim.R (completed on cluster)
 * figS12:
 
 ### `simFunction.R`
