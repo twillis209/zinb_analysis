@@ -99,3 +99,32 @@ Contents of the Singularity container are read-only, so perhaps it would be bett
 # 4/7/20
 
 Having difficulties running the code in `simFunction.R` in parallel, fitting ZINB to the Allen data set is taking far too long despite running the job on 8 cores with 32GB. 
+
+# 6/7/20
+
+## Cluster work
+
+Being held back by the fact that I cannot run code in parallel.
+
+Simulation scripts not working:
+
+* fig5-S10-S11-S15-S9:
+	* fitZinb_bias_mse_allParam.R: killed for sample with 0 counts
+	* fitZinb_bias_mse_ncells.R: killed for sample with 0 counts
+	* timeZinb.R: killed on cluster for reaching 104.032GB
+* fig6ad-S13-S14: ZIFA not passing unit tests
+	* fitZifa_allen_10000.R
+	* fitZifa.R
+	* fitZifa_zeisel_10000.R
+	* fitZinb10000.R
+	* fitZinb_corSilh.R
+* fig6e-g:
+	* fitZinbLun.R: ran 8 hours on one core on cluster without completion
+
+I really must get `BatchtoolsParam` working on the cluster. Will read the `BiocParallel` and `BatchtoolsParam` documentation in-depth for some solution.
+
+Might be worth trying the MPI example featured near the end of the `BiocParallel` to see if that will work.
+
+Ok, I have gotten jobs to run in parallel (albeit by abandoning Singularity), but memory usage is blowing up with `MulticoreParam`. I will try `BatchtoolsParam` instead.
+
+# 7/7/20

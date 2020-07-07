@@ -123,7 +123,7 @@ R files in this repo:
 	sims/figures/fig6e-g/lunSim.R
 	sims/figures/fig6e-g/fitZinbLun.R
 	sims/figures/fig5-S10-S11-S15-S9/timeZinb.R
-	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R
+	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_ncells.R 
 	sims/figures/fig5-S10-S11-S15-S9/fitZinb_bias_mse_allParam.R
 	sims/figures/fig6ad-S13-S14/fitZifa_allen_10000.R
 	sims/figures/fig6ad-S13-S14/fitZifa_zeisel_10000.R
@@ -132,7 +132,6 @@ R files in this repo:
 	sims/figures/fig6ad-S13-S14/fitZinb10000.R
 	sims/cputime/cputime.R
 
-## 
 
 ### Leads to biologically meaningful clusters
 
@@ -265,9 +264,9 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 	3. zeiselBiasMSECpuTime	
 	3. zeiselMeanDifferencesS26	
 * fig5-S10-S11-S15-S9:
-	* fitZinb_bias_mse_allParam.R
-	* fitZinb_bias_mse_ncells.R
-	* timeZinb.R
+	* fitZinb_bias_mse_allParam.R (not running)
+	* fitZinb_bias_mse_ncells.R (not running)
+	* timeZinb.R (not running)
 * fig6ad-S13-S14:
 	* fitZifa_allen_10000.R
 	* fitZifa.R
@@ -566,6 +565,10 @@ Figure S15 depicts two factors from ZIFA applied to the glioblastoma dataset wit
 `timeZinb.R` takes hours and hours to run, and was not completed when I terminated it, so I must investigate that 
 
 Killed on cluster for exceeding requested 32GB. Now trying 64GB. Now trying 96GB.
+
+Killed on cluster for reaching 104.032GB. What is going on with this? 
+
+Trying with just the first element of the vector.
 
 #### `fitZinb_bias_mse_ncells.R`
 
