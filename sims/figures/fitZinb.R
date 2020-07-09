@@ -17,7 +17,5 @@ bioIni =  as.factor(colData(postfilter)$driver_1_s)
 core = assay(postfilter)
 colIni = cols[bioIni]
 
-param<-SnowParam(workers=8, log=T)
-bpstart(param)
+param<-MulticoreParam(workers=6, log=T)
 zinb <- zinbFit(core, K = 2, commondispersion = F, epsilon = 1000, BPPARAM=param)
-bpstop(param)
