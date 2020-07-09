@@ -133,4 +133,4 @@ Spent whole day working on getting jobs parallelised on the cluster to some avai
 
 # 8/7/20
 
-Check on most recent jobs on cluster with `exam`.
+Check on most recent jobs on cluster with `exam` and read up on difference between workers, jobs, chunks in `batchtools`.
