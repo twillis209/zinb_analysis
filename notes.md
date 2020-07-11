@@ -55,6 +55,11 @@ I was able to get a simple `bplapply` function running in parallel or at least i
 
 Tried using `mclapply` and it runs in parallel only on the head node, not when submitted using SGE.
 
+See the ARC notes in the `math5871` repo for details of my investigation of parallelising `zinbwave` on the cluster.
+
+### 'Dumb' parallel execution
+
+
 # Analyses
 
 Datasets (from Methods section):
@@ -214,6 +219,22 @@ R files:
 
 `silhouette.R` does silhouette calculations for the data sets in this directory.
 
+### Workflow for real data scripts
+
+
+* allen_covariates_1000.Rmd (missing metadata)
+* allen_plots.R
+* espresso_covariates.Rmd
+* espresso_plots.R
+* goodness_of_fit_allen.Rmd
+* goodness_of_fit_espresso.Rmd
+* goodness_of_fit_patel.Rmd
+* goodness_of_fit_zeisel.Rmd
+* patel_covariates.Rmd
+* patel_plots.R
+* zeisel_covariates.Rmd
+* zeisel_plots.R
+
 ### Patel
 
 Can't actually repeat this analysis as it requires alignment of the raw reads with TopHat etc. Don't have the resources for this at the moment.
@@ -254,29 +275,29 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 
 ## Simulation scripts
 
-## Workflow
+### Workflow
 
-* simFunction.R: (apparently complete)
-	1. fit ZINB to Allen data (complete)
-	1. fit ZINB to Zeisel data (complete)
-	2. simulate from Allen data 
-	2. simulate from Zeisel data (apparently complete)
-	3. zeiselBiasMSECpuTime	(complete)
-	3. zeiselMeanDifferencesS26 (complete)
+* simFunction.R: (apparently complete, but will only really know once we come to use the simulated data and look at the figure)
+	1. simulate from Allen data (complete)
+	1. simulate from Zeisel data (complete)
+	2. zeiselBiasMSECpuTime	(complete)
+	2. zeiselMeanDifferencesS26 (complete)
 * fig5-S10-S11-S15-S9:
-	* fitZinb_bias_mse_allParam.R (not running)
-	* fitZinb_bias_mse_ncells.R (not running)
-	* timeZinb.R (need to inspect output on cluster)
-* fig6ad-S13-S14:
+	* fitZinb_bias_mse_allParam.R (running after filtering for zero-count samples)
+	* fitZinb_bias_mse_ncells.R (running after filtering for zero-count samples)
+	* timeZinb.R (complete; check output)
+* fig6ad-S13-S14 (need to install ZIFA):
 	* fitZifa_allen_10000.R
 	* fitZifa.R
 	* fitZifa_zeisel_10000.R
-	* fitZinb10000.R
+	* fitZinb10000.R (running on cluster, need to identify which jobs failed due to samples with zero counts)
 	* fitZinb_corSilh.R
-* fig6e-g:
-	* fitZinbLun.R
-	* lunSim.R (completed on cluster)
-* figS12:
+* fig6e-g (not complete):
+	* fitZinbLun.R (running)
+	* lunSim.R (complete; check output)
+* figS12 (no scripts):
+
+A recurring problem is that we are filtering the simulated data to remove genes with zero counts across all samples and samples with zero counts across all genes. How does this affect the results? I suppose it doesn't matter: we can't run it any other way.
 
 ### `simFunction.R`
 
@@ -583,6 +604,8 @@ Now running on ARC4, get
 
 This is 'thrown' (actually just calls `stop`) in `zinbInitialize`. Presumably something has changed in the codebase since the code in the paper repo was written. Perhaps we should filter it manually? `fitZinb_bias_mse_allParam` filters the counts, manually.
 
+Now failing due to profligate virtual memory usage on the cluster, and that when run serially! Ran a single file which nonetheless failed with `h_vmem=50G`.
+
 #### `fitZinb_bias_mse_allParam.R`
 
 	Error: BiocParallel errors
@@ -599,7 +622,6 @@ Encountered the following error:
 	  Sample 770 has only 0 counts!
 	Calls: source ... myZinbFit -> zinbFit -> zinbFit -> .local -> zinbInitialize
 	Execution halted
-
 
 ### fig6ad-S13-S14
 
@@ -642,6 +664,8 @@ As above, but not a single input file, many, many files instead.
 #### `fitZinb_corSilh.R`
 
 #### `fitZinb10000.R`
+
+Not clear which files we have to run this on to replicate the paper.
 
 ### fig6e-g
 

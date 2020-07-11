@@ -134,3 +134,13 @@ Spent whole day working on getting jobs parallelised on the cluster to some avai
 # 8/7/20
 
 Check on most recent jobs on cluster with `exam` and read up on difference between workers, jobs, chunks in `batchtools`.
+
+# 11/7/20
+
+Need to get ZIFA working on the cluster and then do the 'dumb' parallelisation.
+
+Trying to fix the `fitZinb_bias*` scripts at the moment, which I suspect have been broken by later versions of `zinbwave`.
+
+# 12/7/20
+
+Working on getting ZIFA working.
