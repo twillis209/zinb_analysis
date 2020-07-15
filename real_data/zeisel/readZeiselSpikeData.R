@@ -1,5 +1,4 @@
-# Using Risso code to read in Zeisel data which is stored in a rather complicated text file
-data <- read.table("expression_mRNA_17-Aug-2014.txt", sep='\t', stringsAsFactors = FALSE, comment.char = '%')
+data<-read.table('expression_spikes_17-Aug-2014.txt', sep='\t', stringsAsFactors=F, comment.char='%')
 
 tissue <- as.factor(as.matrix(data)[1,-(1:2)])
 group <- as.factor(as.matrix(data)[2,-(1:2)])
@@ -19,3 +18,4 @@ counts <- as.matrix(data[12:NROW(data),-(1:2)])
 counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
 rownames(counts) <- data[12:NROW(data),1]
 colnames(counts) <- data[8, -(1:2)]
+write.csv(counts, file='zeiselSpikeins.csv')

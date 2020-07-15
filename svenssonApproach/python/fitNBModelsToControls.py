@@ -15,12 +15,14 @@ fletcherAD=anndata.AnnData(X=fletcherDF.to_numpy().transpose(), var=pd.DataFrame
 erccIndex=fletcherAD.var.index[[i for i,x in enumerate(fletcherAD.var.index) if re.search('ERCC', x)]]
 fletcherAD=fletcherAD[:, erccIndex]
 
-kolodDF = pd.read_csv('../Data/kolodziejczyk_counttable_es.csv', sep=',', index_col=0)
+kolodDF = pd.read_csv('../Data/kolodziejczyk_counttable_es.csv', sep=' ', index_col=0)
 kolodAD=anndata.AnnData(X=kolodDF.to_numpy().transpose(), var=pd.DataFrame(index=kolodDF.index), obs=pd.DataFrame(index=kolodDF.columns))
 erccIndex=kolodAD.var.index[[i for i,x in enumerate(kolodAD.var.index) if re.search('ERCC', x)]]
 kolodAD=kolodAD[:, erccIndex]
 
-#zeiselDF = pd.read_csv('../../real_data/zeisel/expression_mRNA_17-Aug-2014.txt', sep='\t', index_col=0, comment="%")
+# This only contains ERCC spike-in data
+zeiselDF = pd.read_csv('../Data/zeiselSpikeins.csv', sep=',', index_col=0)
+zeiselAD=anndata.AnnData(X=zeiselDF.to_numpy().transpose(), var=pd.DataFrame(index=zeiselDF.index), obs=pd.DataFrame(index=zeiselDF.columns))
 
 zhengAD=anndata.read('../Data/zheng_gemcode_control.h5ad')
 
@@ -28,15 +30,15 @@ allenAD.uns['name'] = 'Tasic et al. 2016'
 allenAD.uns['shortName'] = 'allenERCC'
 fletcherAD.uns['name'] = 'Fletcher et al. 2017'
 fletcherAD.uns['shortName'] = 'fletcherERCC'
-kolodAD.uns['name'] = 'Kolodziejczyk et al. 2015'
+kolodAD.uns['name'] = 'Kolodziejczyk et al. 2015 (1)'
 kolodAD.uns['shortName'] = 'kolodERCC'
 zhengAD.uns['name'] = 'Zheng et al. 2017'
 zhengAD.uns['shortName'] = 'zhengERCC'
+zeiselAD.uns['name'] = 'Zeisel et al. 2015'
+zeiselAD.uns['shortName'] = 'zeiselERCC'
 
-# TODO: zeisel, patel
-# 'Zeisel et al. 2015'
-# 'Patel et al. 2014'  
-datasets=[allenAD, fletcherAD, kolodAD, zhengAD]
+# For the Patel et al. 2014 data set, we only have access to the log TPM values
+datasets=[allenAD, fletcherAD, kolodAD, zhengAD, zeiselAD]
 
 for adata in datasets:
     fit_per_gene_stats(adata)

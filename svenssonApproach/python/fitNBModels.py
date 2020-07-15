@@ -86,3 +86,13 @@ def prob_zero_fun(mu, phi):
 def prob_zero_fun_vec(mu, phi):
     phi_1 = 1. / phi
     return (phi_1 / (mu + phi_1)) ** phi_1
+
+def fitNBModels(adata):
+	fit_per_gene_stats(adata)
+	phi_hat, _ = optimize.curve_fit(var_fun, adata.var['empirical_mean'], adata.var['empirical_variance'])
+	adata.uns['global_dispersion'] = phi_hat
+	adata.var['global_zero_fraction'] = prob_zero_fun_vec(adata.var['empirical_mean'],
+							  adata.uns['global_dispersion'])
+	adata.var['genewise_zero_fraction'] = prob_zero_fun_vec(adata.var['empirical_mean'],
+							    adata.var['genewise_dispersion'])
+	return

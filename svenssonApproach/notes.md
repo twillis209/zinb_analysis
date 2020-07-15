@@ -4,7 +4,6 @@ The plan is to run Svenssons's analysis on the (real) data sets of Risso et al. 
 
 I will start by running the code from `Gene-wise_dispersion.ipynb`. Not sure this actually needs to be in a notebook. 
 
-
 Svensson looked at:
 
 * negative controls
@@ -13,9 +12,13 @@ Svensson looked at:
 
 Which data sets are suitable for this investigation? 
 
-* Several contain ERCC spike-ins:
-	* Allen
-	* Fletcher 
+* All contain ERCC spike-ins
+* Homogeneous cells:
+	* Kolodziejczyk has cells separated by batch and plate; separating only by plate led to a very poor fit
+	* Allen contains cells from the V1 visual cortex
+	* Fletcher has cells separated by lineage
+	* Zeisel has cells from S1 somatosensory cortex and the CA1 cell field of the hippocampus
+	* A pity that we don't have access to the Patel counts as cells from each tumour would be suitably homogeneous (one would hope)
 
 # Risso data formats
 
@@ -32,9 +35,12 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 * Kolodziejczyk: 
 	* in space-separated file with header and rownames
 	* header and rownames
+	* Over 38k features, so will need to apply some filter; what did Svensson do?
 * Patel: 
 	* in tab-separated `txt` file
 	* just header?
+	* See notes in `readPatelData.R`, will move those here at some point
+	* We only have access to the log TPM values at the moment, so we can go no further
 * Zeisel:
 	* in tab-separated `txt` file
 	* issues:
