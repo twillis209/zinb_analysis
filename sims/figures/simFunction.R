@@ -1,6 +1,5 @@
 # Should produce 62 files, checked with: for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
 
-
 # Writes out:
 
 # Allen 
@@ -231,8 +230,8 @@ library(magrittr)
 ## ALLEN
 ##########
 
-# Using this like a subroutine to get core, colIni, and allen into the global environment. Hacky but I don't want to rewrite this entire program.
-# Reading Allen from this file rather than using the scRNAseq function as it will be quite a lot of work to recover the original Allen data from the new ReprocessedAllenData() data set and the former is no longer available in newer version of scRNAseq.
+# Using this like a subroutine to get core, colIni, and allen into the global environment. Hacky but I don't want to rewrite this entire program. Reading Allen from this file rather than using the scRNAseq function as it will be quite a lot of work to recover the original Allen data from the new ReprocessedAllenData() data set and the former is no longer available in newer version of scRNAseq.
+# NB: calling `assay` on the `allen` object returns the `tophat_counts` assay.
 loadAndFilterAllenData<-function() {
 	load("../../real_data/allen/allen.rda")
 	cols = brewer.pal(8, "Set1")

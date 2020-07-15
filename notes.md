@@ -62,37 +62,51 @@ See the ARC notes in the `math5871` repo for details of my investigation of para
 
 # Analyses
 
-Datasets (from Methods section):
+## Data sets
 
-* V1 data set:
-	* Tasic et al. 
-	* Available in `scRNAseq` package
-	* The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
-	* Plate-based: sorted by FACS into a 96-well plate and amplified using the SMARTer kit
-* S1/CA1 data set:
-	* Zeisel et al.
-	* Downloaded.
-	* Fluidigm C1 microfluidics cell capture platform
-* mESC data set:
-	* Kolodziejczyk et al.
-	* Downloaded.
-	* May now be in `scRNAseq`
-	* Fluidigm C1 microfluidics cell capture platform
-* OE data set:
-	* Fletcher et al.
-	* Downloaded
-	* Identifying developmental trajectories of OE cells
-	* Figure 3
-	* FACS then Fluidigm C1 microfluidics cell capture platform
-* PBMC data set:
-	* Zheng et al.
-	* Downloaded.
-	* Clustering of PBMCs
-	* Figure 3
-	* Droplet-based 10x Genomics platform 
-* Glioblastoma data set:
-	* Patel et al.
-	* SMART-Seq
+### V1/Tasic/Allen
+
+* Tasic et al. 
+* Available in `scRNAseq` package
+* The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
+* The counts used in the analyses by Risso et al. are the default `tophat_counts` (confirmed this with use of `digest::digest`)
+* Plate-based: sorted by FACS into a 96-well plate and amplified using the SMARTer kit
+### S1/CA1 data set
+
+* Zeisel et al.
+* Downloaded.
+* Fluidigm C1 microfluidics cell capture platform
+
+### mESC/Kolodziejczyk data set
+
+* Kolodziejczyk et al.
+* Downloaded.
+* May now be in `scRNAseq`
+* Fluidigm C1 microfluidics cell capture platform
+
+### OE/Fletcher data set
+
+* Fletcher et al.
+* Downloaded
+* Identifying developmental trajectories of OE cells
+* Figure 3
+* FACS then Fluidigm C1 microfluidics cell capture platform
+
+### PBMC/Zheng data set
+
+* Zheng et al.
+* Downloaded.
+* Clustering of PBMCs
+* Figure 3
+* Droplet-based 10x Genomics platform 
+
+### GBM/Patel data set
+
+* Patel et al.
+* SMART-Seq
+
+### Applications of data sets
+
 * Impact of normalization methods
 	* All four data sets
 	* Figure 4
