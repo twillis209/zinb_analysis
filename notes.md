@@ -117,6 +117,7 @@ Found transcriptomes were distinct between these conditions.
 ### GBM/Patel data set
 
 * Patel et al.
+* Sorted cells into 96 well plate using FACS
 * SMART-Seq
 
 From `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE57872`:
@@ -794,3 +795,18 @@ Figure S12 depicts the first two PCs for the mESC data set with:
 	b) TC
 	c) FQ 
 	d) TMM 
+
+# Analysis of additional droplet-based data sets
+
+## Sources
+
+Looking for curated repositories of scRNA-Seq data sets:
+
+* Hemberg lab curates a set of data sets: https://hemberg-lab.github.io/scRNA.seq.datasets/
+* EBI also curates data sets: https://www.ebi.ac.uk/gxa/sc/home
+
+## Candidate data sets 
+
+* The data sets analysed by Svensson:
+	* What about the underlying biological data in the studies used for their spike-ins? Were there such data?
+* Lung Cell Atlas: Single cell RNA sequencing analysis of fresh resected human lung tissue - Drop-seq dataset  

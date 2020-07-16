@@ -1,3 +1,10 @@
+# TODO (delete me)
+
+* Write up details of technology used to generate all data
+* Download a couple of droplet-based data sets and see if we can generate good fits without any filtering
+* Find out how to fit ZINB; will try to stay in Python for now with `statsmodels`, but having difficulty atm
+* Find a labelled data set
+
 # Plan
 
 The plan is to run Svenssons's analysis on the (real) data sets of Risso et al. 2018. Not sure about the simulated data yet.
@@ -14,7 +21,7 @@ Which data sets are suitable for this investigation?
 
 * All contain ERCC spike-ins
 * Homogeneous cells:
-	* Kolodziejczyk has cells separated by batch and plate; separating only by plate led to a very poor fit
+	* Kolodziejczyk has cells separated by batch and plate; separating only by plate led to a very poor fit, batch was no better
 	* Allen contains cells from the V1 visual cortex
 	* Fletcher has cells separated by lineage
 	* Zeisel has cells from S1 somatosensory cortex and the CA1 cell field of the hippocampus
@@ -35,7 +42,7 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 * Kolodziejczyk: 
 	* in space-separated file with header and rownames
 	* header and rownames
-	* Over 38k features, so will need to apply some filter; what did Svensson do?
+	* Over 38k features, so will need to apply some filter; what did Svensson do? Apparently no filter was applied
 * Patel: 
 	* in tab-separated `txt` file
 	* just header?
@@ -48,3 +55,14 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 	* seems easiest just to use Risso's R code to obtain the counts
 * Zheng:
 	* Svensson already handled this, just using his data
+
+# Analysis
+
+## Spike-ins
+
+Svensson got very good fits to the spike-in data using gene-wise dispersion coefficients, but we:
+
+* got good fits to Zheng (droplet, used by Svensson) and Zeisel
+
+
+## Kolodziejczyk
