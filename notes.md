@@ -805,6 +805,14 @@ Looking for curated repositories of scRNA-Seq data sets:
 * Hemberg lab curates a set of data sets: https://hemberg-lab.github.io/scRNA.seq.datasets/
 * EBI also curates data sets: https://www.ebi.ac.uk/gxa/sc/home
 
+Looking at papers on scRNA-Seq clustering to see what data sets were used to benchmark methods, in particular the dropClust paper.
+
+Should examine more closely how the Zheng 2017 data sets were used in Risso. There were two in the Zheng paper: the PBMCs from one individual and the mixed HEK293T and Jurkat cell data set
+
+PBMCS are annotated in Zheng based on similarity with transcriptomes of FACS-purified cells. Not quite ground truth.
+
+Seems a lack of labelled data sets; probably hard to do if cell type labels, rather than tissue labels, are what we require. May have to resort to imputed labels.
+
 ## Candidate data sets 
 
 * The data sets analysed by Svensson:

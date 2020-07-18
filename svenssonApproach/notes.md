@@ -62,7 +62,9 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 
 Svensson got very good fits to the spike-in data using gene-wise dispersion coefficients, but we:
 
-* got good fits to Zheng (droplet, used by Svensson) and Zeisel
-
+* got good fits to Zheng (droplet, used by Svensson) and Zeisel; Zeisel was done with STRT-Seq with UMIs
+* poor fit to Allen, Fletcher, Kolodziejczyk
 
 ## Kolodziejczyk
+
+Fits were very poor when performed without filtering. Need to apply some kind of filter, should look at what was used in the original paper.
