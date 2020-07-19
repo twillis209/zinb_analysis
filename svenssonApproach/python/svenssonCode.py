@@ -110,22 +110,24 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 	for adata in datasets:
 		difference1 = adata.var['empirical_zero_fraction'] - adata.var['global_zero_fraction']
 		difference2 = adata.var['empirical_zero_fraction'] - adata.var['genewise_zero_fraction']
-		mins.append(min(difference1.min(), difference2.min()))
-		maxs.append(max(difference1.max(), difference2.max()))
+		difference3 = adata.var['empirical_zero_fraction'] - adata.var['genewise_zi_zero_fraction']
+		mins.append(min(difference1.min(), difference2.min(), difference3.min()))
+		maxs.append(max(difference1.max(), difference2.max(), difference3.max()))
 
 	min(mins), max(maxs)
 
-	fig = plt.figure(figsize=(30, 50))
+	fig = plt.figure(figsize=(25, 15))
 
-	outer_grid = fig.add_gridspec(4, 5, hspace=0.4, wspace=0.3)
+	outer_grid = fig.add_gridspec(2, 2, hspace=0.6, wspace=0.45)
 
 	for adata in datasets:
 	    
 		i = locationDict[adata.uns['name']]
 		grid_box = outer_grid[i]
 
-		inner_grid = grid_box.subgridspec(2, 2)
-
+		inner_grid = grid_box.subgridspec(2, 3)
+		# 0 1 2
+		# 3 4 5 	
 		# -- Global -- 
 
 		ax = fig.add_subplot(inner_grid[0])
@@ -149,9 +151,9 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
 
-		## _
+		## Global dispersion differences
 
-		ax = fig.add_subplot(inner_grid[2])
+		ax = fig.add_subplot(inner_grid[3])
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
@@ -190,15 +192,52 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
 
-		## _
+		## Genewise dispersion differences
 
-		ax = fig.add_subplot(inner_grid[3])
+		ax = fig.add_subplot(inner_grid[4])
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
 		ax.set_ylim(top=0.9, bottom=-0.5)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zero_fraction']
+		ax.scatter(adata.var['empirical_mean'],
+		       difference,
+		       c='k', marker='.', rasterized=True)
+
+		ax.set_xlabel('Mean')
+
+		ax.spines['top'].set_visible(False)
+		ax.spines['right'].set_visible(False)
+
+		## Zero inflation
+
+		ax = fig.add_subplot(inner_grid[2])
+
+		ax.set_title('Gene-wise dispersion with zero inflation')
+
+		ax.set_xscale('log')
+		ax.set_xlim(left=2e-4, right=1e4)
+
+		ax.scatter(adata.var['empirical_mean'],
+		       adata.var['empirical_zero_fraction'],
+		       c='k', rasterized=True);
+		ax.scatter(adata.var['empirical_mean'],
+		       adata.var['genewise_zi_zero_fraction'],
+		       ec='w', c='grey', rasterized=True);
+
+		ax.spines['top'].set_visible(False)
+		ax.spines['right'].set_visible(False)
+
+		## Zero inflation differences
+
+		ax = fig.add_subplot(inner_grid[5])
+
+		ax.set_xscale('log')
+		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_ylim(top=0.9, bottom=-0.5)
+
+		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zi_zero_fraction']
 		ax.scatter(adata.var['empirical_mean'],
 		       difference,
 		       c='k', marker='.', rasterized=True)

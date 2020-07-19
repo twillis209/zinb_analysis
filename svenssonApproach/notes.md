@@ -56,6 +56,10 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 * Zheng:
 	* Svensson already handled this, just using his data
 
+# Code
+
+Can't get `statsmodels` ZINB model to fit, so trying `R`. First want to see if we can get a similar NB fit. 
+
 # Analysis
 
 ## Spike-ins
