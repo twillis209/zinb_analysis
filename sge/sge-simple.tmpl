@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#$ -V
+#$ -cwd
+#$ -N <%= resources$job.name %>
+#$ -o "$HOME/logs/"<%= resources$job.name %>_o.txt
+#$ -e "$HOME/logs/"<%= resources$job.name %>_e.txt
+
+#$ -l h_rt=<%= resources$h_rt %>,mem_free=<%= resources$mem_free %>,h_vmem=<%= resources$h_vmem %>
+
+#$ -pe smp <%= resources$smp %>
+
+Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
+exit 0

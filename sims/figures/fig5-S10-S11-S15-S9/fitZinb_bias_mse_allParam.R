@@ -1,4 +1,5 @@
 library(zinbwave)
+library(BiocParallel)
 
 # Writes out simZeisel_nc1000_ratio1_offs2_fittedAll.rda
 
@@ -28,12 +29,16 @@ nc = 1000
 b2 = 1
 offs = 2
 
+#param<-BatchtoolsParam(workers=8)
+#bpstart(param)
+#register(param)
+
 pp = sprintf('sim%s_nc%s_ratio%s_offs%s', ds, nc, b2, offs)
 load(paste0(pp,".rda"))
 fittedSim = lapply(K, function(k){
   lapply(Vintercept, function(Vint){
     lapply(commondispersion, function(commondisp){
-      mclapply(1:length(simData), function(i){
+      lapply(1:length(simData), function(i){
         counts = t(simData[[i]]$counts)
         counts = counts[rowSums(counts) !=0, ]
         #zeros = (rowSums(counts) == 0)
@@ -51,9 +56,10 @@ fittedSim = lapply(K, function(k){
                                 ngenes = nrow(counts), 
                                 ncells = ncol(counts))
         myZinbFit(counts)
-      },mc.cores =  ncores)
+     })
     })
   })
 })
 out = paste0(pp, '_fittedAll.rda')
 save(fittedSim, file = out)
+#bpstop(param)

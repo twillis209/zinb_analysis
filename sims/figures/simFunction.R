@@ -1,5 +1,4 @@
-# Should produce 62 files, checked with: for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
-
+# Should produce 63 files, checked with: for i in $(grep "^# fig" simFunction.R | sed 's/# //'); do if [ ! -f $i ]; then echo "$i"; fi; done
 # Writes out:
 
 # Allen 
@@ -178,18 +177,19 @@ fitZinbAndCache<-function(core,  cacheDirPath="zinbCache", K=2, epsilon=1000, co
     assign("zinb", zinb, envir=parent.frame())
     save(zinb, file = fileZinb)
   }else{
+    print('Loading cached ZINB fit')
     load(fileZinb, envir=parent.frame())
   }
 }
 
 # Fits ZINB to data in core, then simulates data using the specified parameters and produces B replicates
-zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3, ratioSSW_SSB = 1, gammapiOffset = 0, B = 1, fileName = 'zinbSim.rda', BPPARAM=BiocParallel::bpparam()){
+zinbSimWrapper <- function(core, colIni, ncells = 100, ngenes = 1000, nclust = 3, ratioSSW_SSB = 1, gammapiOffset = 0, B = 1, fileName = 'zinbSim.rda', cacheDirPath="zinbCache", BPPARAM=BiocParallel::bpparam()){
   # sample ngenes 
   set.seed(9128)
   if (ngenes > nrow(core)) repl = T else repl = F
   core = core[sample(1:nrow(core), ngenes, repl = repl),]
   
-  fitZinbAndCache(core, K=2, epsilon=ngenes, commonDispersion=F, BPPARAM=BPPARAM)
+  fitZinbAndCache(core, K=2, epsilon=ngenes, commonDispersion=F, cacheDirPath=cacheDirPath, BPPARAM=BPPARAM)
   
   # sim W
   w = simulateW(zinb, ncells, nclust, ratioSSW_SSB, colIni)
@@ -261,7 +261,7 @@ loadAndFilterAllenData2<-function() {
 }
 
 # Loads the V1 data set and filters as specified in the paper
-simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5), outDir="fig6ad-S13-S14", BPPARAM=BiocParallel:bpparam()) {
+simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(0, 2, 5), outDir="fig6ad-S13-S14", cacheDirPath="zinbCache", BPPARAM=BiocParallel::bpparam()) {
 	loadAndFilterAllenData() 
 
 	## Simulates data sets based on Allen V1 data set
@@ -273,7 +273,7 @@ simulateFromAllenData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5,
 	      ff = sprintf(paste(outDir, 'simAllen_nc%s_ratio%s_offs%s.rda', sep="/"), nc, b2, offs)
 	      zinbSimWrapper(core = core, colIni = colIni, ncells = nc, nclust = 3, 
 			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-			     fileName = ff, BPPARAM=BPPARAM)
+			     fileName = ff, cacheDirPath=cacheDirPath, BPPARAM=BPPARAM)
 	    }
 	  }
 	}
@@ -334,7 +334,10 @@ zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
 	b2 = 1
 	offs = 2
 
-	system('mkdir figS12')
+	if(!file.exists("figS12")) {
+		system("mkdir figS12")
+	}
+
 	ff = sprintf('figS12/simZeisel_nc%s_ratio%s_offs%s.rda', nc, b2, offs)
 
 	## simulate
