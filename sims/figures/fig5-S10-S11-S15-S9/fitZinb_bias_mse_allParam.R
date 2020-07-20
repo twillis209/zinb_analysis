@@ -29,9 +29,7 @@ nc = 1000
 b2 = 1
 offs = 2
 
-#param<-BatchtoolsParam(workers=8)
-#bpstart(param)
-#register(param)
+register(SerialParam())
 
 pp = sprintf('sim%s_nc%s_ratio%s_offs%s', ds, nc, b2, offs)
 load(paste0(pp,".rda"))
@@ -39,8 +37,9 @@ fittedSim = lapply(K, function(k){
   lapply(Vintercept, function(Vint){
     lapply(commondispersion, function(commondisp){
       lapply(1:length(simData), function(i){
+	sprintf("Sim replicate no. %d", i)
         counts = t(simData[[i]]$counts)
-        counts = counts[rowSums(counts) !=0, ]
+        counts = counts[rowSums(counts) !=0, colSums(counts)!=0]
         #zeros = (rowSums(counts) == 0)
         #if (sum(zeros) > 0){
         #  mm =  matrix(0, ncol = ncol(counts), nrow = sum(zeros)) 
@@ -62,4 +61,4 @@ fittedSim = lapply(K, function(k){
 })
 out = paste0(pp, '_fittedAll.rda')
 save(fittedSim, file = out)
-#bpstop(param)
+print("Done")

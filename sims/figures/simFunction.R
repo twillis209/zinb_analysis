@@ -306,7 +306,7 @@ loadAndFilterZeiselData<-function() {
 	out<-mapply(assign, c("counts", "colIni"), list(counts, colIni), MoreArgs=list(envir=.GlobalEnv))
 }
 
-simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2), outDir="fig6ad-S13-S14", BPPARAM=BiocParallel::bpparam()) {
+simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5, 10), gammapiOffset=c(-1.5, 0.5, 2), outDir="fig6ad-S13-S14", cacheDirPath="zinbCache", BPPARAM=BiocParallel::bpparam()) {
 	loadAndFilterZeiselData()
 	
 	## Correlation and Silhouette plots
@@ -317,7 +317,7 @@ simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5
 	      ff = sprintf(paste(outDir, 'simZeisel_nc%s_ratio%s_offs%s.rda', sep="/"), nc, b2, offs)
 	      zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
 			     ratioSSW_SSB = b2, gammapiOffset = offs, B = 10, 
-			     fileName = ff, BPPARAM=BPPARAM)
+			     fileName = ff, cacheDirPath=cacheDirPath, BPPARAM=BPPARAM)
 	    }
 	  }
 	}
@@ -327,7 +327,7 @@ simulateFromZeiselData<-function(ncells=c(100, 1000, 10000), ratioSSW_SSB=c(1, 5
 # Mean-Difference plot
 # Figure S26
 ######################
-zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
+zeiselMeanDifferencesS26<-function(cacheDirPath="zinbCache", BPPARAM=BiocParallel::bpparam()) {
 	loadAndFilterZeiselData()
 
 	nc = 1000
@@ -342,7 +342,8 @@ zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
 
 	## simulate
 	zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
-		       ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, fileName = ff, BPPARAM=BPPARAM)
+		       ratioSSW_SSB = b2, gammapiOffset = offs, B = 1, fileName = ff, cacheDirPath="zinbCache",
+			BPPARAM=BPPARAM)
 
 	# remove genes with only zeros and keep track of removed genes for mean diff
 	load(ff)
@@ -354,8 +355,12 @@ zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
 	save(bio, simModel, simData, keep, file = ff)
 
 	# fit
-	fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE, epsilon = ncol(simData$counts), BPPARAM=BPPARAM)
-	save(fittedSim, file = gsub('.rda', '_fitted.rda', ff))
+	# Replacing with caching function
+	#fittedSim = zinbFit(t(simData$counts), K = 2, commondispersion = FALSE, epsilon = ncol(simData$counts), BPPARAM=BPPARAM)
+	#save(fittedSim, file = gsub('.rda', '_fitted.rda', ff))
+
+	fitZinbAndCache(t(simData$counts), K = 2, commonDispersion = FALSE, epsilon = ncol(simData$counts), BPPARAM=BPPARAM, cacheDirPath=cacheDirPath)
+	save(zinb, file = gsub('.rda', '_fitted.rda', ff))
 }
 
 
@@ -365,7 +370,7 @@ zeiselMeanDifferencesS26<-function(BPPARAM=BiocParallel::bpparam()) {
 
 # This and the previous function were previously not inside a function, so it's not clear what filtering of the counts performed for the sake of the previous simulation should be carried over to this one. Review the git diff if things do not work out.
 
-zeiselBiasMSECpuTime<-function(BPPARAM=BiocParallel::bpparam()) {
+zeiselBiasMSECpuTime<-function(cacheDirPath="zinbCache", BPPARAM=BiocParallel::bpparam()) {
 	loadAndFilterZeiselData()
 
 	b2 = 1
@@ -375,7 +380,7 @@ zeiselBiasMSECpuTime<-function(BPPARAM=BiocParallel::bpparam()) {
 	
  zinbSimWrapper(core = counts, colIni = colIni, ncells = nc, nclust = 3, 
 			 ratioSSW_SSB = b2, gammapiOffset = offs, B = 10,
-			 fileName = ff, BPPARAM=BPPARAM)
+			 fileName = ff, cacheDirPath=cacheDirPath, BPPARAM=BPPARAM)
 	  
 	  # remove genes with only zeros in at least one of the B simulated ds
 	  load(ff)
