@@ -345,6 +345,7 @@ plotList = lapply(c(50, 100, 500, 1000, 5000, 10000), function(nc){
   bb$nc = nc
   bb
 })
+
 plotList = do.call(rbind, plotList)
 plotMolten = melt(plotList, id.vars = c('nc'))
 gg = gsub('([[:upper:]])', ' \\1', plotMolten$variable)
@@ -365,7 +366,7 @@ bias_MSE_ncells= ggplot(plotMolten, aes(x = nc, y = value)) +
   panel_border() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #bias_MSE_ncells
-# save figure S9
+# save figure S22
 ggsave(filename="../../paper/bias_mse_ncells.png",
        plot =bias_MSE_ncells,
        device = 'png', width = 8, height = 6)
