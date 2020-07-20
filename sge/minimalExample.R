@@ -19,9 +19,10 @@ d <- sqrt(nums[, 1]^2 + nums[, 2]^2)
 #				))
 #logdir=paste(Sys.getenv("HOME"), "logs", sep="/")
 
-param<-SnowParam(workers=16, progressbar=T, log=T, jobname="minimalExample")
-bpstart(param)
+#param<-SnowParam(workers=16, progressbar=T, log=T, jobname="minimalExample")
+#bpstart(param)
 ## Run parallel job
+param<-MulticoreParam(workers=16)
 result <- bplapply(rep(10e5, 1e4), piApprox, BPPARAM=param)
-bpstop(param)
+#bpstop(param)
 print("Done")

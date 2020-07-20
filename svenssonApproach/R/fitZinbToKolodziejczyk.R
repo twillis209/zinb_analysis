@@ -17,8 +17,9 @@ names(kolodDFs)<-prefixes
 zinbModels<-list()
 for(j in 1:length(kolodDFs)) {
 	zinbModels[[names(kolodDFs)[[j]]]]<-list()
-	for(i in 1:10) {
-	#for(i in 1:nrow(kolodDFs[[j]])) {
+
+	for(i in 1:nrow(kolodDFs[[j]])) {
+#	for(i in 1:10) {
 		print(rownames(kolodDFs[[j]])[i])
 	zinbModels[[names(kolodDFs)[[j]]]][[rownames(kolodDFs[[j]])[i]]]<-tryCatch({zeroinfl(t(kolodDFs[[j]][i,])~1|1, dist="negbin")}, warning=function(w) { message(w); NULL}, error=function(e) { message(e); NULL})
 	}
