@@ -1,16 +1,4 @@
----
-title: "Figures for simulations"
-author: "Fanny Perraudeau"
-date: "04/10/2017"
-output: 
-  html_document: 
-  fig_height: 10
-fig_width: 10
-toc: yes
-code_folding: hide
-toc_float: yes
----
-```{r options, echo=FALSE, results="hide",message=FALSE, error=FALSE, include=FALSE, autodep=TRUE}
+## ----options, echo=FALSE, results="hide",message=FALSE, error=FALSE, include=FALSE, autodep=TRUE----
 knitr::opts_chunk$set(fig.align="center", cache=TRUE, error=FALSE, message=FALSE, warning=TRUE, fig.width=6, fig.height=6)
 library(zinbwave)
 library(cluster)
@@ -24,10 +12,11 @@ library(DESeq2)
 library(cowplot)
 library(gridExtra)
 mycol = c(brewer.pal(11,"RdYlGn")[c(8:11, 1:4)], brewer.pal(11,"RdYlBu")[8:11])
-```
 
-# Bias and MSE (Figures 5, S10, S11)
-```{r savePaper}
+
+## ----savePaper----------------------------------------------------------------
+# Looks like the last ZinbModel fittedSim[[x]][[y]][[z]][[10]] always has 999 samples for some reason; perhaps
+# it is because I had to filter out zero counts? This means we drop one of the 10 bootstrap samples in each condition
 computeBiasList <- function(fittedSim, simModel, keep){
   biasList = lapply(1:4, function(k){
     tmp <- lapply(1:2, function(Vint){
@@ -63,9 +52,9 @@ computeVarianceList <- function(fittedSim, simModel, keep){
       tmp <- lapply(1:2, function(commondisp){
         
         mm <- lapply(seq_along(simData), function(i) {
-          # 1000 x 1000 on LHS
           (getLogMu(fittedSim[[k]][[Vint]][[commondisp]][[i]]) -getLogMu(simModel)[,keep])^2
         })
+        
         mu <- Reduce("+", mm)/(length(mm) - 1)
         
         pp <- lapply(seq_along(simData), function(i) {
@@ -91,8 +80,17 @@ computeVarianceList <- function(fittedSim, simModel, keep){
 load('fig5-S10-S11-S15-S9/simZeisel_nc1000_ratio1_offs2_fittedAll.rda')
 load('fig5-S10-S11-S15-S9/simZeisel_nc1000_ratio1_offs2.rda')
 
+#for(k in 1:4){
+#  for(Vint in 1:2){
+#    for(commondisp in 1:2) {
+#    }
+#  }
+#}
+
 simData<-simData[1:9]
 
+# For some reason, the last (i.e. the 10th) bootstrap replicate in each condition has dimension (999, 1000) rather
+# than (1000, 1000). Easiest just to remove it for now.
 # Bias
 biasList = computeBiasList(fittedSim, simModel, keep)
 plotbias <- unlist(unlist(unlist(biasList, recursive=FALSE), recursive=FALSE), recursive=FALSE)
@@ -115,10 +113,9 @@ variance = data.frame(do.call(rbind, variance), stringsAsFactors = F)
 MSE = bias
 MSE$bias = MSE$bias^2 + variance$variance
 colnames(MSE)[1] = 'MSE'
-```
 
 
-```{r bias_mu}
+## ----bias_mu------------------------------------------------------------------
 bias_mu = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('Bias log(', mu, ')'))) + 
@@ -126,9 +123,9 @@ bias_mu = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border()
 bias_mu
-```
 
-```{r bias_mu_noOut}
+
+## ----bias_mu_noOut------------------------------------------------------------
 bias_mu_noOut = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) + 
   geom_boxplot(outlier.shape = NA) +
   ggtitle('') + ylab(expression(paste('Bias log(', mu, ')'))) + 
@@ -136,18 +133,18 @@ bias_mu_noOut = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-2,2))
 bias_mu_noOut
-```
 
-```{r bias_pi}
+
+## ----bias_pi------------------------------------------------------------------
 bias_pi = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('Bias ', pi))) + background_grid(major = 'y', minor = "none") + 
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 bias_pi
-```
 
-```{r bias_pi_noOut}
+
+## ----bias_pi_noOut------------------------------------------------------------
 bias_pi_noOut = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) + 
   geom_boxplot(outlier.shape = NA) + 
   ggtitle('') + ylab(expression(paste('Bias ', pi))) + 
@@ -155,10 +152,9 @@ bias_pi_noOut = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-.1,.1))
 bias_pi_noOut
-```
 
-## MSE
-```{r MSE_mu}
+
+## ----MSE_mu-------------------------------------------------------------------
 MSE_mu = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('MSE log(', mu, ')'))) + 
@@ -166,9 +162,9 @@ MSE_mu = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu
-```
 
-```{r MSE_mu_noOut}
+
+## ----MSE_mu_noOut-------------------------------------------------------------
 MSE_mu_noOut = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) + 
   geom_boxplot(outlier.shape = NA) + ggtitle('') +
    ylab(expression(paste('MSE log(', mu, ')'))) + 
@@ -177,9 +173,9 @@ MSE_mu_noOut = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu_noOut
-```
 
-```{r MSE_pi}
+
+## ----MSE_pi-------------------------------------------------------------------
 MSE_pi = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('MSE ', pi))) +
@@ -187,9 +183,9 @@ MSE_pi = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi
-```
 
-```{r MSE_pi_noOut}
+
+## ----MSE_pi_noOut-------------------------------------------------------------
 MSE_pi_noOut = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) + 
   geom_boxplot(outlier.shape = NA) + ggtitle('') +
   ylab(expression(paste('MSE ', pi))) + 
@@ -198,10 +194,9 @@ MSE_pi_noOut = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi_noOut
-```
 
-## Variance
-```{r variance_mu}
+
+## ----variance_mu--------------------------------------------------------------
 variance_mu = ggplot(variance[variance$param == 'mu', ], aes(x = K, y = variance)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('Variance log(', mu, ')'))) + 
@@ -235,9 +230,9 @@ variance_pi_noOut = ggplot(variance[variance$param == 'pi', ], aes(x = K, y = va
   facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
   geom_hline(yintercept = 0, col = 'red')
 variance_pi_noOut
-```
 
-```{r variancePlot}
+
+## ----variancePlot-------------------------------------------------------------
 # save figure 5
 p1 = plot_grid(bias_mu_noOut, bias_pi_noOut, MSE_mu_noOut, MSE_pi_noOut,
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2, align = "h")
@@ -254,10 +249,9 @@ p3 = plot_grid(variance_mu, variance_pi, variance_mu_noOut, variance_pi_noOut,
                align = "h", labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
 save_plot("../../paper/6680489mtyrjx/variance_allParam.png",device ='png',
           p3, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
-```
 
-# Mean Difference (figure S12)
-```{r figS12}
+
+## ----figS12-------------------------------------------------------------------
 load('figS12/simZeisel_nc1000_ratio1_offs2_fitted.rda')
 load('figS12/simZeisel_nc1000_ratio1_offs2.rda')
 zz = fittedSim
@@ -283,10 +277,9 @@ smoothScatter(meanPi, diffPi, bandwidth = .01, xlab = 'Mean',
               ylab = 'Difference')
 abline(h = 0, col = 'gray')
 dev.off()
-```
 
-# Asymptotically unbiased (figure S9)
-```{r consistency}
+
+## ----consistency--------------------------------------------------------------
 computeBias <- function(fittedSim, keep, simModel, simData){
   keepCells = lapply(1:length(simData), function(i){
     rowSums(simData[[i]]$counts) != 0
@@ -378,11 +371,9 @@ bias_MSE_ncells
 ggsave(filename="../../paper/6680489mtyrjx/bias_mse_ncells.png",
        plot =bias_MSE_ncells,
        device = 'png', width = 8, height = 6)
-```
 
 
-# Correlation and Silhouette width, our model (Figure 6, panels a-d, figure s13, s14)
-```{r corr}
+## ----corr---------------------------------------------------------------------
 eval_cor <- function(dtrue, dest) {
   corr <- sapply(seq_len(NCOL(dtrue)), function(i) cor(dtrue[,i], dest[,i]))
   return(corr)
@@ -603,11 +594,9 @@ p4
 # save figure S13
 save_plot("../../paper/6680489mtyrjx/corrSilh.png", device = 'png',
           p4, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
-```
 
 
-Figure 6, panels a-d
-```{r figure6ad}
+## ----figure6ad----------------------------------------------------------------
 subset = resMolten[resMolten$nc == 1000 & resMolten$clustering == 5 &
                      resMolten$zfrac == 80, ]
 c1 = ggplot(subset[subset$ds == 'Allen' & grepl('^corr', subset$variable), ],
@@ -647,10 +636,9 @@ cs
 # save figure 6, panels a-d
 save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
-```
 
-Figure S14
-```{r}
+
+## -----------------------------------------------------------------------------
 fns = c('fig6ad-S13-S14/simZeisel_nc10000_ratio5_offs2',
         'fig6ad-S13-S14/simAllen_nc10000_ratio5_offs5')
 res = lapply(fns, function(pref){
@@ -726,11 +714,9 @@ cs
 # save Figure S14
 save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots_10000.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
-```
 
 
-# Silhouette Lun2 (Figure 6, panels e-g)
-```{r silSummary}
+## ----silSummary---------------------------------------------------------------
 eval_sil <- function(labels, dest) {
   sest <- silhouette(labels, dest)
   return(sest)
@@ -860,11 +846,9 @@ silLun
 # save figure 6, panels e-g
 ggsave(filename="../../paper/6680489mtyrjx/silhouetteLun.pdf", plot = silLun,
        width = 8, height = 5)
-```
 
 
-Figure 6
-```{r mergeLunAndZINB}
+## ----mergeLunAndZINB----------------------------------------------------------
 cs = plot_grid(c1, c2, s1, s2,
                align = "h", labels = c("a", "b", "c", "d"),
                nrow = 2, ncol = 2)
@@ -902,4 +886,4 @@ csss
 save_plot("../../paper/6680489mtyrjx/corrSilh_combined.png", device = 'png',
          csss, ncol = 3, nrow = 3, base_aspect_ratio = 1.3)
 
-```
+

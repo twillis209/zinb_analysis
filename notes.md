@@ -267,7 +267,6 @@ R files:
 
 ### Workflow for real data scripts
 
-
 * allen_covariates_1000.Rmd (missing metadata)
 * allen_plots.R
 * espresso_covariates.Rmd
@@ -580,6 +579,19 @@ Data files required:
 	fig6e-g/simLun_10000_ziadd0.67_zifaTMM.rda
 
 Assuming that 
+
+
+#### Debugging `figuresPaper.Rmd`
+
+Suppose I ought to have guessed that this would not knit to PDF the first time around.
+
+Will extract the R code and try to debug it in RStudio. 
+
+The last of the 10 bootstrap replicates required for the bias, variance, and MSE-based evaluations had dimension (999,1000) for some reason. Suspect it may be to do with the dropping of zero count genes and cells from the data sets to stop ZINB from throwing an error. 
+
+Upon examination of the data needed for figure S12, I am starting to doubt that the simulation code ran correctly. Not sure if the cell/sample-level intercept has been included correctly where required, for example.
+
+We could resimulate things *without* filtering?
 
 ### fig5-S10-S11-S15-S9
 

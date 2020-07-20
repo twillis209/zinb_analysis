@@ -1,2 +1,4 @@
 *.rda
 *.csv
+*.log
+fitZinb10000.e*
