@@ -115,10 +115,11 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 		maxs.append(max(difference1.max(), difference2.max(), difference3.max()))
 
 	min(mins), max(maxs)
+	
+	# TODO: still editing size and grid dimensions by hand
+	fig = plt.figure(figsize=(40, 25))
 
-	fig = plt.figure(figsize=(25, 15))
-
-	outer_grid = fig.add_gridspec(2, 2, hspace=0.6, wspace=0.45)
+	outer_grid = fig.add_gridspec(4, 4, hspace=0.6, wspace=0.45)
 
 	for adata in datasets:
 	    
@@ -214,7 +215,7 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 
 		ax = fig.add_subplot(inner_grid[2])
 
-		ax.set_title('Gene-wise dispersion with zero inflation')
+		ax.set_title('ZI model')
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)

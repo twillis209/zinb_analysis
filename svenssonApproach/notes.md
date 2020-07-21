@@ -69,6 +69,10 @@ Svensson got very good fits to the spike-in data using gene-wise dispersion coef
 * got good fits to Zheng (droplet, used by Svensson) and Zeisel; Zeisel was done with STRT-Seq with UMIs
 * poor fit to Allen, Fletcher, Kolodziejczyk
 
+## Allen
+
 ## Kolodziejczyk
 
-Fits were very poor when performed without filtering. Need to apply some kind of filter, should look at what was used in the original paper.
+Fits were very poor when performed without filtering. Need to apply some kind of filter, should look at what was used in the original paper. Having now read it, it seems the data supplied on the Espresso website were already filtered.
+
+ZI fits are good, with a bit of excessive zero prediction for means in the middle of the range. Notable that performance does not seem to differ between batches and media (i.e. aggregations of batches). What if we just aggregated all media, too?

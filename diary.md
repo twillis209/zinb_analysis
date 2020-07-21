@@ -144,3 +144,7 @@ Trying to fix the `fitZinb_bias*` scripts at the moment, which I suspect have be
 # 12/7/20
 
 Working on getting ZIFA working.
+
+# 20/7/20
+
+Finally using simulated code to put together the paper plots. Working on figure S9 in `figuresPaper.R`.

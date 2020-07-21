@@ -70,13 +70,13 @@ See the ARC notes in the `math5871` repo for details of my investigation of para
 * Available in `scRNAseq` package
 * The 'Allen' data set is a subset of the Tasic data. From the package manual: '`ReprocessedAllenData()` provides 379 cells from the mouse visual cortex, which is a subset of the data from Tasic et al. (2016).'
 * The counts used in the analyses by Risso et al. are the default `tophat_counts` (confirmed this with use of `digest::digest`)
-* Plate-based: sorted by FACS into a 96-well plate and amplified using the SMARTer kit
+* Plate-based: sorted by FACS into a 96-well plate and amplified using the SMARTer kit, i.e. Smart-seq
 
 ### S1/CA1 data set
 
 * Zeisel et al.
 * Downloaded.
-* Fluidigm C1 microfluidics cell capture platform
+* FACS (of some cells?) then Fluidigm C1 microfluidics cell capture platform with STRT-Seq (cite Islam 2014)
 
 From `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60361`:
 
@@ -89,7 +89,7 @@ From `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60361`:
 * Kolodziejczyk et al.
 * Downloaded.
 * May now be in `scRNAseq`
-* Fluidigm C1 microfluidics cell capture platform
+* Fluidigm C1 microfluidics cell capture platform, then SMARTer kit and Nextera XT Kit for library prep (i.e. Smart-seq, cite Ramskoeld 2012)
 
 Cultured mESC in three conditions:
 * serum 
@@ -104,7 +104,7 @@ Found transcriptomes were distinct between these conditions.
 * Downloaded
 * Identifying developmental trajectories of OE cells
 * Figure 3
-* FACS then Fluidigm C1 microfluidics cell capture platform
+* FACS then Fluidigm C1 microfluidics cell capture platform then Smart-seq
 
 ### PBMC/Zheng data set
 
@@ -117,7 +117,7 @@ Found transcriptomes were distinct between these conditions.
 ### GBM/Patel data set
 
 * Patel et al.
-* Sorted cells into 96 well plate using FACS
+* Sorted cells into 96 well plate using flow cytometry
 * SMART-Seq
 
 From `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE57872`:
@@ -592,6 +592,34 @@ The last of the 10 bootstrap replicates required for the bias, variance, and MSE
 Upon examination of the data needed for figure S12, I am starting to doubt that the simulation code ran correctly. Not sure if the cell/sample-level intercept has been included correctly where required, for example.
 
 We could resimulate things *without* filtering?
+
+Pressing forward at the moment and trying to get a result for everything, after which I will take stock.
+
+##### S9 code
+
+	[1] 50
+	[1] 100
+	[1] 500
+	[1] 1000
+	[1] 5000
+	[1] 10000
+	Warning messages:
+	1: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	2: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	3: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	4: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	5: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	6: In cbind(...) :
+	  number of rows of result is not a multiple of vector length (arg 3)
+	Error in rbind(deparse.level, ...) :
+	  numbers of columns of arguments do not match
+	Calls: do.call ... standardGeneric -> eval -> eval -> eval -> rbind -> rbind
+	Execution halted
 
 ### fig5-S10-S11-S15-S9
 
