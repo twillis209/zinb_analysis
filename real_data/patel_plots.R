@@ -5,30 +5,48 @@ library(ggplot2)
 
 load("patel_covariates.rda")
 
-counts <- read.table("Patel/glioblastoma_raw_rnaseq_SCandbulk_counts.txt", header=TRUE, stringsAsFactors = FALSE, row.names=NULL)
+# Adapting Risso's code from the Rmd file for processing their own Patel counts
+counts <- read.table("patel/glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
+info <- as.matrix(counts)[1,-(1:3)]
+
+# Drops "X" rownames column and sample info row
+counts <- counts[-1,-1]
 
 gene_symbols <- counts[,1]
 ensembl_ids <- counts[,2]
+
 sample_names <- colnames(counts)[-(1:2)]
 
+# Drops gene symbol and ID columns
 all.counts <- counts[,-(1:2)]
 rownames(all.counts) <- ensembl_ids
 
-metadata <- read.table("patel/SraRunTable.txt", sep='\t', stringsAsFactors = FALSE, header=TRUE, row.names=5, na.strings = "<not provided>")
+# Risso's code
+# metadata <- read.table("patel/SraRunTable.txt", sep='\t', stringsAsFactors = FALSE, header=TRUE, row.names=5, na.strings = "<not provided>")
+
+metadata <- read.table("patel/SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
+rownames(metadata)<-metadata$Run
 metadata <- metadata[sample_names,]
 
-# select only single-cell samples from patients
-keep <- which(grepl("^Single cell", metadata$source_name_s) &
-                !is.na(metadata$patient_id_s) &
-                !is.na(metadata$subtype_s))
+batch <- stringr::str_split_fixed(info, "_", 2)[,2]
+batch <- stringr::str_split_fixed(batch, "_", 2)[,1]
+
+
+# Subtype filtering is odd, what was the intention? Apparently there is a difference between an empty string and 'None'
+# May need to revisit this
+keep <- which(grepl("^Single cell", metadata$source_name) &
+                grepl("MGH", metadata$patient_id) &
+		metadata$subtype != "")
+		#metadata$subtype != "" & metadata$subtype != "None")
+		
 metadata <- metadata[keep,]
 
+batch <- as.factor(batch[keep])
 all.counts <- all.counts[,keep]
+all.counts <- as.matrix(all.counts)
+class(all.counts) <- "numeric"
 
 stopifnot(all(rownames(metadata)==colnames(all.counts)))
-
-level1 <- as.factor(metadata$patient_id_s[!is.na(metadata$subtype_s)])
-level2 <- as.factor(metadata$subtype_s[!is.na(metadata$subtype_s)])
 
 col1 <- brewer.pal(9, "Set1")
 col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
@@ -36,10 +54,15 @@ col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
 detection_rate <- colSums(all.counts>0)
 coverage <- colSums(all.counts)
 
-library(scater)
-sceset <- newSCESet(countData = all.counts)
+qc <- cbind(detection_rate, coverage)
 
-keep_feature <- rowSums(exprs(sceset) > 0) > 0
+level1 <- as.factor(metadata$patient_id)
+level2 <- as.factor(metadata$subtype)
+
+library(scater)
+sceset <- SingleCellExperiment(all.counts)
+
+keep_feature <- rowSums(assay(sceset) > 0) > 0
 sceset <- sceset[keep_feature,]
 
 sceset <- calculateQCMetrics(sceset)

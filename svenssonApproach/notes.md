@@ -75,4 +75,12 @@ Svensson got very good fits to the spike-in data using gene-wise dispersion coef
 
 Fits were very poor when performed without filtering. Need to apply some kind of filter, should look at what was used in the original paper. Having now read it, it seems the data supplied on the Espresso website were already filtered.
 
-ZI fits are good, with a bit of excessive zero prediction for means in the middle of the range. Notable that performance does not seem to differ between batches and media (i.e. aggregations of batches). What if we just aggregated all media, too?
+ZI fits are good, with a bit of excessive zero prediction for means in the middle of the range. Notable that performance does not seem to differ between batches and media (i.e. aggregations of batches). What if we just aggregated all media, too? Doing that now.
+
+So the fits of the three models (global dispersion, genewise dispersion, and ZI with genewise dispersion) seem not to vary regardless of whether the data set is:
+
+* all batches aggregated
+* batches aggregated by medium
+* individual batches
+
+Does this mean that these covariates have little influence on zero fraction? 

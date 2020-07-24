@@ -15,7 +15,15 @@ filenames = [
 	"kolod_lif_2_zi.h5ad",
 	"kolod_lif_3_zi.h5ad",
 	"kolod_lif_zi.h5ad",
-	"kolodERCC_zi.h5ad"
+	"kolodERCC_zi.h5ad",
+	"kolodNoERCC_zi.h5ad"
+		]
+
+filenames = [
+	"kolod_2i_2_zi.h5ad",
+	"kolod_2i_zi.h5ad",
+	"kolodERCC_zi.h5ad",
+	"kolodNoERCC_zi.h5ad"	
 		]
 
 datasets = [anndata.read(os.path.join('../Data/output/kolodZi', x)) for x in filenames]
@@ -34,13 +42,21 @@ names = [
 	'Kolodziejczyk et al. 2015 (lif_3)',
 	'Kolodziejczyk et al. 2015 (lif)',
 	'Kolodziejczyk et al. 2015 (ERCC)',
+	'Kolodziejczyk et al. 2015 (No ERCC)'
+	]
+
+names = [
+	'Kolodziejczyk et al. 2015 (2i_2)',
+	'Kolodziejczyk et al. 2015 (2i)',
+	'Kolodziejczyk et al. 2015 (ERCC)',
+	'Kolodziejczyk et al. 2015 (No ERCC)'
 	]
 
 for i,x in enumerate(datasets):
 	x.uns['name'] = names[i]
 
-
 annotation = {
+	'Kolodziejczyk et al. 2015 (No ERCC)' :'All biological features', 
 	'Kolodziejczyk et al. 2015 (ERCC)' :'ERCC spike-ins', 
 	'Kolodziejczyk et al. 2015 (2i_2)' : '2i batch 1',
 	'Kolodziejczyk et al. 2015 (2i_3)' : '2i batch 2',
@@ -55,7 +71,13 @@ annotation = {
 	'Kolodziejczyk et al. 2015 (lif_3)' : 'lif batch 3',
 	'Kolodziejczyk et al. 2015 (lif)' : 'lif medium'
 }
+annotation = {
+	'Kolodziejczyk et al. 2015 (No ERCC)' :'All biological features', 
+	'Kolodziejczyk et al. 2015 (ERCC)' :'ERCC spike-ins', 
+	'Kolodziejczyk et al. 2015 (2i_2)' : '2i batch 1',
+	'Kolodziejczyk et al. 2015 (2i)' : '2i medium',
+}
 
 location = dict(zip(names, range(len(names))))
 
-makePlot(datasets, annotation, location, outputPath='test.pdf')
+makePlot(datasets, annotation, location, nrows=2, ncols=2, figSize=(20,13), outputPath='test.pdf')

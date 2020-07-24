@@ -45,6 +45,6 @@ for pair in zip(h5adFilenames, csvFilenames):
 	ad = anndata.read(os.path.join("../Data/output", pair[0]))
 	ziDF = pd.read_csv(os.path.join("../Data/output/kolodZi", pair[1]), index_col=0)
 	ad = ad[:, ziDF.index]
-	ad.var=pd.merge(ad.var, ziDF['ml_mean', 'genewise_zi_zero_fraction'], left_index=True, right_index=True)
+	ad.var=pd.merge(ad.var, ziDF['genewise_zi_zero_fraction'], left_index=True, right_index=True)
 	ad.uns['shortName'] = pair[0].replace('.h5ad', '')
 	ad.write(os.path.join("../Data/output/kolodZi", ad.uns['shortName']+'_zi.h5ad'))

@@ -137,6 +137,10 @@ So for the Svensson-style analysis:
 * we are only interesting in the single cells (532 in total)
 * 5948 genes with the highest composite expression are featured in the data 
 
+...although it could be interesting to fit models to the population samples just to show that bulk RNA-Seq does not have excessive zeros
+
+Finally got the count data from Risso. 
+
 ### Applications of data sets
 
 * Impact of normalization methods
@@ -255,9 +259,44 @@ R files:
 
 ### Goodness-of-fit of ZINB-WaVE model
 
+* sFigure 18: mean difference plots of estimated vs. observed mean count for V1 data set (counts averaged n cells for each feature)
+	* sFigure 18a: Fit of edgeR NB 
+	* sFigure 18b: Fit of ZW 
+* sFigure 19: mean difference plots of estimated vs. observed zero probability for V1 data set (zero probabilities averaged n cells for each feature)
+	* sFigure 19a: Fit of edgeR NB 
+	* sFigure 19b: Fit of ZW 
+* sFigure 20: disperson parameter vs. observed proportion of zero counts for V1 data set (zero probabilities averaged n cells for each feature)
+	* sFigure 20a: Fit of edgeR NB 
+	* sFigure 20b: Fit of ZW 
+* sFigure 21: GOF of MAST hurdle model for V1 data set (mean, zero probabilities averaged n cells for each feature)
+	* sFigure 21a: mean log2 TPM+1
+	* sFigure 21b: zero probability fit 
+	* sFigure 21c: Gaussian variance 
+
 ### ZINB-WaVE estimators are asymptotically unbiased and robust
 
+* Figure 6: bias and MSE for ln(mu) and pi with/out sample-level intercept, with/out genewise dispersion estimates for K = 1-4 for true value of K=2 and genewise dispersion estimates (i.e. effect of model misspecification)
+* sFigure 22: bias, variance, and MSE for ZW estimation procedure for pi and ln(mu) for an increasing number of cells using S1/CA1 simulated data
+* sFigure 23: AIC, BIC, and log-likelihood for ZINB-WaVE using S1/CA1 simulated data
+* sFigure 24: as figure 6 but with outliers plotted individually
+* sFigure 25: variance for ZW estimation procedure for same conditions as in figure 6
+* sFigure 26: mean-difference plots for estimated vs. true mean and zero inflation probability using S1/CA1 simulated data
+
 ### ZINB-WaVE is more accurate than state-of-the-art methods
+
+* Figure 7: between-sample distances and silhouette widths on data simulated from V1 and S1/CA1 data sets using the ZINB-WaVE model, and using the Lun and Marioni model.
+	* Figure 7a-b: Boxplots of correlations for ZW for correct and incorrect K, and PCA and ZIFA with all four normalisation methods
+		* Figure 7a: correlation between between-sample distances based on true and estimated low-D representations of simulated V1 data
+		* Figure 7b: correlation between between-sample distances based on true and estimated low-D representations of simulated S1/CA1 data
+
+	* Figure 7c-d: as 7a-b but for silhouette widths
+		* Figure 7c: silhouette widths for true clusters based on simulated V1 data 
+		* Figure 7d: silhouette widths for true clusters based on simulated S1/CA1 data
+	* Figure 7e-g: average silhouette widths for true clusters vs. zero fraction for data simulated from the Lun and Marioni model
+
+* sFigure 27: as figure 7 but for n = 10000 cells rather than n = 1000 cells
+* sFigure 28: as sFigure 27 but with additional scenarios
+* sFigure 29: precision and recall for ZW, PCA, and ZIFA on the Lun and Marioni simulated data 
 
 ## Scripts for data analysis
 
@@ -282,11 +321,22 @@ R files:
 
 ### Patel
 
-Can't actually repeat this analysis as it requires alignment of the raw reads with TopHat etc. Don't have the resources for this at the moment.
+Unresolved issue is whether should include those samples classified as `None` in `metadata$subtype`. A comment from `patel_plots.R` reads:
+
+	# select only single-cell samples from patients
+
+Interesting. Should think about what this means.
 
 #### `goodness_of_fit_patel.Rmd`
 
 #### `patel_covariates.Rmd`
+
+TODO:
+
+* add caching zinb fit function
+* MGH26-2 seems absent in the first ZINB plot
+
+I have added `zinbFit` caching code, but I note that I had previously not been caching results by the choice of K, epsilon, and common dispersion. Upon examining `simFunction.R`, it does not appear to have made a difference as we never varied any of those parameters.
 
 #### `patel_plots.R`
 
@@ -835,6 +885,65 @@ Figure S12 depicts the first two PCs for the mESC data set with:
 	b) TC
 	c) FQ 
 	d) TMM 
+
+# ZIFA
+
+Current install fails unit tests. I will try to create a conda environment containing the versions of the dependencies with which the unit tests fail.
+
+	conda create --name zifa python=2.7.10 numpy=1.13.1 scipy=0.18.1 sklearn=0.16.1
+
+Neither the python version nor the sklearn were available. Let's try:
+
+	conda create --name zifa python=2.7.12 numpy=1.13.1 scipy=0.18.1 scikit-learn=0.17.1
+
+but this gives conflicts, as does
+
+	conda create --name zifa python=2.7.12 numpy=1.13.1 scipy=0.18.1 scikit-learn=0.18
+
+Trying 
+
+	conda create --name zifa2 python=2.7.12 scikit-learn=0.17.1
+
+which gives during install the following output:
+
+	numpy              conda-forge/linux-64::numpy-1.11.3-py27_blas_openblas_201
+	python             conda-forge/linux-64::python-2.7.12-2
+	scikit-learn       conda-forge/linux-64::scikit-learn-0.17.1-np111py27_blas_openblas_202
+	scipy              conda-forge/linux-64::scipy-0.18.1-np111py27_blas_openblas_200
+
+This yields the following output for `unitTests.py`:
+
+	Fraction of zeros: 0.427; decay coef: 0.100
+	Running zero-inflated factor analysis with N = 200, D = 20, K = 2
+	Param change below threshold 1.000e-02 after 18 iterations
+	Traceback (most recent call last):
+	  File "unitTests.py", line 84, in <module>
+	    unitTests()
+	  File "unitTests.py", line 45, in unitTests
+	    assert np.allclose(np.abs(Zhat[-1, :]), np.abs([ 1.50067515, 0.04742477]), atol=absolute_tolerance)
+	AssertionError
+
+Using my `diss` environment with `python2`, I get the following output:
+
+	Fraction of zeros: 0.427; decay coef: 0.100
+	Running zero-inflated factor analysis with N = 200, D = 20, K = 2
+	Param change below threshold 1.000e-02 after 18 iterations
+	Traceback (most recent call last):
+	  File "unitTests.py", line 84, in <module>
+	    unitTests()
+	  File "unitTests.py", line 45, in unitTests
+	    assert np.allclose(np.abs(Zhat[-1, :]), np.abs([ 1.50067515, 0.04742477]), atol=absolute_tolerance)
+	AssertionError
+
+I do not get significantly different results when increasing the `absolute_tolerance` parameter to 1e-4.
+
+Just going to try with `diss` as `zifa` is missing things like `matplotlib` and can't seem to install it because of conflicts.
+
+Let's see how things run on my laptop before moving this to the cluster.
+
+Trying to put something together on the cluster:
+
+	scipy=0.19.1
 
 # Analysis of additional droplet-based data sets
 
