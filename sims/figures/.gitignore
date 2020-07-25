@@ -1,2 +1,4 @@
 */*.rda
 testSimFunctionChanges.*
+*_files
+*_cache
