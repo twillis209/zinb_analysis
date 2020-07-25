@@ -24,52 +24,18 @@ library(DESeq2)
 library(cowplot)
 library(matrixStats)
 library(scRNAseq)
+source('../R/utilityFunctions.R')
 mycol = c(brewer.pal(11,"RdYlGn")[c(8:11, 1:4)], brewer.pal(11,"RdYlBu")[8:11])
 ```
 
 
 ```{r datain}
 df = 'patel'
-counts <- read.table("../sims/datasets/patel/glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
 
-info <- as.matrix(counts)[1,-(1:3)]
-counts <- counts[-1,-1]
-
-gene_symbols <- counts[,1]
-ensembl_ids <- counts[,2]
-sample_names <- colnames(counts)[-(1:2)]
-
-all.counts <- counts[,-(1:2)]
-rownames(all.counts) <- ensembl_ids
-
-metadata <- read.table("../sims/datasets/patel/SraRunTable.txt", sep='\t', stringsAsFactors = FALSE, header=TRUE, row.names=5, na.strings = "<not provided>")
-metadata <- metadata[sample_names,]
-
-batch <- stringr::str_split_fixed(info, "_", 2)[,2]
-batch <- stringr::str_split_fixed(batch, "_", 2)[,1]
-
-# select only single-cell samples from patients
-keep <- which(grepl("^Single cell", metadata$source_name_s) &
-                !is.na(metadata$patient_id_s) &
-                !is.na(metadata$subtype_s))
-metadata <- metadata[keep,]
-batch <- as.factor(batch[keep])
-all.counts <- all.counts[,keep]
-all.counts <- as.matrix(all.counts)
-class(all.counts) <- "numeric"
-
-stopifnot(all(rownames(metadata)==colnames(all.counts)))
-
-col1 <- brewer.pal(9, "Set1")
-col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
-
-detection_rate <- colSums(all.counts>0)
-coverage <- colSums(all.counts)
-
-qc <- cbind(detection_rate, coverage)
-
-level1 <- as.factor(metadata$patient_id_s[!is.na(metadata$subtype_s)])
-level2 <- as.factor(metadata$subtype_s[!is.na(metadata$subtype_s)])
+oldWd<-getwd()
+setwd('patel')
+source('readPatelData.R')
+setwd(oldWd)
 
 filter <- rowSums(all.counts>50)>=50
 raw <- all.counts[filter,]
@@ -90,8 +56,8 @@ core = as.matrix(raw[vargenes,])
 ```
 
 ```{r zinb}
-zinb <- zinbFit(core, ncores = 2, K = 2, epsilon = 1e3, 
-                commondispersion = FALSE, verbose = T)
+
+zinb <- fitZinbAndCache(core, K = 2, epsilon = 1e3, commonDispersion = FALSE)
 ```
 
 ```{r functions}
@@ -151,7 +117,7 @@ nbPY0 = rowMeans((1 + nb$fitted * nb$disp)^(-1/nb$disp))
 
 MD-plot estimated vs. observed mean count, log scale
 ```{r meanCount25}
-pdf(sprintf('../paper/6680489mtyrjx/gof_mu_%s.pdf', df), width = 10)
+pdf(sprintf('../paper/gof_mu_%s.pdf', df), width = 10)
 par(mfrow=c(1,2))
 xlim =  c(3.5, 10)
 ylim = c(-1, 3)
@@ -162,7 +128,7 @@ dev.off()
 
 MD-plot estimated vs. observed zero probability
 ```{r}
-pdf(sprintf('../paper/6680489mtyrjx/gof_pi_%s.pdf', df), width = 10)
+pdf(sprintf('../paper/gof_pi_%s.pdf', df), width = 10)
 par(mfrow = c(1, 2))
 plotMD(zinbPY0, prop0, xlim = c(0, .7), ylim = c(-.2, .2), main = 'ZINB')
 plotMD(nbPY0, prop0, xlim = c(0, .7), ylim = c(-.2, .2), main = 'NB, edgeR')
@@ -171,7 +137,7 @@ dev.off()
 
 Estimated dispersion versus observed zero probability
 ```{r}
-pdf(sprintf('../paper/6680489mtyrjx/gof_disp_%s.pdf', df), width = 10)
+pdf(sprintf('../paper/gof_disp_%s.pdf', df), width = 10)
 par(mfrow = c(1,2))
 xpred = seq(0, 1, .05)
 fitzinb = loess(exp(-zz@zeta) ~ rowMeans(core == 0))

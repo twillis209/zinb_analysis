@@ -4,69 +4,35 @@ library(magrittr)
 library(ggplot2)
 
 load("patel_covariates.rda")
-
-# Adapting Risso's code from the Rmd file for processing their own Patel counts
-counts <- read.table("patel/glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
-info <- as.matrix(counts)[1,-(1:3)]
-
-# Drops "X" rownames column and sample info row
-counts <- counts[-1,-1]
-
-gene_symbols <- counts[,1]
-ensembl_ids <- counts[,2]
-
-sample_names <- colnames(counts)[-(1:2)]
-
-# Drops gene symbol and ID columns
-all.counts <- counts[,-(1:2)]
-rownames(all.counts) <- ensembl_ids
-
-# Risso's code
-# metadata <- read.table("patel/SraRunTable.txt", sep='\t', stringsAsFactors = FALSE, header=TRUE, row.names=5, na.strings = "<not provided>")
-
-metadata <- read.table("patel/SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
-rownames(metadata)<-metadata$Run
-metadata <- metadata[sample_names,]
-
-batch <- stringr::str_split_fixed(info, "_", 2)[,2]
-batch <- stringr::str_split_fixed(batch, "_", 2)[,1]
-
-
-# Subtype filtering is odd, what was the intention? Apparently there is a difference between an empty string and 'None'
-# May need to revisit this
-keep <- which(grepl("^Single cell", metadata$source_name) &
-                grepl("MGH", metadata$patient_id) &
-		metadata$subtype != "")
-		#metadata$subtype != "" & metadata$subtype != "None")
-		
-metadata <- metadata[keep,]
-
-batch <- as.factor(batch[keep])
-all.counts <- all.counts[,keep]
-all.counts <- as.matrix(all.counts)
-class(all.counts) <- "numeric"
-
-stopifnot(all(rownames(metadata)==colnames(all.counts)))
-
-col1 <- brewer.pal(9, "Set1")
-col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
-
-detection_rate <- colSums(all.counts>0)
-coverage <- colSums(all.counts)
-
-qc <- cbind(detection_rate, coverage)
-
-level1 <- as.factor(metadata$patient_id)
-level2 <- as.factor(metadata$subtype)
+oldWd<-getwd()
+setwd('patel')
+source('readPatelData.R')
+setwd(oldWd)
 
 library(scater)
-sceset <- SingleCellExperiment(all.counts)
+sceset <- SingleCellExperiment(list(counts=all.counts))
 
+# Only keeping features with non-zero counts in at least one cell
 keep_feature <- rowSums(assay(sceset) > 0) > 0
 sceset <- sceset[keep_feature,]
 
+# Deprecated, but we only need revisit this if it doesn't work, but perCellQCMetrics doesn't give us everything we need here
 sceset <- calculateQCMetrics(sceset)
-qc <- pData(sceset)[,c(1, 4, 7, 11:14)]
+# pct_counts_top_100_features
+# pct_counts_top_200_features
+# pct_counts_top_50_features
+# pct_counts_top_500_features
+# pct_dropout: have this, but it is in rowData and by feature
+# total_counts
+# total_features
+
+# Maybe pData is just being used to access the QC metrics? 
+# Missing dropout here, let's run it and see what happens
+# Ok, everything seems fine. Let's try and calculate pct_dropout by hand, taking 0 as dropout
+#qc <- pData(sceset)[,c(1, 4, 7, 11:14)]
+
+pct_dropout=100.0*apply(counts(sceset) == 0, 2, sum)/nrow(counts(sceset))
+qc <- data.frame(colData(sceset)[,c("total_features_by_counts", "pct_counts_in_top_50_features", "pct_counts_in_top_100_features", "pct_counts_in_top_200_features", "pct_counts_in_top_500_features", "total_counts")], pct_dropout=pct_dropout)
 
 filter <- rowSums(all.counts>10)>=10
 raw <- all.counts[filter,]
@@ -117,7 +83,7 @@ save_plot("patel_fig1.pdf", fig1,
           base_aspect_ratio = 1.3
 )
 
-cors <- lapply(1:2, function(i) abs(cor(pc_tc[,i], qc, method="spearman")))
+cors <- lapply(1:2, function(i) abs(cor(pc_tc[,i], as.matrix(qc), method="spearman")))
 cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors,
                    QC=rep(stringr::str_to_lower(colnames(qc)), 2),
@@ -128,7 +94,7 @@ bars %>%
   geom_bar(stat="identity", position='dodge') +
   scale_fill_manual(values=col2) + ylim(0, .5) -> panel2_pca
 
-cors <- lapply(1:2, function(i) abs(cor(zifa_tc[,i], qc)))
+cors <- lapply(1:2, function(i) abs(cor(zifa_tc[,i], as.matrix(qc))))
 cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors,
                    QC=rep(stringr::str_to_lower(colnames(qc)), 2),
@@ -139,7 +105,7 @@ bars %>%
   geom_bar(stat="identity", position='dodge') +
   scale_fill_manual(values=col2) + ylim(0, .5) -> panel2_zifa
 
-cors <- lapply(1:2, function(i) abs(cor(zinb@W[,i], qc)))
+cors <- lapply(1:2, function(i) abs(cor(zinb@W[,i], as.matrix(qc))))
 cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors,
                    QC=rep(stringr::str_to_lower(colnames(qc)), 2),
@@ -193,8 +159,6 @@ bars %>%
 
 sil2 <- plot_grid(sil, NULL, NULL, ncol=3, nrow=1, labels="G")
 fig1_tris <- plot_grid(upper, lower, sil2, ncol=1, nrow=3)
-fig1_tris
-
 save_plot("patel_fig1tris.pdf", fig1_tris,
           ncol = 3,
           nrow = 3,

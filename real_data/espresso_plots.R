@@ -5,7 +5,7 @@ library(ggplot2)
 
 load("espresso_covariates.rda")
 
-all.counts <- read.table("ESpresso/counttable_es.csv", header=TRUE, row.names=1, colClasses=c("character", rep("integer", 704)))
+all.counts <- read.table("kolodziejczyk/counttable_es.csv", header=TRUE, row.names=1, colClasses=c("character", rep("integer", 704)))
 serum <- sub("ola_mES_([^_]+)_.*", "\\1", colnames(all.counts))
 batch <- sub("ola_mES_[^_]+_([^_]+)_.*", "\\1", colnames(all.counts))
 targets <- data.frame(Serum=serum, Batch=batch)

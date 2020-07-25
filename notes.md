@@ -245,9 +245,9 @@ R files:
 		* Figure 5b: 2D ZW DR with batch as sample-level covariate
 		* Figure 5c: silhouette widths for medium clusters with and without batch covariate
 		* Figure 5d: silhouette widths for batch clusters with and without batch covariate
-	* Figure 5e-f: glioblastoma data set (Patel)
-		* Figure 5e: 2D ZW with sample-level intercept
-		* Figure 5f: 2D ZW with total no. of expressed genes as sample-level intercept
+	* figure 5e-f: glioblastoma data set (patel)
+		* figure 5e: 2d zw with sample-level intercept
+		* figure 5f: 2d zw with total no. of expressed genes as sample-level intercept
 * sFigure 16: DR on mESC data set (Espresso), 'ZINB-WaVE and ComBat', comparing ZW to remove batch effect with normalisation method, ComBat:
 	* sFigure 16a: PCA on FQ-normalised counts
 	* sFigure 16b: PCA on ComBat-normalised counts
@@ -327,18 +327,42 @@ Unresolved issue is whether should include those samples classified as `None` in
 
 Interesting. Should think about what this means.
 
+Both Rmd files are compiled and the plot script is running, too, now.
+
+Should return to figure 5f first.
+
+What needs to be checked?
+
+* sFigure 3: Fig 2 analysis on glioblastoma data set (Patel) (WIP, patel_plots/with_pct_dropout/patel_fig1_v4.pdf)
+* sFigure 5: Average silhouette widths for clusters produced with PCA, ZIFA, and ZW in V1, S1/CA1, glioblastoma, mESC data sets (CHECK, patel_plots/with_pct_dropout/patel_supp_sil.pdf)
+* figure 5e-f: glioblastoma data set (patel)
+	* figure 5e: 2d zw with sample-level intercept (CHECK, patel_covariates.Rmd, needed subdivision of MGH26 and MGH26-2)
+	* figure 5f: 2d zw with total no. of expressed genes as sample-level intercept (WIP, patel_covariates.Rmd, can't find this)
+* Figure 4: average silhouette width in the real data sets by DR and normalisation technique and (WIP, patel_plots/with_pct_dropout/patel_fig1tris.pdf, silhouette widths for PCA don't match those in publication)
+	* Figure 4c: glioblastoma
+* sFigure 14: PCA on glioblastoma data set (CHECK patel_plots/with_pct_dropout/patel_supp_pca.pdf)
+* sFigure 15: ZIFA on glioblastoma data set (CHECK patel_covariates_files/figure-html/zifa-(1-4).png)
+* sFigure 17: DR on glioblastoma data set (Patel):
+	* sFigure 17a: PCA with FQ and ComBat 
+	* sFigure 17b: ZW with batch as sample-level covariate (not satisfactory separation)
+
 #### `goodness_of_fit_patel.Rmd`
+
+Running.
 
 #### `patel_covariates.Rmd`
 
 TODO:
 
-* add caching zinb fit function
 * MGH26-2 seems absent in the first ZINB plot
 
-I have added `zinbFit` caching code, but I note that I had previously not been caching results by the choice of K, epsilon, and common dispersion. Upon examining `simFunction.R`, it does not appear to have made a difference as we never varied any of those parameters.
+I have added `zinbFit` caching code, but I note that I had previously not been caching results by the choice of K, epsilon, and common dispersion. Upon examining `simFunction.R`, it does not appear to have made a difference as we never varied any of those parameters. The cache will also not work correctly if we change the design matrix.
 
 #### `patel_plots.R`
+
+Need to return to this.
+
+Ok, I have run this with and without `pct_dropout`, which I have had to calculate myself.
 
 ### Allen
 
