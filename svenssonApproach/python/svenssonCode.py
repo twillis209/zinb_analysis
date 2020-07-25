@@ -103,7 +103,7 @@ def fitNBModels(adata):
 							    adata.var['genewise_dispersion'])
 	return
 
-def makePlot(datasets, annotationDict, locationDict, outputPath):
+def makePlot(datasets, annotationDict, locationDict, outputPath, figSize=(40, 25), nrows=4, ncols=4):
 	mins = []
 	maxs = []
 
@@ -115,10 +115,11 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 		maxs.append(max(difference1.max(), difference2.max(), difference3.max()))
 
 	min(mins), max(maxs)
+	
+	# TODO: still editing size and grid dimensions by hand
+	fig = plt.figure(figsize=figSize)
 
-	fig = plt.figure(figsize=(25, 15))
-
-	outer_grid = fig.add_gridspec(2, 2, hspace=0.6, wspace=0.45)
+	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
 
 	for adata in datasets:
 	    
@@ -157,7 +158,7 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
-		ax.set_ylim(top=0.9, bottom=-0.5)
+		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['global_zero_fraction']
 		ax.scatter(adata.var['empirical_mean'],
@@ -198,7 +199,7 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
-		ax.set_ylim(top=0.9, bottom=-0.5)
+		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zero_fraction']
 		ax.scatter(adata.var['empirical_mean'],
@@ -214,7 +215,7 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 
 		ax = fig.add_subplot(inner_grid[2])
 
-		ax.set_title('Gene-wise dispersion with zero inflation')
+		ax.set_title('ZI model')
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
@@ -235,7 +236,7 @@ def makePlot(datasets, annotationDict, locationDict, outputPath):
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=2e-4, right=1e4)
-		ax.set_ylim(top=0.9, bottom=-0.5)
+		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zi_zero_fraction']
 		ax.scatter(adata.var['empirical_mean'],
