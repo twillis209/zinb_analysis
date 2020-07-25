@@ -63,6 +63,7 @@ computeVarianceList <- function(fittedSim, simModel, keep){
       tmp <- lapply(1:2, function(commondisp){
         
         mm <- lapply(seq_along(simData), function(i) {
+          # 1000 x 1000 on LHS
           (getLogMu(fittedSim[[k]][[Vint]][[commondisp]][[i]]) -getLogMu(simModel)[,keep])^2
         })
         mu <- Reduce("+", mm)/(length(mm) - 1)

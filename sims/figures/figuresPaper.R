@@ -221,18 +221,18 @@ variance_pi_noOut
 # save figure 5
 p1 = plot_grid(bias_mu_noOut, bias_pi_noOut, MSE_mu_noOut, MSE_pi_noOut,
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2, align = "h")
-save_plot("../../paper/6680489mtyrjx/bias_mse_allParam.pdf",
+save_plot("../../paper/gcbias_mse_allParam.pdf",
           p1, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 # save figure S10
 p2 = plot_grid(bias_mu, bias_pi, MSE_mu, MSE_pi, align = "h",
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/6680489mtyrjx/bias_mse_allParam_outliers.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
+save_plot("../../paper/gcbias_mse_allParam_outliers.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 # save figure S11
 p3 = plot_grid(variance_mu, variance_pi, variance_mu_noOut, variance_pi_noOut,
                align = "h", labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/6680489mtyrjx/variance_allParam.png",device ='png',
+save_plot("../../paper/gcvariance_allParam.png",device ='png',
           p3, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 
@@ -251,13 +251,13 @@ meanPi = as.vector(.5*(truePi + fittedPi))
 diffPi = as.vector(fittedPi - truePi)
 
 # save figure S12
-pdf('../../paper/6680489mtyrjx/mdMu.pdf', width = 10)
+pdf('../../paper/gcmdMu.pdf', width = 10)
 smoothScatter(meanMu, diffMu, bandwidth = .1, xlab = 'Mean',
               ylab = 'Difference')
 abline(h = 0, col = 'gray')
 dev.off()
 
-pdf('../../paper/6680489mtyrjx/mdPi.pdf', width = 10)
+pdf('../../paper/gcmdPi.pdf', width = 10)
 smoothScatter(meanPi, diffPi, bandwidth = .01, xlab = 'Mean',
               ylab = 'Difference')
 abline(h = 0, col = 'gray')
@@ -332,6 +332,7 @@ plotList = lapply(c(50, 100, 500, 1000, 5000, 10000), function(nc){
   bb$nc = nc
   bb
 })
+
 plotList = do.call(rbind, plotList)
 plotMolten = melt(plotList, id.vars = c('nc'))
 gg = gsub('([[:upper:]])', ' \\1', plotMolten$variable)
@@ -351,9 +352,9 @@ bias_MSE_ncells= ggplot(plotMolten, aes(x = nc, y = value)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-bias_MSE_ncells
-# save figure S9
-ggsave(filename="../../paper/6680489mtyrjx/bias_mse_ncells.png",
+#bias_MSE_ncells
+# save figure S22
+ggsave(filename="../../paper/bias_mse_ncells.png",
        plot =bias_MSE_ncells,
        device = 'png', width = 8, height = 6)
 
@@ -577,7 +578,7 @@ legend <- get_legend(silAllen)
 p4 <- plot_grid(p4, legend, rel_widths = c(3, .6))
 p4
 # save figure S13
-save_plot("../../paper/6680489mtyrjx/corrSilh.png", device = 'png',
+save_plot("../../paper/gccorrSilh.png", device = 'png',
           p4, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 
@@ -619,7 +620,7 @@ legend <- get_legend(silAllen)
 cs <- plot_grid(cs, legend, rel_widths = c(3, .6))
 cs
 # save figure 6, panels a-d
-save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots.png", device = 'png',
+save_plot("../../paper/gccorrSilh_boxplots.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 
@@ -697,7 +698,7 @@ legend <- get_legend(s1)
 cs <- plot_grid(cs, legend, rel_widths = c(3, .6))
 cs
 # save Figure S14
-save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots_10000.png", device = 'png',
+save_plot("../../paper/gccorrSilh_boxplots_10000.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
 
@@ -829,7 +830,7 @@ silLun = ggplot(silMolt,
   scale_color_manual(values=mycol[c(2,5:length(mycol))])
 silLun
 # save figure 6, panels e-g
-ggsave(filename="../../paper/6680489mtyrjx/silhouetteLun.pdf", plot = silLun,
+ggsave(filename="../../paper/gcsilhouetteLun.pdf", plot = silLun,
        width = 8, height = 5)
 
 
@@ -868,7 +869,7 @@ legend <- get_legend(silAllen)
 csss <- plot_grid(css, legend, rel_widths = c(3, .6))
 csss
 # save figure 6
-save_plot("../../paper/6680489mtyrjx/corrSilh_combined.png", device = 'png',
+save_plot("../../paper/gccorrSilh_combined.png", device = 'png',
          csss, ncol = 3, nrow = 3, base_aspect_ratio = 1.3)
 
 
