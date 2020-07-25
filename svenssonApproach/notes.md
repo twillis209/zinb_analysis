@@ -84,3 +84,14 @@ So the fits of the three models (global dispersion, genewise dispersion, and ZI 
 * individual batches
 
 Does this mean that these covariates have little influence on zero fraction? 
+
+## Patel 
+
+Contains no spike-ins, but does contain genes with symbols beginning with 'ERCC' :).
+
+Let's try aggregating by patient and batch first.
+
+Fitting on the cluster without filters at the moment, but we should implement some. Risso used 
+
+	filter <- rowSums(all.counts>50)>=50
+
