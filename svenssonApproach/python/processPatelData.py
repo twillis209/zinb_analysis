@@ -12,6 +12,9 @@ patelAD=anndata.AnnData(X=patelDF.iloc[1:, 2:].to_numpy().transpose(), var=pd.Da
 
 patelAD.obs['source_name']=patelDF.iloc[0,2:]
 
+# Filter from Risso
+patelAD=patelAD[:, np.sum(patelAD.X>50)>=50]
+
 substrings = ['MGH26_', 'MGH26-2_', 'MGH28_', 'MGH29_', 'MGH30_', 'MGH30L_', 'MGH31_', 'CSC6_', 'CSC8_']
 
 patelIndices=[patelAD.obs.index[[i for i,x in enumerate(patelAD.obs.source_name) if re.search(y, x)]] for y in substrings]
