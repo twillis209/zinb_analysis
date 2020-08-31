@@ -2,12 +2,12 @@
 
 * Write up details of technology used to generate all data
 * Download a couple of droplet-based data sets and see if we can generate good fits without any filtering
-* Find out how to fit ZINB; will try to stay in Python for now with `statsmodels`, but having difficulty atm
-* Find a labelled data set
 
 # Plan
 
-The plan is to run Svenssons's analysis on the (real) data sets of Risso et al. 2018. Not sure about the simulated data yet.
+The plan is to run Svenssons's analysis on the (real) data sets of Risso et al. 2018. Not sure about the simulated data yet. 
+
+Update 18/8/20: Also adding the MATQ-Seq dataset
 
 I will start by running the code from `Gene-wise_dispersion.ipynb`. Not sure this actually needs to be in a notebook. 
 
@@ -95,3 +95,42 @@ Fitting on the cluster without filters at the moment, but we should implement so
 
 	filter <- rowSums(all.counts>50)>=50
 
+## MATQ-Seq data set
+
+MATQ-Seq uses random hexamer UMIs which the authors refer to as 'amplicon indexes'. The authors removed dependence on sequencing depth by normalising amplicon counts by the total number of unique amplicons in the cell, used amplicons per million amplicons. The authors state that absolute transcript numbers can be counted, but that this requires sufficient sequencing depth. 
+
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE78968
+
+MATQ-Seq allows detection of both poly-A mature mRNA and non-poly-A pre-mRNA. Not obvious whether we should use intron, exon, or gene counts for our purposes.
+
+Aspects of study:
+
+* 6 averaged one-fifth MCF10A single-cell samples with ERCC spike-ins
+* Sequenced 10 HEK293T cells individually
+* Pooled 40 HEK293T cells, split their mixed lysate into 40 parts, and sequenced 10 of these single-cell averages (idea is that we can determine technical variation associated with each gene)
+* Sequenced another HEK293T clone: 10 single cells and 10 single cell averages
+* Sequenced breast cancer cell line MCF10A
+* 6 MCF10A cells individually
+* 6 MCF10A single cell averages (i.e. pool-and-split as with HEK293T)
+* Additional 38 HEK293T single cells and 10 pool-and-split averaged sc samples
+* F-testing for excess biological variation over technical variation
+
+Pipeline: TopHat, HT-seq, 
+
+Starting with ERCC spike-in data. Barcodes not mentioned in the files so I don't actually know if UMIs were used with these; only 'reads' are listed.
+
+Do we have a sufficient number of replicates to get decent fits? What units are they in?
+
+Poorly annotated data, not sure if read or UMI counts, assume UMIs on the basis of reads. Too few samples, really only 6. How many did Svensson have for his analyses?
+
+* Macosko ERCC samples: 84 droplets (80 ERCC spike-ins)
+* Svensson (1): 2000 droplets (24116 sequences)
+* Svensson (2): 2000 droplets (24116 sequences)
+* Zheng: 1015 (92 ERCC spike-ins)
+* Klein: 953 droplets (25435 sequences)
+* Padovan-Merhar: 96 cells, (92 ERCC spike-ins)
+* Sheng: 6 cells (92 spike-ins)
+
+Not sure if library size normalisation is going to make much of a difference. Did Svensson correct for sequencing depth? Apparently not, total counts per cell/sample varies widely within data sets. Assumption is that the 'raw' count distribution was of interest, wonder to what extent this causes problems with the fit. Attempt to correct sequencing depth with DESeq did not appear to change anything.
+
+Maybe we should include the Poisson for completeness? Can't actually find the code for fitting Poisson distributions, is it just using the sample mean or something?
