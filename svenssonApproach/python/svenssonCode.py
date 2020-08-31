@@ -322,8 +322,6 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       adata.var['global_zero_fraction'],
 		       ec='w', c='grey', label='Expected', rasterized=True);
 
-		ax.legend(title='Genes', loc='lower left', scatterpoints=3, fontsize=8)
-
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
 
@@ -341,8 +339,6 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       c='k', marker='.', label='Genes', rasterized=True)
 
 		ax.set_xlabel('Mean')
-
-		ax.legend(loc='lower left', scatterpoints=3)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)

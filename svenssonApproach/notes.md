@@ -133,4 +133,7 @@ Poorly annotated data, not sure if read or UMI counts, assume UMIs on the basis 
 
 Not sure if library size normalisation is going to make much of a difference. Did Svensson correct for sequencing depth? Apparently not, total counts per cell/sample varies widely within data sets. Assumption is that the 'raw' count distribution was of interest, wonder to what extent this causes problems with the fit. Attempt to correct sequencing depth with DESeq did not appear to change anything.
 
-Maybe we should include the Poisson for completeness? Can't actually find the code for fitting Poisson distributions, is it just using the sample mean or something?
+Although I have taken data thus far from the data made available directory, might be easier to use the data packaged up more neatly in a sub-directory of the `code` directory. It appears identical to the data published with the paper.
+
+High number of sequences in averaged data, but high compared to the Svensson data? Could check this if necessary.
+
