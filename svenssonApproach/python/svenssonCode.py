@@ -93,12 +93,11 @@ def prob_zero_fun_vec(mu, phi):
     return (phi_1 / (mu + phi_1)) ** phi_1
 
 def fitPoissonModel(adata):
-
 	def prob_zero_fun(mu, counts):
     		return np.exp(-(mu[:,np.newaxis]).dot(counts.values[np.newaxis])).sum(1) / len(counts)
 
 	mean_of_scaled = np.array(adata.X.sum(0) / adata.X.sum())
-	adata.var['scaled_count_mean'] = mean_of_scaled[0]
+	adata.var['scaled_count_mean'] = mean_of_scaled
 	adata.obs['total_counts'] = np.array(adata.X.sum(1))
 	adata.var['poisson_zero_fraction'] = prob_zero_fun(adata.var['scaled_count_mean'], adata.obs['total_counts'])
 	return 

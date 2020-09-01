@@ -137,3 +137,4 @@ Although I have taken data thus far from the data made available directory, migh
 
 High number of sequences in averaged data, but high compared to the Svensson data? Could check this if necessary.
 
+Experiencing the odd warning when trying to fit the negative binomial. Warning is raised by `scipy`'s `optimize` function.
