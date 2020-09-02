@@ -12,8 +12,6 @@ sizeFactors = [0.7648592, 1.1928399, 1.1955849, 1.3242736, 1.0770043, 0.5951686]
 
 shengAD=anndata.AnnData(X=shengDF.to_numpy().transpose(), var=pd.DataFrame(index=shengDF.index), obs=pd.DataFrame(index=shengDF.columns))
 
-shengAD = shengAD[:,np.sum(shengAD.X,0)>0]
-
 shengAD.uns['name'] = "Sheng et al. 2017"
 
 fitPoissonModel(shengAD)
@@ -25,5 +23,3 @@ shengAD.obs['total_count'] = sum(shengAD.X.transpose())
 shengAD.obs['size_factors'] = sizeFactors
 
 shengAD.write('../Data/output/sheng/ercc.h5ad')
-
-makePlotOfPoissonAndNB([shengAD], ["ERCC spike-ins"], "../Figures/shengERCCPlots.pdf")

@@ -137,4 +137,48 @@ Although I have taken data thus far from the data made available directory, migh
 
 High number of sequences in averaged data, but high compared to the Svensson data? Could check this if necessary.
 
-Experiencing the odd warning when trying to fit the negative binomial. Warning is raised by `scipy`'s `optimize` function.
+Experiencing the odd warning when trying to fit the negative binomial. Warning is raised by `scipy`'s `optimize` function. Was just one or two genes, not worth worrying about.
+
+Analyses we have:
+
+* ERCC spike-ins (6 samples)
+* Set one pool-and-split 293T cells (10 samples)
+* Set two pool-and-split 293T cells (10 samples)
+* 293T cells (38 samples)
+
+Svensson scaled the Poisson data in a way we don't seem to be doing. The code uses a single valued for the scaled_count_mean (the first in the matrix?), which is like fitting a single Poisson model to all the data. Still, the current code can be used to reproduce the Macosko results, so it does seem correct. But I'm not happy with the scaling in the Sheng case. Perhaps the low replicate count is giving us the odd result? Or perhaps it was highly sequenced? The counts do seem high, even when scaled.
+
+How to reproduce the Townes-style histogram analysis? Not really enough replicates to do it for the ERCC and pool-and-split samples. Not sure how to proceed in a rigorous fashion. 
+
+Whether or not we should use the 'noFilter' data should be decided by however Svensson did it. Apparently Svensson did not use a filter.
+
+10x v3 PBMC
+Genes:  33538
+15147
+10x v3 HEK293T
+Genes:  57905
+30684
+10x v3 NIH3T3
+Genes:  54232
+31952
+Padovan-Merhar et al 2015 (SMARTer)
+Genes:  25590
+8573
+Klein et al 2015
+Genes:  25435
+169
+Macosko et al 2015
+Genes:  80
+0
+Zheng et al 2017
+Genes:  92
+1
+
+Sheng et al. 2017 (P&S)
+Genes:  57819
+39131
+Sheng et al. 2017 (293T single cell)
+Genes:  57819
+26682
+
+>
