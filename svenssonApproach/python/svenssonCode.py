@@ -110,7 +110,80 @@ def fitNBModels(adata):
 							    adata.var['genewise_dispersion'])
 	return
 
-def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None):
+def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, pLimits=(10e-3, 10e4)):
+	"""
+	"""
+	
+	fig = plt.figure(figsize=figSize)
+
+	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
+
+	for i,adata in enumerate(datasets):
+	    
+		grid_box = outer_grid[i]
+
+		inner_grid = grid_box.subgridspec(2, 1)
+		
+		# -- Poisson -- 
+
+		ax = fig.add_subplot(inner_grid[0])
+
+		ax.set_title('Poisson')
+
+		ax.set_xscale('log')
+		ax.set_xlim(left=pLimits[0], right=pLimits[1])
+
+		ax.scatter(adata.var['scaled_count_mean'],
+		       adata.var['empirical_zero_fraction'],
+		       c='k', label='Observed', rasterized=True);
+		ax.scatter(adata.var['scaled_count_mean'],
+		       adata.var['poisson_zero_fraction'],
+		       ec='w', c='grey', label='Expected', rasterized=True);
+
+		ax.set_ylabel('Fraction zeros')
+
+		ax.legend(title='Genes', loc='upper left', scatterpoints=3, fontsize=8)
+
+		ax.spines['top'].set_visible(False)
+		ax.spines['right'].set_visible(False)
+
+		## Poisson differences
+
+		ax = fig.add_subplot(inner_grid[1])
+
+		ax.set_xscale('log')
+		ax.set_xlim(left=pLimits[0], right=pLimits[1])
+		ax.set_ylim(top=1.0, bottom=-1.0)
+
+		difference = adata.var['empirical_zero_fraction'] - adata.var['poisson_zero_fraction']
+		ax.scatter(adata.var['scaled_count_mean'],
+		       difference,
+		       c='k', marker='.', label='Genes', rasterized=True)
+
+		ax.set_ylabel('Difference \n(Observed - Expected)')
+		ax.set_xlabel('Mean')
+
+		ax.legend(loc='lower left', scatterpoints=3)
+
+		ax.spines['top'].set_visible(False)
+		ax.spines['right'].set_visible(False)
+
+		# -- Annotation --
+
+		bbox = grid_box.get_position(fig)
+		x = (bbox.x0 + bbox.x1) / 2
+		y = bbox.y1 + 0.035
+
+		if title:
+			figTitle = title
+		else: 
+			figTitle = adata.uns['name']
+
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+	    
+	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
+
+def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2, 10e3)):
 	"""
 	Makes common and genewise dispersion NB plots in the same manner as the Svensson publication, i.e. no ZI fit.
 	"""
@@ -144,7 +217,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		ax.set_title('Common dispersion')
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 
 		ax.scatter(adata.var['empirical_mean'],
 		       adata.var['empirical_zero_fraction'],
@@ -165,7 +238,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		ax = fig.add_subplot(inner_grid[2])
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['global_zero_fraction']
@@ -189,7 +262,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		ax.set_title('Gene-wise dispersion')
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 
 		ax.scatter(adata.var['empirical_mean'],
 		       adata.var['empirical_zero_fraction'],
@@ -206,7 +279,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		ax = fig.add_subplot(inner_grid[3])
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zero_fraction']
@@ -223,7 +296,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.015
+		y = bbox.y1 + 0.035
 
 		if title:
 			figTitle = title
@@ -386,7 +459,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.015
+		y = bbox.y1 + 0.035
 
 		if title:
 			figTitle = title
@@ -397,7 +470,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None):
+def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2,10e4)):
 	"""
 	Makes plots with genewise ZI fits.
 	"""	
@@ -413,7 +486,6 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 	min(mins), max(maxs)
 	
-	# TODO: still editing size and grid dimensions by hand
 	fig = plt.figure(figsize=figSize)
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
@@ -432,7 +504,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		ax.set_title('Common dispersion')
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 
 		ax.scatter(adata.var['empirical_mean'],
 		       adata.var['empirical_zero_fraction'],
@@ -453,7 +525,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		ax = fig.add_subplot(inner_grid[3])
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['global_zero_fraction']
@@ -477,7 +549,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		ax.set_title('Gene-wise dispersion')
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 
 		ax.scatter(adata.var['empirical_mean'],
 		       adata.var['empirical_zero_fraction'],
@@ -494,7 +566,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		ax = fig.add_subplot(inner_grid[4])
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zero_fraction']
@@ -511,10 +583,10 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		ax = fig.add_subplot(inner_grid[2])
 
-		ax.set_title('ZI model')
+		ax.set_title('ZINB')
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 
 		ax.scatter(adata.var['empirical_mean'],
 		       adata.var['empirical_zero_fraction'],
@@ -531,7 +603,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		ax = fig.add_subplot(inner_grid[5])
 
 		ax.set_xscale('log')
-		ax.set_xlim(left=2e-4, right=1e4)
+		ax.set_xlim(left=limits[0], right=limits[1])
 		ax.set_ylim(top=1.0, bottom=-1.0)
 
 		difference = adata.var['empirical_zero_fraction'] - adata.var['genewise_zi_zero_fraction']
@@ -548,7 +620,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.015
+		y = bbox.y1 + 0.035
 
 		if title:
 			figTitle = title
@@ -559,9 +631,15 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def printGOFstatistics(adata):
+def printGOFStatistics(adata):
 	print(adata.uns['name'])
 	nGenes = adata.var.shape[0]
+	zGenes = sum(adata.var.empirical_mean==0)
+	dGenes = sum(adata.var.empirical_mean!=0)
+	print("Genes: ", nGenes)
+	print("Zero genes: ", zGenes)
+	print("Non-zero genes: ", dGenes)
+	print("Detection rate: %.2f" % (100.0*dGenes/nGenes))
 	print(f'{adata.obs.shape[0]} cells, {adata.var.shape[0]} genes')
 	difference = adata.var['empirical_zero_fraction'] - adata.var['poisson_zero_fraction']
 	absdiff = np.abs(difference)

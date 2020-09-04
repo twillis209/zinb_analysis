@@ -47,7 +47,7 @@ Svensson code is written for `h5ad` format, but the format of the Risso data set
 	* in tab-separated `txt` file
 	* just header?
 	* See notes in `readPatelData.R`, will move those here at some point
-	* We only have access to the log TPM values at the moment, so we can go no further
+	* No spike-ins
 * Zeisel:
 	* in tab-separated `txt` file
 	* issues:
@@ -180,5 +180,3 @@ Genes:  57819
 Sheng et al. 2017 (293T single cell)
 Genes:  57819
 26682
-
->

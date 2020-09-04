@@ -13,7 +13,7 @@ patelAD=anndata.AnnData(X=patelDF.iloc[1:, 2:].to_numpy().transpose(), var=pd.Da
 patelAD.obs['source_name']=patelDF.iloc[0,2:]
 
 # Filter from Risso
-patelAD=patelAD[:, np.sum(patelAD.X>50, axis=0)>=50]
+#patelAD=patelAD[:, np.sum(patelAD.X>50, axis=0)>=50]
 
 substrings = ['MGH26_', 'MGH26-2_', 'MGH28_', 'MGH29_', 'MGH30_', 'MGH30L_', 'MGH31_', 'CSC6_', 'CSC8_']
 
@@ -24,5 +24,6 @@ datasets=[patelAD[x,:] for x in patelIndices]
 for x in zip(datasets, [y[:-1] for y in substrings]):
 	x[0].uns['shortName'] = x[1]
 	x[0].uns['name'] = 'Patel et al. 2014 (%s)' % x[1]
-	fitNBModels(x[0])
+#	fitPoissonModel(x[0])
+#w	fitNBModels(x[0])
 	x[0].write('../Data/output/patel_%s.h5ad' % x[1])

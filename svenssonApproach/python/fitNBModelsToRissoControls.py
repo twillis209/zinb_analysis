@@ -37,7 +37,6 @@ zhengAD.uns['shortName'] = 'zhengERCC'
 zeiselAD.uns['name'] = 'Zeisel et al. 2015'
 zeiselAD.uns['shortName'] = 'zeiselERCC'
 
-# For the Patel et al. 2014 data set, we only have access to the log TPM values
 datasets=[allenAD, fletcherAD, kolodAD, zhengAD, zeiselAD]
 
 for adata in datasets:

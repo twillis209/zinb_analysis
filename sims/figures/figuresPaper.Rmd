@@ -272,13 +272,13 @@ meanPi = as.vector(.5*(truePi + fittedPi))
 diffPi = as.vector(fittedPi - truePi)
 
 # save figure S12
-pdf('../../paper/6680489mtyrjx/mdMu.pdf', width = 10)
+pdf('../../paper/mdMu.pdf', width = 10)
 smoothScatter(meanMu, diffMu, bandwidth = .1, xlab = 'Mean',
               ylab = 'Difference')
 abline(h = 0, col = 'gray')
 dev.off()
 
-pdf('../../paper/6680489mtyrjx/mdPi.pdf', width = 10)
+pdf('../../paper/mdPi.pdf', width = 10)
 smoothScatter(meanPi, diffPi, bandwidth = .01, xlab = 'Mean',
               ylab = 'Difference')
 abline(h = 0, col = 'gray')
