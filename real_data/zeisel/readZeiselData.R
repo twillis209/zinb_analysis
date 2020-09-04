@@ -19,3 +19,4 @@ counts <- as.matrix(data[12:NROW(data),-(1:2)])
 counts <- matrix(as.numeric(counts), ncol=ncol(counts), nrow=nrow(counts))
 rownames(counts) <- data[12:NROW(data),1]
 colnames(counts) <- data[8, -(1:2)]
+write.csv(counts, 'zeiselCounts.csv', row.names=T)

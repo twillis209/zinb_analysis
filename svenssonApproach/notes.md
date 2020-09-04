@@ -67,7 +67,7 @@ Can't get `statsmodels` ZINB model to fit, so trying `R`. First want to see if w
 Svensson got very good fits to the spike-in data using gene-wise dispersion coefficients, but we:
 
 * got good fits to Zheng (droplet, used by Svensson) and Zeisel; Zeisel was done with STRT-Seq with UMIs
-* poor fit to Allen, Fletcher, Kolodziejczyk
+* poor fit to Allen, Fletcher, Kolodziejczyk, Patel
 
 ## Allen
 

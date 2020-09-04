@@ -2,7 +2,7 @@ import anndata
 import pandas as pd
 import numpy as np
 import re 
-from svenssonCode import *
+from svenssoncode import *
 
 # Initialising AnnData objects using the guidance here: http://falexwolf.de/blog/171223_AnnData_indexing_views_HDF5-backing/
 allenDF = pd.read_csv('../Data/allenTophatCounts.csv', sep=',', index_col=0)
