@@ -1,0 +1,380 @@
+"","dissection_s","Core.Type","Primary.Type","Secondary.Type","Animal.ID"
+"SRR2140028","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",133632
+"SRR2140022","L4","Core","L4 Scnn1a","",133632
+"SRR2140055","All","Intermediate","L5a Tcerg1l","L5a Batf3",151560
+"SRR2140083","L4",NA,NA,NA,NA
+"SRR2139991","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",126846
+"SRR2140067","All","Core","L4 Ctxn3","",151560
+"SRR2140010","L4","Core","L4 Scnn1a","",133632
+"SRR2140031","L4","Core","L4 Ctxn3","",133632
+"SRR2140046","All","Intermediate","L4 Ctxn3","L4 Scnn1a",151560
+"SRR2140074","L4","Intermediate","L4 Scnn1a","L4 Arf5",126846
+"SRR2140003","L4","Core","L4 Scnn1a","",133632
+"SRR2139988","L4","Core","L4 Arf5","",126846
+"SRR2139982","L4","Core","L4 Scnn1a","",133632
+"SRR2140009","L4","Core","L4 Scnn1a","",133632
+"SRR2140004","L4","Core","L5a Hsd11b1","",133632
+"SRR2140073","L4","Core","L4 Scnn1a","",126846
+"SRR2139985","L4","Intermediate","L4 Ctxn3","L4 Scnn1a",126846
+"SRR2140079","All",NA,NA,NA,NA
+"SRR2140041","All","Intermediate","L4 Scnn1a","L4 Ctxn3",151560
+"SRR2140036","lower","Core","L5a Batf3","",133632
+"SRR2140084","L4",NA,NA,NA,NA
+"SRR2139978","L4","Intermediate","L4 Arf5","L4 Scnn1a",133632
+"SRR2139996","L4","Core","L4 Scnn1a","",126846
+"SRR2140017","L4","Core","L4 Scnn1a","",133632
+"SRR2140060","All","Intermediate","L4 Scnn1a","L5a Hsd11b1",151560
+"SRR2140058","All","Core","L4 Scnn1a","",151560
+"SRR2140052","All","Intermediate","L4 Ctxn3","L4 Scnn1a",151560
+"SRR2140025","L4","Intermediate","L4 Ctxn3","L4 Scnn1a",133632
+"SRR2140056","All","Core","L4 Scnn1a","",151560
+"SRR2140021","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",133632
+"SRR2140013","L4","Core","L4 Scnn1a","",133632
+"SRR2140064","All","Core","L4 Ctxn3","",151560
+"SRR2139998","L4","Core","L5a Hsd11b1","",126846
+"SRR2139992","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",126846
+"SRR2140019","L4","Intermediate","L4 Arf5","L4 Scnn1a",133632
+"SRR2140080","L4",NA,NA,NA,NA
+"SRR2140038","lower","Core","L6a Mgp","",133632
+"SRR2140045","All","Intermediate","L4 Scnn1a","L4 Ctxn3",151560
+"SRR2140032","L4","Intermediate","L4 Arf5","L4 Scnn1a",133632
+"SRR2139981","L4","Core","L5a Hsd11b1","",133632
+"SRR2140000","L4","Core","L4 Ctxn3","",133632
+"SRR2140077","All",NA,NA,NA,NA
+"SRR2139986","L4","Core","L4 Scnn1a","",126846
+"SRR2140070","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",126846
+"SRR2140007","L4","Core","L4 Scnn1a","",133632
+"SRR2140048","All","Core","L4 Scnn1a","",151560
+"SRR2140035","lower","Core","L5a Hsd11b1","",133632
+"SRR2140042","All","Intermediate","L4 Ctxn3","L4 Scnn1a",151560
+"SRR2140063","All","Core","L4 Arf5","",151560
+"SRR2140014","L4","Intermediate","L4 Arf5","L4 Scnn1a",133632
+"SRR2139995","L4","Core","L5a Hsd11b1","",126846
+"SRR2140069","L4","Core","L5a Hsd11b1","",126846
+"SRR2140026","L4","Core","L4 Arf5","",133632
+"SRR2140051","All","Core","L4 Ctxn3","",151560
+"SRR2140061","All","Core","L4 Ctxn3","",151560
+"SRR2140016","L4","Core","L4 Arf5","",133632
+"SRR2139979","L4","Core","L4 Scnn1a","",133632
+"SRR2139997","L4","Core","L4 Arf5","",126846
+"SRR2140085","All",NA,NA,NA,NA
+"SRR2140024","L4","Core","L4 Scnn1a","",133632
+"SRR2140053","All","Core","L4 Ctxn3","",151560
+"SRR2140059","All","Intermediate","L5a Tcerg1l","L5a Batf3",151560
+"SRR2140078","L4",NA,NA,NA,NA
+"SRR2139984","L4","Core","L4 Scnn1a","",126846
+"SRR2140072","L4","Core","L5a Hsd11b1","",126846
+"SRR2140005","L4","Core","L4 Scnn1a","",133632
+"SRR2140037","lower","Core","L6a Mgp","",133632
+"SRR2140040","lower","Core","L5a Tcerg1l","",133632
+"SRR2140047","All","Core","L4 Arf5","",151560
+"SRR2140030","L4","Core","L4 Arf5","",133632
+"SRR2140008","L4","Intermediate","L5a Hsd11b1","L4 Scnn1a",133632
+"SRR2139983","L4","Core","L4 Scnn1a","",133632
+"SRR2139989","L4","Core","L4 Arf5","",126846
+"SRR2140002","L4","Core","L4 Scnn1a","",133632
+"SRR2140075","L4","Core","L4 Scnn1a","",126846
+"SRR2140054","All","Intermediate","L5a Hsd11b1","L4 Arf5",151560
+"SRR2140023","L4","Core","L4 Scnn1a","",133632
+"SRR2140029","L4","Core","L4 Scnn1a","",133632
+"SRR2140011","L4","Core","L4 Scnn1a","",133632
+"SRR2140066","All","Core","L4 Ctxn3","",151560
+"SRR2139990","L4","Core","L4 Scnn1a","",126846
+"SRR2140082","L4",NA,NA,NA,NA
+"SRR2140086","All",NA,NA,NA,NA
+"SRR2140068","L4","Core","L4 Scnn1a","",126846
+"SRR2139994","L4","Core","L4 Arf5","",126846
+"SRR2140015","L4","Core","L5a Hsd11b1","",133632
+"SRR2140062","All","Core","L4 Arf5","",151560
+"SRR2140050","All","Intermediate","L4 Ctxn3","L4 Arf5",151560
+"SRR2140027","L4","Core","L5a Hsd11b1","",133632
+"SRR2140006","L4","Core","L4 Arf5","",133632
+"SRR2140071","L4","Core","L5a Hsd11b1","",126846
+"SRR2139987","L4","Core","L4 Scnn1a","",126846
+"SRR2140043","All","Intermediate","L4 Scnn1a","L4 Ctxn3",151560
+"SRR2140034","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",133632
+"SRR2140049","All","Core","L4 Scnn1a","",151560
+"SRR2140033","L4","Core","L4 Arf5","",133632
+"SRR2140044","All","Intermediate","L4 Ctxn3","L4 Scnn1a",151560
+"SRR2140039","lower","Intermediate","L5a Hsd11b1","L5a Fam5c",133632
+"SRR2140076","L4",NA,NA,NA,NA
+"SRR2140001","L4","Core","L4 Scnn1a","",133632
+"SRR2139980","L4","Core","L4 Scnn1a","",133632
+"SRR2140020","L4","Core","L4 Scnn1a","",133632
+"SRR2140057","All","Core","L4 Scnn1a","",151560
+"SRR2140018","L4","Core","L4 Arf5","",133632
+"SRR2140081","L4",NA,NA,NA,NA
+"SRR2139993","L4","Core","L4 Scnn1a","",126846
+"SRR2139999","L4","Core","L4 Scnn1a","",133632
+"SRR2139977","L4","Intermediate","L5a Hsd11b1","L5a Fam5c",133632
+"SRR2140065","All","Core","L4 Ctxn3","",151560
+"SRR2140012","L4","Intermediate","L4 Scnn1a","L4 Ctxn3",133632
+"SRR2139847","All",NA,NA,NA,NA
+"SRR2139830","All","Core","L5a Batf3","",137693
+"SRR2139787","L5","Core","L5b Tph2","",140142
+"SRR2139769","L5","Core","L5b Tph2","",140142
+"SRR2139680","All","Core","L5b Chrna6","",163834
+"SRR2139714","All","Core","L5b Cdh13","",163069
+"SRR2139763","L5","Core","L5b Tph2","",140142
+"SRR2139808","L5","Core","L5b Cdh13","",130880
+"SRR2139802","L5","Intermediate","L5a Tcerg1l","L5a Batf3",114609
+"SRR2139751","L5","Intermediate","L4 Scnn1a","L4 Ctxn3",140142
+"SRR2139726","L5","Core","L5a Batf3","",140142
+"SRR2139854","L5",NA,NA,NA,NA
+"SRR2139823","All","Core","L5 Ucma","",137693
+"SRR2139829","All","Core","L6a Sla","",137693
+"SRR2139693","All","Core","L5a Batf3","",163834
+"SRR2139707","All","Core","L5b Cdh13","",163069
+"SRR2139770","L5","Core","L5 Ucma","",140142
+"SRR2139699","All","Intermediate","L6a Car12","L6a Syt17",163834
+"SRR2139677","All","Core","L5b Chrna6","",163834
+"SRR2139794","L5","Core","Sst Myh8","",130880
+"SRR2139811","All","Intermediate","L5a Tcerg1l","L5a Batf3",137693
+"SRR2139742","L5","Core","L5b Tph2","",140142
+"SRR2139735","L5","Core","L5a Tcerg1l","",140142
+"SRR2139748","L5","Core","L5b Cdh13","",140142
+"SRR2139732","L5","Core","L5b Tph2","",140142
+"SRR2139745","L5","Core","L5b Tph2","",140142
+"SRR2139738","L5","Core","L5b Cdh13","",140142
+"SRR2139816","All","Core","L5b Cdh13","",137693
+"SRR2139799","L5","Core","L5b Cdh13","",130880
+"SRR2139777","L5","Core","L5b Cdh13","",140142
+"SRR2139700","All","Core","L6a Syt17","",163068
+"SRR2139694","All","Core","L5a Batf3","",163834
+"SRR2139793","L5","Core","L5a Tcerg1l","",130880
+"SRR2139670","L5","Core","L5a Batf3","",130880
+"SRR2139824","All","Core","L5a Batf3","",137693
+"SRR2139853","L5",NA,NA,NA,NA
+"SRR2139721","L5","Intermediate","L5 Ucma","L5a Fam5c",140142
+"SRR2139756","L5","Intermediate","L5a Tcerg1l","L5a Batf3",140142
+"SRR2139805","L5","Core","L5a Batf3","",130880
+"SRR2139719","L5","Core","Pvalb Tacr3","",140142
+"SRR2139780","L5","Core","L5a Batf3","",140142
+"SRR2139764","L5","Core","L5a Batf3","",140142
+"SRR2139713","All","Intermediate","L5b Tph2","L5b Cdh13",163069
+"SRR2139687","All","Core","L5a Hsd11b1","",163834
+"SRR2139669","L5","Core","L5 Ucma","",130880
+"SRR2139837","All","Core","L5b Cdh13","",137693
+"SRR2139840","All","Core","L5 Ucma","",137693
+"SRR2139760","L5","Core","L5a Batf3","",140142
+"SRR2139683","All","Intermediate","L5b Cdh13","L5b Samd3",163834
+"SRR2139717","L5","Core","L5b Chrna6","",140142
+"SRR2139784","L5","Core","L5a Batf3","",140142
+"SRR2139689","All","Core","L5b Cdh13","",163834
+"SRR2139833","L5","Intermediate","L5a Tcerg1l","L5b Cdh13",114609
+"SRR2139844","L5",NA,NA,NA,NA
+"SRR2139839","All","Intermediate","L5 Ucma","L4 Ctxn3",137693
+"SRR2139725","L5","Core","L5b Tph2","",140142
+"SRR2139752","L5","Core","L5b Tph2","",140142
+"SRR2139758","L5","Core","L5b Cdh13","",140142
+"SRR2139801","L5","Core","L5a Tcerg1l","",114609
+"SRR2139779","L5","Core","L5a Batf3","",140142
+"SRR2139797","L5","Core","L5a Batf3","",130880
+"SRR2139674","L5","Core","L5a Batf3","",130880
+"SRR2139773","L5","Core","L5a Pde1c","",140142
+"SRR2139690","All","Core","L6a Car12","",163834
+"SRR2139704","All","Core","L5a Hsd11b1","",163068
+"SRR2139820","All","Core","L5b Cdh13","",137693
+"SRR2139857","L5",NA,NA,NA,NA
+"SRR2139736","L5","Core","L5b Cdh13","",140142
+"SRR2139741","L5","Core","L5b Cdh13","",140142
+"SRR2139818","All","Core","L5a Batf3","",137693
+"SRR2139812","All","Intermediate","L5a Hsd11b1","L4 Scnn1a",137693
+"SRR2139815","All","Intermediate","L5a Pde1c","L5a Batf3",137693
+"SRR2139746","L5","Core","L5a Hsd11b1","",140142
+"SRR2139731","L5","Core","L5a Batf3","",140142
+"SRR2139850","L5",NA,NA,NA,NA
+"SRR2139827","All","Core","L5a Batf3","",137693
+"SRR2139673","L5","Core","L5a Batf3","",130880
+"SRR2139790","L5","Core","L5a Tcerg1l","",140142
+"SRR2139709","All","Core","L5a Pde1c","",163069
+"SRR2139679","All","Core","L5a Tcerg1l","",163834
+"SRR2139703","All","Core","L5a Hsd11b1","",163068
+"SRR2139697","All","Core","L5a Hsd11b1","",163834
+"SRR2139774","L5","Core","L5b Cdh13","",140142
+"SRR2139806","L5","Core","L5b Cdh13","",130880
+"SRR2139755","L5","Core","L5b Tph2","",140142
+"SRR2139722","L5","Core","L5b Cdh13","",140142
+"SRR2139728","L5","Core","L5b Cdh13","",140142
+"SRR2139843","L5",NA,NA,NA,NA
+"SRR2139834","All","Core","L5a Batf3","",137693
+"SRR2139849","L5",NA,NA,NA,NA
+"SRR2139710","All","Core","L5b Cdh13","",163069
+"SRR2139684","All","Core","L4 Ctxn3","",163834
+"SRR2139767","L5","Core","L5 Ucma","",140142
+"SRR2139789","L5","Intermediate","L5a Tcerg1l","L5a Hsd11b1",140142
+"SRR2139783","L5","Core","L5a Batf3","",140142
+"SRR2139757","L5","Core","L5b Cdh13","",140142
+"SRR2139720","L5","Core","L5b Tph2","",140142
+"SRR2139804","L5","Core","L5a Hsd11b1","",130880
+"SRR2139712","All","Core","L5 Ucma","",163069
+"SRR2139686","All","Intermediate","L5a Tcerg1l","L5a Hsd11b1",163834
+"SRR2139765","L5","Core","L5a Batf3","",140142
+"SRR2139718","L5","Core","L5a Batf3","",140142
+"SRR2139781","L5","Core","L5b Chrna6","",140142
+"SRR2139841","All","Core","L5a Batf3","",137693
+"SRR2139836","All","Core","L5a Batf3","",137693
+"SRR2139739","L5","Core","L5a Batf3","",140142
+"SRR2139744","L5","Core","L5b Cdh13","",140142
+"SRR2139733","L5","Core","L5a Batf3","",140142
+"SRR2139817","All","Core","L5b Tph2","",137693
+"SRR2139671","L5","Intermediate","L5 Ucma","L5a Batf3",130880
+"SRR2139792","L5","Core","L5b Cdh13","",140142
+"SRR2139798","L5","Core","L5b Tph2","",130880
+"SRR2139701","All","Core","L5b Tph2","",163068
+"SRR2139695","All","Core","L5b Chrna6","",163834
+"SRR2139776","L5","Intermediate","L5a Tcerg1l","L5a Batf3",140142
+"SRR2139858","L5",NA,NA,NA,NA
+"SRR2139852","L5",NA,NA,NA,NA
+"SRR2139825","All","Core","L6a Sla","",137693
+"SRR2139828","All","Core","L6a Sla","",137693
+"SRR2139822","All","Core","L5a Batf3","",137693
+"SRR2139855","L5",NA,NA,NA,NA
+"SRR2139698","All","Core","L5 Ucma","",163834
+"SRR2139795","L5","Core","L5b Cdh13","",130880
+"SRR2139676","L5","Core","L5b Tph2","",130880
+"SRR2139771","L5","Core","L5 Ucma","",140142
+"SRR2139692","All","Core","L5a Tcerg1l","",163834
+"SRR2139706","All","Core","L5b Chrna6","",163068
+"SRR2139810","All","Intermediate","L4 Ctxn3","L5 Ucma",137693
+"SRR2139749","L5","Core","L5b Tph2","",140142
+"SRR2139734","L5","Core","L5a Batf3","",140142
+"SRR2139743","L5","Core","L5b Tph2","",140142
+"SRR2139831","All","Intermediate","L6a Sla","L6a Mgp",137693
+"SRR2139846","L5",NA,NA,NA,NA
+"SRR2139762","L5","Core","L5a Batf3","",140142
+"SRR2139681","All","Core","L5a Tcerg1l","",163834
+"SRR2139715","L5","Core","L5 Ucma","",140142
+"SRR2139786","L5","Core","L5b Cdh13","",140142
+"SRR2139768","L5","Core","L5b Cdh13","",140142
+"SRR2139803","L5","Core","L5a Batf3","",130880
+"SRR2139809","L5","Core","L5a Pde1c","",130880
+"SRR2139727","L5","Intermediate","L5a Tcerg1l","L4 Arf5",140142
+"SRR2139750","L5","Core","L5b Cdh13","",140142
+"SRR2139807","L5","Core","L5a Tcerg1l","",130880
+"SRR2139729","L5","Intermediate","L5a Hsd11b1","L4 Arf5",140142
+"SRR2139723","L5","Intermediate","L5a Batf3","L5a Syt17",140142
+"SRR2139754","L5","Intermediate","L5a Batf3","L5a Fam5c",140142
+"SRR2139848","L5",NA,NA,NA,NA
+"SRR2139835","All","Core","L5a Batf3","",137693
+"SRR2139842","All",NA,NA,NA,NA
+"SRR2139782","L5","Core","L5b Cdh13","",140142
+"SRR2139766","L5","Intermediate","L6a Mgp","L6a Sla",140142
+"SRR2139711","All","Core","L5b Cdh13","",163069
+"SRR2139685","All","Core","L5b Tph2","",163834
+"SRR2139788","L5","Core","L5b Chrna6","",140142
+"SRR2139814","All","Core","L5a Tcerg1l","",137693
+"SRR2139730","L5","Intermediate","L4 Ctxn3","L4 Scnn1a",140142
+"SRR2139747","L5","Core","L5a Batf3","",140142
+"SRR2139826","All","Core","L5a Hsd11b1","",137693
+"SRR2139851","L5",NA,NA,NA,NA
+"SRR2139678","All","Core","L5 Ucma","",163834
+"SRR2139775","L5","Core","L5b Tph2","",140142
+"SRR2139702","All","Core","L5a Hsd11b1","",163068
+"SRR2139696","All","Intermediate","L5a Tcerg1l","L5a Hsd11b1",163834
+"SRR2139791","L5","Core","L6a Sla","",140142
+"SRR2139672","L5","Core","L5a Batf3","",130880
+"SRR2139708","All","Core","L6a Syt17","",163069
+"SRR2139691","All","Core","L5 Ucma","",163834
+"SRR2139705","All","Core","L5a Hsd11b1","",163068
+"SRR2139772","L5","Core","L5a Batf3","",140142
+"SRR2139778","L5","Core","L5b Cdh13","",140142
+"SRR2139675","L5","Core","L5b Chrna6","",130880
+"SRR2139796","L5","Core","L5b Cdh13","",130880
+"SRR2139856","L5",NA,NA,NA,NA
+"SRR2139821","All","Core","L5a Tcerg1l","",137693
+"SRR2139740","L5","Core","L5b Tph2","",140142
+"SRR2139737","L5","Core","L5a Batf3","",140142
+"SRR2139813","All","Core","L5a Tcerg1l","",137693
+"SRR2139819","All","Core","L5b Tph2","",137693
+"SRR2139785","L5","Intermediate","L5b Cdh13","L5b Samd3",140142
+"SRR2139688","All","Core","L5a Batf3","",163834
+"SRR2139682","All","Core","L5a Tcerg1l","",163834
+"SRR2139716","L5","Core","L5b Tph2","",140142
+"SRR2139761","L5","Core","L5b Tph2","",140142
+"SRR2139838","All","Intermediate","L6a Car12","L4 Ctxn3",137693
+"SRR2139845","L5",NA,NA,NA,NA
+"SRR2139832","All","Core","L5a Hsd11b1","",137693
+"SRR2139759","L5","Intermediate","L5b Tph2","L5b Cdh13",140142
+"SRR2139753","L5","Core","L5a Batf3","",140142
+"SRR2139724","L5","Core","L5a Batf3","",140142
+"SRR2139800","L5","Core","L5a Tcerg1l","",130880
+"SRR2139306","L6a","Intermediate","L6a Sla","L6a Mgp",128264
+"SRR2139371","L6a","Core","L6a Sla","",132856
+"SRR2139343","L6a","Core","L6a Mgp","",128264
+"SRR2139334","L6a","Core","L6a Sla","",132856
+"SRR2139349","L6a","Core","L6a Mgp","",128264
+"SRR2139368","L6a","Core","L6a Sla","",132856
+"SRR2139315","L6a","Intermediate","L6a Sla","L6a Mgp",176094
+"SRR2139362","L6a","Core","L6a Mgp","",132856
+"SRR2139350","L6a","Core","L6a Mgp","",128264
+"SRR2139327","L6a","Core","L6a Sla","",175613
+"SRR2139320","L6a","Core","L6a Mgp","",176094
+"SRR2139357","L6a","Core","L6a Mgp","",128264
+"SRR2139318","L6a","Core","L6a Sla","",176094
+"SRR2139381","L6a","Intermediate","L6a Mgp","L6a Sla",126448
+"SRR2139365","L6a","Core","L6a Sla","",132856
+"SRR2139312","L6a","Core","L6a Mgp","",128264
+"SRR2139333","L6a","Core","L6a Sla","",175613
+"SRR2139344","L6a","Core","L6a Sla","",128264
+"SRR2139339","L6a","Core","L6a Sla","",132856
+"SRR2139376","L6a","Core","L6a Sla","",132856
+"SRR2139378","L6a","Core","L6a Mgp","",132856
+"SRR2139372","L6a","Core","L6a Sla","",132856
+"SRR2139337","L6a","Core","L6a Mgp","",132856
+"SRR2139340","L6a","Core","L6a Mgp","",132856
+"SRR2139361","L6a","Core","L6a Sla","",132856
+"SRR2139316","L6a","Core","L6a Mgp","",176094
+"SRR2139324","L6a","Core","L6a Sla","",175613
+"SRR2139353","L6a","Core","L6a Mgp","",128264
+"SRR2139359","L6a","Core","L6a Sla","",132856
+"SRR2139354","L6a","Core","L6a Sla","",128264
+"SRR2139323","L6a","Core","L6a Mgp","",176094
+"SRR2139329","L6a","Core","L6a Sla","",175613
+"SRR2139311","L6a","Core","L6a Sla","",128264
+"SRR2139366","L6a","Core","L6a Sla","",132856
+"SRR2139382","L6a","Core","L6a Mgp","",126448
+"SRR2139347","L6a","Core","L6a Sla","",128264
+"SRR2139330","L6a","Core","L6a Mgp","",175613
+"SRR2139308","L6a","Core","L6a Sla","",128264
+"SRR2139375","L6a","Core","L6a Sla","",132856
+"SRR2139338","L6a","Core","L6a Sla","",132856
+"SRR2139345","L6a","Core","L6a Mgp","",128264
+"SRR2139332","L6a","Core","L6a Mgp","",175613
+"SRR2139377","L6a","Core","L6a Sla","",132856
+"SRR2139356","L6a","Core","L6a Sla","",128264
+"SRR2139321","L6a","Intermediate","L6a Mgp","L6a Sla",176094
+"SRR2139313","L6a","Core","L6a Sla","",128264
+"SRR2139364","L6a","Core","L6a Sla","",132856
+"SRR2139319","L6a","Core","L6a Sla","",176094
+"SRR2139380","L6a","Core","L6a Sla","",126448
+"SRR2139363","L6a","Core","L6a Sla","",132856
+"SRR2139314","L6a","Core","L6a Mgp","",176094
+"SRR2139369","L6a","Intermediate","L6a Sla","L6a Mgp",132856
+"SRR2139326","L6a","Core","L6a Mgp","",175613
+"SRR2139351","L6a","Core","L6a Mgp","",128264
+"SRR2139370","L6a","Core","L6a Sla","",132856
+"SRR2139307","L6a","Core","L6a Mgp","",128264
+"SRR2139348","L6a","Intermediate","L6a Mgp","L6a Sla",128264
+"SRR2139335","L6a","Core","L6a Mgp","",132856
+"SRR2139342","L6a","Core","L6a Sla","",128264
+"SRR2139331","L6a","Core","L6a Mgp","",175613
+"SRR2139346","L6a","Core","L6a Mgp","",128264
+"SRR2139374","L6a","Core","L6a Sla","",132856
+"SRR2139309","L6a","Core","L6a Mgp","",128264
+"SRR2139328","L6a","Core","L6a Mgp","",175613
+"SRR2139322","L6a","Core","L6a Sla","",176094
+"SRR2139355","L6a","Core","L6a Sla","",128264
+"SRR2139383","L6a",NA,NA,NA,NA
+"SRR2139367","L6a","Core","L6a Sla","",132856
+"SRR2139310","L6a","Core","L6a Sla","",128264
+"SRR2139384","L6a",NA,NA,NA,NA
+"SRR2139317","L6a","Core","L6a Mgp","",176094
+"SRR2139360","L6a","Core","L6a Sla","",132856
+"SRR2139358","L6a","Core","L6a Sla","",132856
+"SRR2139352","L6a","Core","L6a Sla","",128264
+"SRR2139325","L6a","Intermediate","L6a Sla","L6a Mgp",175613
+"SRR2139373","L6a","Core","L6a Sla","",132856
+"SRR2139379","L6a","Core","L6a Sla","",132856
+"SRR2139341","L6a","Core","L6a Sla","",132856
+"SRR2139336","L6a","Core","L6a Sla","",132856
