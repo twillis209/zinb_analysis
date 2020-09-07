@@ -29,6 +29,8 @@ library(digest)
 library(edgeR)
 library(DESeq2)
 
+source('../R/utilityFunctions.R')
+
 set.seed(8283)
 options(getClass.msg=FALSE) #get rid of annoying messages about cache until fixed internally in R
 
@@ -112,24 +114,6 @@ plot(pc_fq, col=colCl, pch=20, main="PCA FQ")
 ## ZIFA
 
 ```{r zifa}
-# NB: The only reason that digest was not working was that I was trying to run this without first loading the digest library
-wrapRzifa <- function(Y, block = T){
-  # wrapper R function for ZIFA.
-  # md5 hashing and temporary files are used not to re-run zifa 
-  # if it has already be run on this computer.
-  d = digest(Y, "md5")
-  tmp = paste0(tempdir(), '/', d)
-  write.csv(Y, paste0(tmp, '.csv'))
-  
-  if (!file.exists(paste0(tmp, '_zifa.csv'))){
-    print('run ZIFA')
-    bb = ifelse(block, '-b ', '')
-    cmd = sprintf('python run_zifa.py %s%s.csv %s_zifa.csv', bb, tmp, tmp)
-    system(cmd)
-  }
-  read.csv(sprintf("%s_zifa.csv", tmp), header=FALSE)
-}
-
 zifa_raw <- wrapRzifa(log1p(raw[vargenes,]))
 plot(zifa_raw, pch=19, col=colMerged, main="ZIFA Raw")
 plot(zifa_raw, pch=19, col=colCl, main="ZIFA Raw")

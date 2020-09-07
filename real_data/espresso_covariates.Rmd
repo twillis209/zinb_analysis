@@ -29,6 +29,8 @@ library(digest)
 library(edgeR)
 library(DESeq2)
 
+source('../R/utilityFunctions.R')
+
 set.seed(8283)
 options(getClass.msg=FALSE) #get rid of annoying messages about cache until fixed internally in R
 
@@ -115,22 +117,6 @@ plot(pc_fq, col=colMerged, pch=20, main="PCA FQ")
 ## ZIFA
 
 ```{r zifa}
-wrapRzifa <- function(Y, block = TRUE, k=2){
-  # wrapper R function for ZIFA.
-  # md5 hashing and temporary files are used not to re-run zifa 
-  # if it has already be run on this computer.
-  d = digest(Y, "md5")
-  tmp = paste0(tempdir(), '/', d)
-  write.csv(Y, paste0(tmp, '.csv'))
-  
-  if (!file.exists(paste0(tmp, "_", k, '_zifa.csv'))){
-    print('run ZIFA')
-    bb = ifelse(block, '-b ', '')
-    cmd = sprintf('python run_zifa.py -d %d %s%s.csv %s_%d_zifa.csv', k, bb, tmp, tmp, k)
-    system(cmd)
-  }
-  read.csv(sprintf("%s_%d_zifa.csv", tmp, k), header=FALSE)
-}
 
 zifa_raw <- wrapRzifa(log1p(raw[vargenes,]), k=2)
 pairs(zifa_raw, pch=19, col=colMerged, main="ZIFA Raw")

@@ -124,7 +124,7 @@ nbPY0 = rowMeans((1 + nb$fitted * nb$disp)^(-1/nb$disp))
 
 MD-plot estimated vs. observed mean count, log scale
 ```{r meanCount25}
-pdf(sprintf('../paper/6680489mtyrjx/gof_mu_%s.pdf', df), width = 10, height = 5)
+pdf('zeisel_plots/gof_mu.pdf', width = 10, height = 5)
 par(mfrow=c(1,2))
 xlim =  c(0, 6)
 ylim = c(-2, 1.5)
@@ -135,7 +135,7 @@ dev.off()
 
 MD-plot estimated vs. observed zero probability
 ```{r}
-pdf(sprintf('../paper/6680489mtyrjx/gof_pi_%s.pdf', df), width = 10, height = 5)
+pdf('zeisel_plots/gof_pi.pdf', width = 10, height = 5)
 par(mfrow = c(1, 2))
 plotMD(zinbPY0, prop0, xlim = c(0, 1), ylim = c(-.2, .2), main = 'ZINB-WaVE')
 plotMD(nbPY0, prop0, xlim = c(0, 1), ylim = c(-.2, .2), main = 'NB, edgeR')
@@ -144,7 +144,7 @@ dev.off()
 
 Estimated dispersion versus observed zero probability
 ```{r}
-pdf(sprintf('../paper/6680489mtyrjx/gof_disp_%s.pdf', df), width = 10, height = 5)
+pdf('zeisel_plots/gof_disp.pdf', width = 10, height = 5)
 par(mfrow = c(1,2))
 xpred = seq(0, 1, .05)
 fitzinb = loess(exp(-zz@zeta) ~ rowMeans(core == 0))

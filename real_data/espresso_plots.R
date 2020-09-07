@@ -83,7 +83,7 @@ lower <- plot_grid(p2, legend2, rel_widths = c(3, .6))
 
 fig1 <- plot_grid(upper, lower, ncol=1, nrow=2)
 
-save_plot("epresso_fig1.pdf", fig1,
+save_plot("espresso_plots/epresso_fig1.pdf", fig1,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -132,7 +132,7 @@ lower <- plot_grid(p2, legend2, rel_widths = c(3, 1))
 
 fig1bis <- plot_grid(upper, lower, ncol=1, nrow=2)
 
-save_plot("espresso_fig1bis.pdf", fig1bis,
+save_plot("espresso_plots/espresso_fig1bis.pdf", fig1bis,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -167,7 +167,7 @@ sil2 <- plot_grid(sil, NULL, NULL, ncol=3, nrow=1, labels="G")
 fig1_tris <- plot_grid(upper, lower, sil2, ncol=1, nrow=3)
 fig1_tris
 
-save_plot("espresso_fig1tris.pdf", fig1_tris,
+save_plot("espresso_plots/espresso_fig1tris.pdf", fig1_tris,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -204,13 +204,13 @@ upper <- plot_grid(p1, sil, labels=c("", "g"), rel_widths = c(3, 1))
 fig1_4 <- plot_grid(upper, lower, ncol=1, nrow=2)
 fig1_4
 
-save_plot("espresso_fig1_v4.pdf", fig1_4,
+save_plot("espresso_plots/espresso_fig1_v4.pdf", fig1_4,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
 )
 
-save_plot("espresso_supp_sil.pdf", sil)
+save_plot("espresso_plots/espresso_supp_sil.pdf", sil)
 
 condition <- level1
 batch <- level2
@@ -228,7 +228,7 @@ fig2 <- plot_grid(panel1_zinb + theme(legend.position = "none"),
                   labels=c("a", "b"), ncol=2, nrow=1, rel_widths = c(1, 1.25))
 fig2
 
-save_plot("espresso_fig2.pdf", fig2,
+save_plot("espresso_plots/espresso_fig2.pdf", fig2,
           ncol = 2,
           nrow = 1,
           base_aspect_ratio = 1.3
@@ -279,7 +279,7 @@ fig2_bis <- plot_grid(panel1_zinb + theme(legend.position = "none"),
                   labels=c("a", "b", "c", "d"), ncol=2, nrow=2, rel_widths = c(1, 1.25, 1, 1))
 fig2_bis
 
-save_plot("espresso_fig2bis.pdf", fig2_bis,
+save_plot("espresso_plots/espresso_fig2bis.pdf", fig2_bis,
           ncol = 2,
           nrow = 2,
           base_aspect_ratio = 1.3
