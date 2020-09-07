@@ -20,4 +20,4 @@ annotations = [
 
 datasets[0].uns['name'] =  'Kolodziejczyk et al. 2015'
 
-makePlotOfNBWithZi(datasets, annotations, outputPath="../../Figures/kolodHomoZi.pdf", nrows=1, ncols=1, figSize=(15,8), limits=(10e-3, 10e3))
+makePlotOfGDWithZi(datasets, annotations, outputPath="../../Figures/kolodHomoZi.pdf", nrows=1, ncols=1, figSize=(8,8), limits=(10e-3, 10e3))

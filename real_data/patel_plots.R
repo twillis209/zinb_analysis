@@ -77,7 +77,7 @@ lower <- plot_grid(p2, legend2, rel_widths = c(3, .6))
 
 fig1 <- plot_grid(upper, lower, ncol=1, nrow=2)
 
-save_plot("patel_fig1.pdf", fig1,
+save_plot("patel_plots/patel_fig1.pdf", fig1,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -126,7 +126,7 @@ lower <- plot_grid(p2, legend2, rel_widths = c(3, 1))
 
 fig1bis <- plot_grid(upper, lower, ncol=1, nrow=2)
 
-save_plot("patel_fig1bis.pdf", fig1bis,
+save_plot("patel_plots/patel_fig1bis.pdf", fig1bis,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -159,7 +159,7 @@ bars %>%
 
 sil2 <- plot_grid(sil, NULL, NULL, ncol=3, nrow=1, labels="G")
 fig1_tris <- plot_grid(upper, lower, sil2, ncol=1, nrow=3)
-save_plot("patel_fig1tris.pdf", fig1_tris,
+save_plot("patel_plots/patel_fig1tris.pdf", fig1_tris,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -195,13 +195,13 @@ upper <- plot_grid(p1, sil, labels=c("", "g"), rel_widths = c(3, 1))
 fig1_4 <- plot_grid(upper, lower, ncol=1, nrow=2)
 fig1_4
 
-save_plot("patel_fig1_v4.pdf", fig1_4,
+save_plot("patel_plots/patel_fig1_v4.pdf", fig1_4,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
 )
 
-save_plot("patel_supp_sil.pdf", sil)
+save_plot("patel_plots/patel_supp_sil.pdf", sil)
 
 data.frame(Dim1=pc_raw[,1], Dim2=pc_raw[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point() +
@@ -217,7 +217,7 @@ data.frame(Dim1=pc_fq[,1], Dim2=pc_fq[,2]) %>%
   scale_color_brewer(palette="Set1") -> pca_fq
 
 fig_pca <- plot_grid(pca_raw, pca_tc, pca_tmm, pca_fq, labels=c("a", "b", "c", "d"))
-save_plot("patel_supp_pca.pdf", fig_pca,
+save_plot("patel_plots/patel_supp_pca.pdf", fig_pca,
           ncol = 2,
           nrow = 2,
           base_aspect_ratio = 1.3)
