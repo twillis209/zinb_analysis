@@ -304,13 +304,13 @@ boxplot(zinb_bio@W[-outliers,1]~batch[-outliers], las=2)
 
 ## Add batches in ZINB model
 
-```{r zinb_batch2, dependson="zinb_check_batch"}
+```{r zinb_batch2, dependson="zinb_check_batch", eval=F}
 zinb_batch <- zinbFit(raw[vargenes,], K = 2, X=model.matrix(~batch), epsilon=1e4)
 plot(zinb_batch@W, pch=19, col=colMerged, main="ZINB")
 plot(zinb_batch@W, pch=19, col=colCl, main="ZINB")
 ```
 
-```{r zinb_batch2_cov, dependson="zinb_batch2"}
+```{r zinb_batch2_cov, dependson="zinb_batch2", eval=F}
 plot(zinb@W, col=col1[batch], pch=19, main="Colored by batch")
 
 df <- cbind(data.frame(W1=zinb_batch@W[,1], W2=zinb_batch@W[,2], coverage=coverage, detection_rate=detection_rate), as.data.frame(colData(allen_core)[,1:15]))
@@ -339,6 +339,6 @@ gene_info = na.omit(gene_info)
 ```
 
 ```{r write_out, dependson=c("zinb", "zifa", "pca", "zinb_batch2", "zinb_bio")}
-save(zinb, zinb_batch, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, 
-file="allen_covariates_1000.rda")
+# save(zinb, zinb_batch, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, 
+save(zinb, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, file="allen_covariates_1000.rda")
 ```
