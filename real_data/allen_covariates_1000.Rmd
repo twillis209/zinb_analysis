@@ -29,6 +29,8 @@ library(digest)
 library(edgeR)
 library(DESeq2)
 
+source('../R/utilityFunctions.R')
+
 set.seed(8283)
 options(getClass.msg=FALSE) #get rid of annoying messages about cache until fixed internally in R
 
@@ -38,7 +40,7 @@ ncores <- detectCores() - 1
 Here, I will explore the relation between the expression values and some covariates provided with the data.
 
 ```{r datain}
-data("allen")
+load("allen/allen.rda")
 
 # Data without spike-ins, core only 
 allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE), which(colData(allen)$Core.Type=="Core" & !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
@@ -112,24 +114,6 @@ plot(pc_fq, col=colCl, pch=20, main="PCA FQ")
 ## ZIFA
 
 ```{r zifa}
-# NB: The only reason that digest was not working was that I was trying to run this without first loading the digest library
-wrapRzifa <- function(Y, block = T){
-  # wrapper R function for ZIFA.
-  # md5 hashing and temporary files are used not to re-run zifa 
-  # if it has already be run on this computer.
-  d = digest(Y, "md5")
-  tmp = paste0(tempdir(), '/', d)
-  write.csv(Y, paste0(tmp, '.csv'))
-  
-  if (!file.exists(paste0(tmp, '_zifa.csv'))){
-    print('run ZIFA')
-    bb = ifelse(block, '-b ', '')
-    cmd = sprintf('python run_zifa.py %s%s.csv %s_zifa.csv', bb, tmp, tmp)
-    system(cmd)
-  }
-  read.csv(sprintf("%s_zifa.csv", tmp), header=FALSE)
-}
-
 zifa_raw <- wrapRzifa(log1p(raw[vargenes,]))
 plot(zifa_raw, pch=19, col=colMerged, main="ZIFA Raw")
 plot(zifa_raw, pch=19, col=colCl, main="ZIFA Raw")
@@ -298,7 +282,7 @@ table(pamres$clustering)
 plot(zinb_bio@W[-outliers,], col=col1[pamres$clustering], pch=19)
 ```
 
-```{r zinb_check_batch}
+```{r zinb_check_batch, eval=F}
 metadata <- read.csv("../../scone_analysis/data/allen_metadata.csv", stringsAsFactors = FALSE)
 ids <- read.table("../../scone_analysis/data/allen_ids.txt", stringsAsFactors = FALSE, header = TRUE)
 
@@ -320,13 +304,13 @@ boxplot(zinb_bio@W[-outliers,1]~batch[-outliers], las=2)
 
 ## Add batches in ZINB model
 
-```{r zinb_batch2, dependson="zinb_check_batch"}
+```{r zinb_batch2, dependson="zinb_check_batch", eval=F}
 zinb_batch <- zinbFit(raw[vargenes,], K = 2, X=model.matrix(~batch), epsilon=1e4)
 plot(zinb_batch@W, pch=19, col=colMerged, main="ZINB")
 plot(zinb_batch@W, pch=19, col=colCl, main="ZINB")
 ```
 
-```{r zinb_batch2_cov, dependson="zinb_batch2"}
+```{r zinb_batch2_cov, dependson="zinb_batch2", eval=F}
 plot(zinb@W, col=col1[batch], pch=19, main="Colored by batch")
 
 df <- cbind(data.frame(W1=zinb_batch@W[,1], W2=zinb_batch@W[,2], coverage=coverage, detection_rate=detection_rate), as.data.frame(colData(allen_core)[,1:15]))
@@ -355,6 +339,6 @@ gene_info = na.omit(gene_info)
 ```
 
 ```{r write_out, dependson=c("zinb", "zifa", "pca", "zinb_batch2", "zinb_bio")}
-save(zinb, zinb_batch, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, 
-file="allen_covariates_1000.rda")
+# save(zinb, zinb_batch, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, 
+save(zinb, zinb_bio, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_deseq, pc_tmm, pc_fq, pc_tc, pc_raw, file="allen_covariates_1000.rda")
 ```
