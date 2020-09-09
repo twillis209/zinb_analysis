@@ -368,6 +368,12 @@ Ok, I have run this with and without `pct_dropout`, which I have had to calculat
 
 Missing metadata not accessible from the library `scRNAseq`, which is providing the rest. The `allen_covariates_1000.Rmd` references `collection_date` which is not part of the metadata of the `SingleCellExperiment` object provided by `scRNAseq`.
 
+The Allen Institute provide a repo for the data:
+
+	devtools::install_github("AllenInstitute/tasic2016data")
+
+...but this did not provide the missing metadata.
+
 #### `goodness_of_fit_allen.Rmd`
 
 #### `allen_covariates_1000.Rmd`

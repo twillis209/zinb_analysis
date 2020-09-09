@@ -40,7 +40,7 @@ ncores <- detectCores() - 1
 Here, I will explore the relation between the expression values and some covariates provided with the data.
 
 ```{r datain}
-data("allen")
+load("allen/allen.rda")
 
 # Data without spike-ins, core only 
 allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE), which(colData(allen)$Core.Type=="Core" & !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
@@ -282,7 +282,7 @@ table(pamres$clustering)
 plot(zinb_bio@W[-outliers,], col=col1[pamres$clustering], pch=19)
 ```
 
-```{r zinb_check_batch}
+```{r zinb_check_batch, eval=F}
 metadata <- read.csv("../../scone_analysis/data/allen_metadata.csv", stringsAsFactors = FALSE)
 ids <- read.table("../../scone_analysis/data/allen_ids.txt", stringsAsFactors = FALSE, header = TRUE)
 

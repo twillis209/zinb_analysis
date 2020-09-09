@@ -5,7 +5,8 @@ library(magrittr)
 library(ggplot2)
 load("allen_covariates_1000.rda")
 
-data("allen")
+load("allen/allen.rda")
+
 allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE),
                     which(colData(allen)$Core.Type=="Core" &
                             !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
