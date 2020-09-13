@@ -14,7 +14,7 @@ colsil <- mycol[c(5:12, 2, 3)]
 
 load("allen_covariates_1000.rda")
 
-data("allen")
+load("allen/allen.rda")
 allen_core <- allen[grep("^ERCC-", rownames(allen), invert = TRUE),
                     which(colData(allen)$Core.Type=="Core" &
                             !(colData(allen)$Primary.Type %in% c("Pvalb Tacr3", "Sst Myh8")))]
@@ -76,7 +76,7 @@ bars %>%
 
 load("zeisel_covariates.rda")
 
-data <- read.table("expression_mRNA_17-Aug-2014.txt", sep='\t', stringsAsFactors = FALSE, comment.char = '%')
+data <- read.table("zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t', stringsAsFactors = FALSE, comment.char = '%')
 
 tissue <- as.factor(as.matrix(data)[1,-(1:2)])
 table(tissue)
@@ -145,7 +145,7 @@ bars %>%
 
 load("espresso_covariates.rda")
 
-all.counts <- read.table("ESpresso/counttable_es.csv", header=TRUE, row.names=1, colClasses=c("character", rep("integer", 704)))
+all.counts <- read.table("kolodziejczyk/counttable_es.csv", header=TRUE, row.names=1, colClasses=c("character", rep("integer", 704)))
 serum <- sub("ola_mES_([^_]+)_.*", "\\1", colnames(all.counts))
 batch <- sub("ola_mES_[^_]+_([^_]+)_.*", "\\1", colnames(all.counts))
 targets <- data.frame(Serum=serum, Batch=batch)
@@ -206,21 +206,22 @@ bars %>%
 
 load("patel_covariates.rda")
 
-counts <- read.table("Patel/glioblastoma_raw_rnaseq_SCandbulk_counts.txt", header=TRUE, stringsAsFactors = FALSE, row.names=NULL)
+counts <- read.table("patel/glioblastoma_raw_rnaseq_SCandbulk_counts.txt", header=TRUE, stringsAsFactors = FALSE, row.names=NULL)
 
 gene_symbols <- counts[,1]
 ensembl_ids <- counts[,2]
 sample_names <- colnames(counts)[-(1:2)]
 
-metadata <- read.table("patel/SraRunTable.txt", sep='\t', stringsAsFactors = FALSE, header=TRUE, row.names=5, na.strings = "<not provided>")
+metadata <- read.table("patel/SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
+row.names(metadata)<-sample_names
 metadata <- metadata[sample_names,]
 
 # select only single-cell samples from patients
-keep <- which(grepl("^Single cell", metadata$source_name_s) &
-                !is.na(metadata$patient_id_s) &
-                !is.na(metadata$subtype_s))
+keep <- which(grepl("^Single cell", metadata$source_name) &
+                grepl("MGH", metadata$patient_id) &
+		metadata$subtype != "")
 metadata <- metadata[keep,]
-level1 <- as.factor(metadata$patient_id_s)
+level1 <- as.factor(metadata$patient_id)
 
 methods <- list(pc_raw[,1:2], pc_tc[,1:2], pc_tmm[,1:2], pc_fq[,1:2],
                 zifa_raw, zifa_tc, zifa_tmm, zifa_fq,
@@ -298,9 +299,9 @@ bars %>%
 
 sil <- plot_grid(sil_allen, sil_zeisel,
                  sil_patel, sil_espresso,
-                 labels=c("a", "b", "c", "d"))
+                 labels=c("a (Allen/Tasic)", "b (Zeisel)", "c (Patel)", "d (Espresso/Kolodziejczyk)"))
 
-save_plot("silhouette.pdf",
+save_plot("silhouette_plots/silhouette.pdf",
           sil,
           ncol = 2,
           nrow = 2,
@@ -309,9 +310,9 @@ save_plot("silhouette.pdf",
 
 sil_pc <- plot_grid(sil_allen_pc, sil_zeisel_pc,
                  sil_patel_pc, sil_espresso_pc,
-                 labels=c("a", "b", "c", "d"))
+                 labels=c("a (Allen/Tasic)", "b (Zeisel)", "c (Patel)", "d (Espresso/Kolodziejczyk)"))
 
-save_plot("silhouette_pc.pdf",
+save_plot("silhouette_plots/silhouette_pc.pdf",
           sil_pc,
           ncol = 2,
           nrow = 2,

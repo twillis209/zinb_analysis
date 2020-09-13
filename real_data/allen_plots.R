@@ -33,11 +33,11 @@ col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
 collayer <- col1[layer]
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point() -> panel1_pca
+  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point()+ggtitle("PCA") -> panel1_pca
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point() -> panel1_zifa
+  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point()+ggtitle("ZIFA")-> panel1_zifa
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
-  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point() -> panel1_zinb
+  ggplot(aes(Dim1, Dim2, colour=layer)) + geom_point()+ggtitle("ZINB")-> panel1_zinb
 
 p1 <- plot_grid(panel1_pca + theme(legend.position = "none"),
                 panel1_zifa + theme(legend.position = "none"),
@@ -52,21 +52,21 @@ cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors, QC=rep(stringr::str_to_lower(colnames(qc)), 2), Dimension=as.factor(rep(1:2, each=ncol(qc))))
 
 bars %>%
-  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) -> panel2_pca
+  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) + ggtitle("PCA") -> panel2_pca
 
 cors <- lapply(1:2, function(i) abs(cor(zifa_tc[,i], qc)))
 cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors, QC=rep(stringr::str_to_lower(colnames(qc)), 2), Dimension=as.factor(rep(1:2, each=ncol(qc))))
 
 bars %>%
-  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) -> panel2_zifa
+  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) + ggtitle("ZIFA") -> panel2_zifa
 
 cors <- lapply(1:2, function(i) abs(cor(zinb@W[,i], qc)))
 cors <- unlist(cors)
 bars <- data.frame(AbsoluteCorrelation=cors, QC=rep(stringr::str_to_lower(colnames(qc)), 2), Dimension=as.factor(rep(1:2, each=ncol(qc))))
 
 bars %>%
-  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) -> panel2_zinb
+  ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) + geom_bar(stat="identity", position='dodge') + scale_fill_manual(values=col2) + ylim(0, .6) + ggtitle("ZINB") -> panel2_zinb
 
 p2 <- plot_grid(panel2_pca + theme(legend.position = "none"),
                 panel2_zifa + theme(legend.position = "none"),
@@ -87,11 +87,11 @@ save_plot("allen_plots/allen_fig1.pdf", fig1,
 ## Alternatively
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) -> panel1_pca
+  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) + ggtitle("PCA") -> panel1_pca
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) -> panel1_zifa
+  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) + ggtitle("ZIFA") -> panel1_zifa
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
-  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) -> panel1_zinb
+  ggplot(aes(Dim1, Dim2, shape=layer, color=cluster2)) + geom_point() + scale_color_manual(values=col2) + ggtitle("ZINB") -> panel1_zinb
 
 p1 <- plot_grid(panel1_pca + theme(legend.position = "none"),
                 panel1_zifa + theme(legend.position = "none"),

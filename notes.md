@@ -141,6 +141,8 @@ So for the Svensson-style analysis:
 
 Finally got the count data from Risso. 
 
+It was necessary to get the batch ID (`runID` in the data) from a GitHub repo, `willtownes/patel2014gliohuman`, which makes available the Patel data in an R package and in the form of a `SummarizedExperiment` object. 
+
 ### Applications of data sets
 
 * Impact of normalization methods
@@ -306,18 +308,19 @@ R files:
 
 ### Workflow for real data scripts
 
-* allen_covariates_1000.Rmd (missing metadata)
-* allen_plots.R
-* espresso_covariates.Rmd
-* espresso_plots.R
-* goodness_of_fit_allen.Rmd
-* goodness_of_fit_espresso.Rmd
-* goodness_of_fit_patel.Rmd
-* goodness_of_fit_zeisel.Rmd
-* patel_covariates.Rmd
-* patel_plots.R
-* zeisel_covariates.Rmd
-* zeisel_plots.R
+* allen_covariates_1000.Rmd (done)
+* allen_plots.R (done)
+* espresso_covariates.Rmd (done)
+* espresso_plots.R (done)
+* goodness_of_fit_allen.Rmd (done)
+* goodness_of_fit_espresso.Rmd (done)
+* goodness_of_fit_patel.Rmd (done)
+* goodness_of_fit_zeisel.Rmd (done)
+* patel_covariates.Rmd (done)
+* patel_plots.R (done)
+* zeisel_covariates.Rmd (done)
+* zeisel_plots.R (done)
+* silhouette.R (done)
 
 ### Patel
 
@@ -391,6 +394,8 @@ The chunk `zinb_check_batch` references relative paths to directories not create
 #### `zeisel_plots.R`
 	
 ### Espresso
+
+Had to modify `newSCESet` call. `scater` no longer uses this class, instead uses the `SingleCellExperiment` class from the package of the same name which we've used elsewhere.
 
 #### `espresso_covariates.Rmd`
 
@@ -997,3 +1002,16 @@ Seems a lack of labelled data sets; probably hard to do if cell type labels, rat
 * The data sets analysed by Svensson:
 	* What about the underlying biological data in the studies used for their spike-ins? Were there such data?
 * Lung Cell Atlas: Single cell RNA sequencing analysis of fresh resected human lung tissue - Drop-seq dataset  
+
+# Head-to-head comparison
+
+* Figure 2:
+	* `real_data/allen_plots/allen_fig1.pdf`
+* Figure 3:
+	* code for these is not in the repo
+* Figure 4:
+	* `real_data/silhouette_plots/silhouette.pdf`
+* Figure 5: 
+	* `real_data/espresso_plots/espresso_fig2bis.pdf`
+	* `real_data/patel_plots/patel_det_cov.pdf` 
+* Figure 6: 

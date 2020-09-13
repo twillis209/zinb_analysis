@@ -91,12 +91,10 @@ fastpca <- function(expr, scale=FALSE) {
   pc_raw <- svd_raw$u %*% diag(svd_raw$d[1:3])
   return(pc_raw)
 }
-
 vars <- rowVars(log1p(tc))
 names(vars) <- rownames(tc)
 vars <- sort(vars, decreasing = TRUE)
 vargenes <- names(vars)[1:1000]
-
 
 pc_raw <- fastpca(log1p(raw[vargenes,]))
 pc_tc <- fastpca(log1p(tc[vargenes,]))
@@ -141,22 +139,26 @@ plot(zinb@W, pch=19, col=colMerged, main="ZINB")
 ## Add batches in ZINB model
 
 ```{r zinb_batch}
-zinb_batch <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~Batch, data=targets), epsilon=1e3)
+zinb_batch <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~Batch, data=targets), epsilon=1e3, sampleCovLabel="batch")
 plot(zinb_batch@W, pch=19, col=colMerged, main="ZINB")
 ```
 
 ```{r zinb_qc}
 library(scater)
 rownames(targets) <- colnames(all.counts)
-sceset <- newSCESet(countData = all.counts, phenoData = AnnotatedDataFrame(targets))
 
-keep_feature <- rowSums(exprs(sceset) > 0) > 0
+sceset <- SingleCellExperiment(assays=list(counts=as.matrix(all.counts)), colData=targets)
+
+keep_feature <- rowSums(counts(sceset) > 0) > 0
 sceset <- sceset[keep_feature,]
 
 sceset <- calculateQCMetrics(sceset)
-qc <- pData(sceset)[,c(4, 7, 10, 14:17)]
+
+pct_dropout=100.0*apply(counts(sceset) == 0, 2, sum)/nrow(counts(sceset))
+qc <- data.frame(colData(sceset)[,c("total_features_by_counts", "pct_counts_in_top_50_features", "pct_counts_in_top_100_features", "pct_counts_in_top_200_features", "pct_counts_in_top_500_features", "total_counts")], pct_dropout=pct_dropout)
+
 qcpca <- prcomp(qc, scale. = TRUE, center = TRUE)
-zinb_qc <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~qcpca$x[,1:2]), epsilon=1e3)
+zinb_qc <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~qcpca$x[,1:2]), epsilon=1e3, sampleCovLabel="qcPCs")
 plot(zinb_qc@W, pch=19, col=colMerged, main="ZINB")
 ```
 
@@ -168,7 +170,7 @@ gene_info = getGeneLengthAndGCContent(vargenes, "mm10", mode="org.db")
 zinb_gc <- fitZinbAndCache(raw[vargenes,], K = 2, 
                    V=model.matrix(~log(length) + gc, data=as.data.frame(gene_info)),
                    X=model.matrix(~Batch, data=targets),
-                   epsilon=1e3)
+                   epsilon=1e3, sampleCovLabel="batch", geneCovLabel="len_gc")
 
 plot(zinb_gc@W, pch=19, col=colMerged, main="ZINB")
 

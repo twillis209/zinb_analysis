@@ -32,8 +32,7 @@ mycol = c(brewer.pal(11,"RdYlGn")[c(8:11, 1:4)], brewer.pal(11,"RdYlBu")[8:11])
 
 
 ```{r datain}
-# Adapting Risso's code from the Rmd file for processing their own Patel counts
-counts <- read.table("glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
+counts <- read.table("patel/glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
 info <- as.matrix(counts)[1,-(1:3)]
 
 # Drops "X" rownames column and sample info row
@@ -48,13 +47,18 @@ sample_names <- colnames(counts)[-(1:2)]
 all.counts <- counts[,-(1:2)]
 rownames(all.counts) <- ensembl_ids
 
-metadata <- read.table("SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
+metadata <- read.table("patel/SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
 rownames(metadata)<-metadata$Run
 metadata <- metadata[sample_names,]
 
 batch <- stringr::str_split_fixed(info, "_", 2)[,2]
 batch <- stringr::str_split_fixed(batch, "_", 2)[,1]
 
+keep <- which(grepl("^Single cell", metadata$source_name) &
+                grepl("MGH", metadata$patient_id) &
+		metadata$subtype != "")
+		#metadata$subtype != "" & metadata$subtype != "None")
+		
 metadata <- metadata[keep,]
 
 batch <- as.factor(batch[keep])

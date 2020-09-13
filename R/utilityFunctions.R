@@ -22,13 +22,13 @@ fitZinbAndCache<-function(countMatrix, cacheDirPath="zinbCache", K=2, epsilon=10
 }
 
 # Different signature for design matrix
-fitZinbAndCache<-function(countMatrix, X, cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=T) {
+fitZinbAndCache<-function(countMatrix, X, cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=T, sampleCovLabel="sCov") {
   # fit zinb (if you already fitted zinb, it is cached)
   d = digest(countMatrix, "md5")
  
   cachePath = paste0(cacheDirPath, '/', d)
  
-  fileZinb = sprintf("%s_%d_%d_%d_zinb.rda", cachePath, K, epsilon, commonDispersion)
+  fileZinb = sprintf("%s_%d_%d_%d_%s_zinb.rda", cachePath, K, epsilon, commonDispersion, sampleCovLabel)
  
   if (!file.exists(fileZinb)){
     print('run ZINB')
@@ -42,13 +42,13 @@ fitZinbAndCache<-function(countMatrix, X, cacheDirPath="zinbCache", K=2, epsilon
 }
 
 # Different signature for design matrices
-fitZinbAndCache<-function(countMatrix, X, V, cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=T) {
+fitZinbAndCache<-function(countMatrix, X, V, cacheDirPath="zinbCache", K=2, epsilon=1000, commonDispersion=T, sampleCovLabel="sCov", geneCovLabel="gCov") {
   # fit zinb (if you already fitted zinb, it is cached)
   d = digest(countMatrix, "md5")
  
   cachePath = paste0(cacheDirPath, '/', d)
  
-  fileZinb = sprintf("%s_%d_%d_%d_zinb.rda", cachePath, K, epsilon, commonDispersion)
+  fileZinb = sprintf("%s_%d_%d_%d_%s_%s_zinb.rda", cachePath, K, epsilon, commonDispersion, sampleCovLabel, geneCovLabel)
  
   if (!file.exists(fileZinb)){
     print('run ZINB')

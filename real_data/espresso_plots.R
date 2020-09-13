@@ -29,14 +29,15 @@ detection_rate <- colSums(all.counts>0)
 coverage <- colSums(all.counts)
 
 library(scater)
-rownames(targets) <- colnames(all.counts)
-sceset <- newSCESet(countData = all.counts, phenoData = AnnotatedDataFrame(targets))
+sceset <- SingleCellExperiment(assays=list(counts=as.matrix(all.counts)), colData=targets)
 
-keep_feature <- rowSums(exprs(sceset) > 0) > 0
+keep_feature <- rowSums(counts(sceset) > 0) > 0
 sceset <- sceset[keep_feature,]
 
 sceset <- calculateQCMetrics(sceset)
-qc <- pData(sceset)[,c(4, 7, 10, 14:17)]
+
+pct_dropout=100.0*apply(counts(sceset) == 0, 2, sum)/nrow(counts(sceset))
+qc <- data.frame(colData(sceset)[,c("total_features_by_counts", "pct_counts_in_top_50_features", "pct_counts_in_top_100_features", "pct_counts_in_top_200_features", "pct_counts_in_top_500_features", "total_counts")], pct_dropout=pct_dropout)
 
 filter <- rowSums(all.counts>10)>=10
 raw <- all.counts[filter,]
@@ -48,15 +49,15 @@ level2 <- targets$Batch
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point() +
-  scale_color_brewer(palette="Set1") -> panel1_pca
+  scale_color_brewer(palette="Set1")+ggtitle("PCA")-> panel1_pca
 
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point() +
-  scale_color_brewer(palette="Set1") -> panel1_zifa
+  scale_color_brewer(palette="Set1") +ggtitle("ZIFA")-> panel1_zifa
 
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point()  +
-  scale_color_brewer(palette="Set1")  -> panel1_zinb
+  scale_color_brewer(palette="Set1") +ggtitle("ZINB")-> panel1_zinb
 
 p1 <- plot_grid(panel1_pca + theme(legend.position = "none"),
           panel1_zifa + theme(legend.position = "none"),
@@ -67,11 +68,11 @@ legend <- get_legend(panel1_pca)
 upper <- plot_grid(p1, legend, rel_widths = c(3, .6))
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_pca
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") +ggtitle("PCA")-> panel2_pca
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_zifa
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") +ggtitle("ZIFA")-> panel2_zifa
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_zinb
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") +ggtitle("ZINB")-> panel2_zinb
 
 p2 <- plot_grid(panel2_pca + theme(legend.position = "none"),
                 panel2_zifa + theme(legend.position = "none"),
@@ -83,7 +84,7 @@ lower <- plot_grid(p2, legend2, rel_widths = c(3, .6))
 
 fig1 <- plot_grid(upper, lower, ncol=1, nrow=2)
 
-save_plot("espresso_plots/epresso_fig1.pdf", fig1,
+save_plot("espresso_plots/espresso_fig1.pdf", fig1,
           ncol = 3,
           nrow = 3,
           base_aspect_ratio = 1.3
@@ -98,7 +99,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, 1) -> panel2_pca
+  scale_fill_manual(values=col2) + ylim(0, 1) + ggtitle("PCA") -> panel2_pca
 
 cors <- lapply(1:2, function(i) abs(cor(zifa_tc[,i], qc)))
 cors <- unlist(cors)
@@ -109,7 +110,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, 1) -> panel2_zifa
+  scale_fill_manual(values=col2) + ylim(0, 1) +ggtitle("ZIFA")-> panel2_zifa
 
 cors <- lapply(1:2, function(i) abs(cor(zinb@W[,i], qc)))
 cors <- unlist(cors)
@@ -120,7 +121,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, 1) -> panel2_zinb
+  scale_fill_manual(values=col2) + ylim(0, 1) +ggtitle("ZINB")-> panel2_zinb
 
 p2 <- plot_grid(panel2_pca + theme(legend.position = "none"),
                 panel2_zifa + theme(legend.position = "none"),

@@ -16,7 +16,7 @@ library(zinbwave)
 library(cluster)
 library(RColorBrewer)
 library(ggplot2)
-library(reshape)
+library(reshape2)
 library(EDASeq)
 library(edgeR)
 library(dplyr)
@@ -25,12 +25,13 @@ library(cowplot)
 library(matrixStats)
 library(scRNAseq)
 mycol = c(brewer.pal(11,"RdYlGn")[c(8:11, 1:4)], brewer.pal(11,"RdYlBu")[8:11])
-```
 
+source('../R/utilityFunctions.R')
+```
 
 ```{r datain}
 df = 'zeisel'
-data <- read.table("../sims/datasets/expression_mRNA_17-Aug-2014.txt", sep='\t', stringsAsFactors = FALSE, comment.char = '%')
+data <- read.table("zeisel/expression_mRNA_17-Aug-2014.txt", sep='\t', stringsAsFactors = FALSE, comment.char = '%')
 
 tissue <- as.factor(as.matrix(data)[1,-(1:2)])
 table(tissue)
@@ -63,8 +64,7 @@ core <- counts[filter,]
 ```
 
 ```{r zinb}
-zinb <- zinbFit(core, ncores = 2, K = 3,
-                commondispersion = FALSE, verbose = T)
+zinb <- fitZinbAndCache(core, K = 3, commonDispersion = FALSE)
 ```
 
 ```{r functions}

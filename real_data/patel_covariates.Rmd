@@ -167,6 +167,8 @@ plot(zinb@W, pch=19, col=batch, main="ZINB")
 
 ## Add batches in ZINB model
 
+Not sure if this was intended, but the subset considered comprises cells classified as 'Cla', 'Mes', 'Neu', and 'Pro' (i.e. all have single classifications). The batch is included as a sample-level covariate.
+
 ```{r zinb_batch}
 
 subset <- which(level2 %in% levels(level2)[c(1, 3, 4, 8)])
@@ -177,7 +179,9 @@ vars <- sort(vars, decreasing = TRUE)
 vargenes2 <- names(vars)[1:1000]
 
 zinb_batch <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
+# 5 colours for tumor type
 plot(zinb_batch@W, pch=19, col=colMerged[subset], main="ZINB")
+# 4 colours for the four tumor types
 plot(zinb_batch@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 ```
 
@@ -190,14 +194,31 @@ names(vars) <- rownames(tc)
 vars <- sort(vars, decreasing = TRUE)
 vargenes2 <- names(vars)[1:1000]
 
+# Fits ZW to the (filtered) MGH26 data without batch as a covariate
 zinb_sub1 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, epsilon=1e3)
+# Batch
 plot(zinb_sub1@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
+# Tumour subtype
 plot(zinb_sub1@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 
-zinb_sub2 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3)
+# Fits ZW to the (filtered) MGH26 data with batch as a covariate
+zinb_sub2 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3, sampleCovLabel="batch")
+# Batch
 plot(zinb_sub2@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
+# Tumor subtype
 plot(zinb_sub2@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 ```
+Detection rate was taken as the number of genes/features with one or more reads (no division).
+
+```{r zinb_detection_rate}
+
+zinb_det <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~detection_rate), epsilon=1e3, sampleCovLabel = "detRate")
+plot(zinb_det@W, pch=19, col=colMerged, main="ZINB with det. rate as covariate")
+# To show MGH26 and MGH26-2 as in figure 5e
+plot(zinb_det@W, pch=19, col=batch, main="ZINB with detection rate as covariate")
+plot(zinb@W, pch=19, col=batch, main="ZINB")
+```
+
 
 # Gene-level covariates
 
@@ -208,6 +229,6 @@ rownames(gene_info) = bm[,1]
 gene_info = na.omit(gene_info)
 ```
 
-```{r write_out, dependson=c("zinb", "zifa", "pca", "zinb_batch")}
-save(zinb, zinb_batch, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_tmm, pc_fq, pc_tc, pc_raw, file="patel_covariates.rda")
+```{r write_out, dependson=c("zinb", "zifa", "pca", "zinb_batch", "zinb_detection_rate")}
+save(zinb, zinb_batch, zinb_det, zifa_fq, zifa_tmm, zifa_tc, zifa_raw, pc_tmm, pc_fq, pc_tc, pc_raw, file="patel_covariates.rda")
 ```

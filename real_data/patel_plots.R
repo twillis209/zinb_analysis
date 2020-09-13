@@ -4,10 +4,53 @@ library(magrittr)
 library(ggplot2)
 
 load("patel_covariates.rda")
-oldWd<-getwd()
-setwd('patel')
-source('readPatelData.R')
-setwd(oldWd)
+
+counts <- read.table("patel/glioblastoma_raw_rnaseq_SCandbulk_counts_withannots.txt", header=TRUE, stringsAsFactors = FALSE)
+info <- as.matrix(counts)[1,-(1:3)]
+
+# Drops "X" rownames column and sample info row
+counts <- counts[-1,-1]
+
+gene_symbols <- counts[,1]
+ensembl_ids <- counts[,2]
+
+sample_names <- colnames(counts)[-(1:2)]
+
+# Drops gene symbol and ID columns
+all.counts <- counts[,-(1:2)]
+rownames(all.counts) <- ensembl_ids
+
+metadata <- read.table("patel/SraRunTable.txt", sep=',', stringsAsFactors = FALSE, header=TRUE)
+rownames(metadata)<-metadata$Run
+metadata <- metadata[sample_names,]
+
+batch <- stringr::str_split_fixed(info, "_", 2)[,2]
+batch <- stringr::str_split_fixed(batch, "_", 2)[,1]
+
+keep <- which(grepl("^Single cell", metadata$source_name) &
+                grepl("MGH", metadata$patient_id) &
+		metadata$subtype != "")
+		#metadata$subtype != "" & metadata$subtype != "None")
+		
+metadata <- metadata[keep,]
+
+batch <- as.factor(batch[keep])
+all.counts <- all.counts[,keep]
+all.counts <- as.matrix(all.counts)
+class(all.counts) <- "numeric"
+
+stopifnot(all(rownames(metadata)==colnames(all.counts)))
+
+col1 <- brewer.pal(9, "Set1")
+col2 <- c(brewer.pal(8, "Set2"), brewer.pal(8, "Set3"), brewer.pal(8, "Set1"))
+
+detection_rate <- colSums(all.counts>0)
+coverage <- colSums(all.counts)
+
+qc <- cbind(detection_rate, coverage)
+
+level1 <- as.factor(metadata$patient_id)
+level2 <- as.factor(metadata$subtype)
 
 library(scater)
 sceset <- SingleCellExperiment(list(counts=all.counts))
@@ -42,15 +85,15 @@ colBatch <- col2[level2]
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point() +
-  scale_color_brewer(palette="Set1") -> panel1_pca
+  scale_color_brewer(palette="Set1") + ggtitle("PCA")-> panel1_pca
 
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point() +
-  scale_color_brewer(palette="Set1") -> panel1_zifa
+  scale_color_brewer(palette="Set1")+ ggtitle("ZIFA") -> panel1_zifa
 
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
   ggplot(aes(Dim1, Dim2, colour=level1)) + geom_point()  +
-  scale_color_brewer(palette="Set1")  -> panel1_zinb
+  scale_color_brewer(palette="Set1")+ ggtitle("ZINB")  -> panel1_zinb
 
 p1 <- plot_grid(panel1_pca + theme(legend.position = "none"),
           panel1_zifa + theme(legend.position = "none"),
@@ -61,11 +104,11 @@ legend <- get_legend(panel1_pca)
 upper <- plot_grid(p1, legend, rel_widths = c(3, .6))
 
 data.frame(Dim1=pc_tc[,1], Dim2=pc_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_pca
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow")+ggtitle("PCA") -> panel2_pca
 data.frame(Dim1=zifa_tc[,1], Dim2=zifa_tc[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_zifa
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") +ggtitle("ZIFA")-> panel2_zifa
 data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
-  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") -> panel2_zinb
+  ggplot(aes(Dim1, Dim2)) + geom_point(aes(color=detection_rate)) + scale_colour_gradient(low="blue", high="yellow") +ggtitle("ZINB")-> panel2_zinb
 
 p2 <- plot_grid(panel2_pca + theme(legend.position = "none"),
                 panel2_zifa + theme(legend.position = "none"),
@@ -92,7 +135,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, .5) -> panel2_pca
+  scale_fill_manual(values=col2) + ylim(0, .5)+ggtitle("PCA") -> panel2_pca
 
 cors <- lapply(1:2, function(i) abs(cor(zifa_tc[,i], as.matrix(qc))))
 cors <- unlist(cors)
@@ -103,7 +146,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, .5) -> panel2_zifa
+  scale_fill_manual(values=col2) + ylim(0, .5) +ggtitle("ZIFA")-> panel2_zifa
 
 cors <- lapply(1:2, function(i) abs(cor(zinb@W[,i], as.matrix(qc))))
 cors <- unlist(cors)
@@ -114,7 +157,7 @@ bars <- data.frame(AbsoluteCorrelation=cors,
 bars %>%
   ggplot(aes(Dimension, AbsoluteCorrelation, group=QC, fill=QC)) +
   geom_bar(stat="identity", position='dodge') +
-  scale_fill_manual(values=col2) + ylim(0, .5) -> panel2_zinb
+  scale_fill_manual(values=col2) + ylim(0, .5)+ ggtitle("ZINB")-> panel2_zinb
 
 p2 <- plot_grid(panel2_pca + theme(legend.position = "none"),
                 panel2_zifa + theme(legend.position = "none"),
@@ -131,7 +174,6 @@ save_plot("patel_plots/patel_fig1bis.pdf", fig1bis,
           nrow = 3,
           base_aspect_ratio = 1.3
 )
-
 
 library(cluster)
 
@@ -221,3 +263,17 @@ save_plot("patel_plots/patel_supp_pca.pdf", fig_pca,
           ncol = 2,
           nrow = 2,
           base_aspect_ratio = 1.3)
+
+data.frame(Dim1=zinb@W[,1], Dim2=zinb@W[,2]) %>%
+  ggplot(aes(Dim1, Dim2, colour=batch)) + geom_point()  +
+  scale_color_brewer(palette="Set1")+ ggtitle("ZINB")  -> zinb_plot
+
+data.frame(Dim1=zinb_det@W[,1], Dim2=zinb_det@W[,2]) %>%
+  ggplot(aes(Dim1, Dim2, colour=batch)) + geom_point()  +
+  scale_color_brewer(palette="Set1")+ ggtitle("ZINB with det. rate")  -> zinb_det_plot
+
+detPlots<-plot_grid(zinb_plot+theme(legend.position = "none"), 
+		zinb_det_plot+theme(legend.position = "none"), 
+		ncol=2)
+
+save_plot("patel_plots/patel_det_cov.pdf", detPlots)

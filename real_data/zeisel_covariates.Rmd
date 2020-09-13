@@ -135,7 +135,7 @@ pairs(zifa_fq, pch=19, col=colMerged, main="ZIFA FQ")
 ## ZINB
 
 ```{r zinb}
-zinb <- zinbFit(raw, ncores = ncores, K = 3)
+zinb <- fitZinbAndCache(raw, K = 3)
 pairs(zinb@W, pch=19, col=colMerged, main="ZINB")
 ```
 
