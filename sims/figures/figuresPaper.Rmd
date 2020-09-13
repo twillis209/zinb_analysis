@@ -126,6 +126,7 @@ bias_mu = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border()
 bias_mu
+ggsave(bias_mu, file="figuresPaper_plots/bias_mu.pdf")
 ```
 
 ```{r bias_mu_noOut}
@@ -134,8 +135,9 @@ bias_mu_noOut = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   ggtitle('') + ylab(expression(paste('Bias log(', mu, ')'))) + 
   facet_grid(disp ~ V) + xlab('') + background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-2,2))
+  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-4,4))
 bias_mu_noOut
+ggsave(bias_mu_noOut, file="figuresPaper_plots/bias_mu_noOut.pdf")
 ```
 
 ```{r bias_pi}
@@ -145,6 +147,7 @@ bias_pi = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 bias_pi
+ggsave(bias_pi, file="figuresPaper_plots/bias_pi.pdf")
 ```
 
 ```{r bias_pi_noOut}
@@ -153,8 +156,9 @@ bias_pi_noOut = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) +
   ggtitle('') + ylab(expression(paste('Bias ', pi))) + 
   facet_grid(disp ~ V) + xlab('') + background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-.1,.1))
+  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-.5,.5))
 bias_pi_noOut
+ggsave(bias_pi_noOut, file="figuresPaper_plots/bias_pi_noOut.pdf")
 ```
 
 ## MSE
@@ -166,17 +170,19 @@ MSE_mu = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu
+ggsave(MSE_mu, file="figuresPaper_plots/MSE_mu.pdf")
 ```
 
 ```{r MSE_mu_noOut}
 MSE_mu_noOut = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) + 
   geom_boxplot(outlier.shape = NA) + ggtitle('') +
    ylab(expression(paste('MSE log(', mu, ')'))) + 
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,4)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,8)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu_noOut
+ggsave(MSE_mu_noOut, file="figuresPaper_plots/MSE_mu_noOut.pdf")
 ```
 
 ```{r MSE_pi}
@@ -187,6 +193,7 @@ MSE_pi = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi
+ggsave(MSE_pi, file="figuresPaper_plots/MSE_pi.pdf")
 ```
 
 ```{r MSE_pi_noOut}
@@ -195,13 +202,14 @@ MSE_pi_noOut = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   ylab(expression(paste('MSE ', pi))) + 
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,1)) +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi_noOut
+ggsave(MSE_pi_noOut, file="figuresPaper_plots/MSE_pi_noOut.pdf")
 ```
 
 ## Variance
-```{r variance_mu}
+```{r variance_mu, dependson=c("options", "savePaper")}
 variance_mu = ggplot(variance[variance$param == 'mu', ], aes(x = K, y = variance)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('Variance log(', mu, ')'))) + 
@@ -232,27 +240,32 @@ variance_pi_noOut = ggplot(variance[variance$param == 'pi', ], aes(x = K, y = va
   ylab(expression(paste('Variance ', pi, ', no outlier'))) + 
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.3)) +
   geom_hline(yintercept = 0, col = 'red')
 variance_pi_noOut
+
+ggsave(variance_mu, file="figuresPaper_plots/variance_mu.pdf")
+ggsave(variance_mu_noOut, file="figuresPaper_plots/variance_mu_noOut.pdf")
+ggsave(variance_pi, file="figuresPaper_plots/variance_pi.pdf")
+ggsave(variance_pi_noOut, file="figuresPaper_plots/variance_pi_noOut.pdf")
 ```
 
 ```{r variancePlot}
-# save figure 5
+# save figure 6
 p1 = plot_grid(bias_mu_noOut, bias_pi_noOut, MSE_mu_noOut, MSE_pi_noOut,
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2, align = "h")
-save_plot("../../paper/6680489mtyrjx/bias_mse_allParam.pdf",
+save_plot("figuresPaper_plots/bias_mse_allParam_figure6.pdf",
           p1, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
-# save figure S10
+# save figure S24
 p2 = plot_grid(bias_mu, bias_pi, MSE_mu, MSE_pi, align = "h",
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/6680489mtyrjx/bias_mse_allParam_outliers.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
+save_plot("figuresPaper_plots/bias_mse_allParam_outliers_figureS24.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
-# save figure S11
+# save figure S25
 p3 = plot_grid(variance_mu, variance_pi, variance_mu_noOut, variance_pi_noOut,
                align = "h", labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/6680489mtyrjx/variance_allParam.png",device ='png',
+save_plot("figuresPaper_plots/variance_allParam_figureS25.png",device ='png',
           p3, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 ```
 
