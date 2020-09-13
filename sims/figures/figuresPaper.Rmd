@@ -11,7 +11,7 @@ code_folding: hide
 toc_float: yes
 ---
 ```{r options, echo=FALSE, results="hide",message=FALSE, error=FALSE, include=FALSE, autodep=TRUE}
-knitr::opts_chunk$set(fig.align="center", cache=TRUE, cache.lazy=FALSE, error=FALSE, message=FALSE, warning=TRUE, fig.width=6, fig.height=6)
+knitr::opts_chunk$set(fig.align="center", cache=TRUE, error=FALSE, message=FALSE, warning=TRUE, fig.width=6, fig.height=6)
 library(zinbwave)
 library(cluster)
 library(RColorBrewer)
@@ -126,6 +126,7 @@ bias_mu = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border()
 bias_mu
+ggsave(bias_mu, file="figuresPaper_plots/bias_mu.pdf")
 ```
 
 ```{r bias_mu_noOut}
@@ -134,8 +135,9 @@ bias_mu_noOut = ggplot(bias[bias$param == 'mu', ], aes(x = K, y = bias)) +
   ggtitle('') + ylab(expression(paste('Bias log(', mu, ')'))) + 
   facet_grid(disp ~ V) + xlab('') + background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-2,2))
+  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-4,4))
 bias_mu_noOut
+ggsave(bias_mu_noOut, file="figuresPaper_plots/bias_mu_noOut.pdf")
 ```
 
 ```{r bias_pi}
@@ -145,6 +147,7 @@ bias_pi = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 bias_pi
+ggsave(bias_pi, file="figuresPaper_plots/bias_pi.pdf")
 ```
 
 ```{r bias_pi_noOut}
@@ -153,8 +156,9 @@ bias_pi_noOut = ggplot(bias[bias$param == 'pi', ], aes(x = K, y = bias)) +
   ggtitle('') + ylab(expression(paste('Bias ', pi))) + 
   facet_grid(disp ~ V) + xlab('') + background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-.1,.1))
+  geom_hline(yintercept = 0, col = 'red') + coord_cartesian(ylim = c(-.5,.5))
 bias_pi_noOut
+ggsave(bias_pi_noOut, file="figuresPaper_plots/bias_pi_noOut.pdf")
 ```
 
 ## MSE
@@ -166,17 +170,19 @@ MSE_mu = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu
+ggsave(MSE_mu, file="figuresPaper_plots/MSE_mu.pdf")
 ```
 
 ```{r MSE_mu_noOut}
 MSE_mu_noOut = ggplot(MSE[MSE$param == 'mu', ], aes(x = K, y = MSE)) + 
   geom_boxplot(outlier.shape = NA) + ggtitle('') +
    ylab(expression(paste('MSE log(', mu, ')'))) + 
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,4)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,8)) +
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_mu_noOut
+ggsave(MSE_mu_noOut, file="figuresPaper_plots/MSE_mu_noOut.pdf")
 ```
 
 ```{r MSE_pi}
@@ -187,6 +193,7 @@ MSE_pi = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   panel_border() +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi
+ggsave(MSE_pi, file="figuresPaper_plots/MSE_pi.pdf")
 ```
 
 ```{r MSE_pi_noOut}
@@ -195,13 +202,14 @@ MSE_pi_noOut = ggplot(MSE[MSE$param == 'pi', ], aes(x = K, y = MSE)) +
   ylab(expression(paste('MSE ', pi))) + 
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,1)) +
   geom_hline(yintercept = 0, col = 'red')
 MSE_pi_noOut
+ggsave(MSE_pi_noOut, file="figuresPaper_plots/MSE_pi_noOut.pdf")
 ```
 
 ## Variance
-```{r variance_mu}
+```{r variance_mu, dependson=c("options", "savePaper")}
 variance_mu = ggplot(variance[variance$param == 'mu', ], aes(x = K, y = variance)) + 
   geom_boxplot() + ggtitle('') + facet_grid(disp ~ V) + 
   ylab(expression(paste('Variance log(', mu, ')'))) + 
@@ -232,44 +240,40 @@ variance_pi_noOut = ggplot(variance[variance$param == 'pi', ], aes(x = K, y = va
   ylab(expression(paste('Variance ', pi, ', no outlier'))) + 
   background_grid(major = 'y', minor = "none") + 
   panel_border() +
-  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.025)) +
+  facet_grid(disp ~ V) + coord_cartesian(ylim = c(0,.3)) +
   geom_hline(yintercept = 0, col = 'red')
 variance_pi_noOut
+
+ggsave(variance_mu, file="figuresPaper_plots/variance_mu.pdf")
+ggsave(variance_mu_noOut, file="figuresPaper_plots/variance_mu_noOut.pdf")
+ggsave(variance_pi, file="figuresPaper_plots/variance_pi.pdf")
+ggsave(variance_pi_noOut, file="figuresPaper_plots/variance_pi_noOut.pdf")
 ```
 
 ```{r variancePlot}
-# save figure 5
+# save figure 6
 p1 = plot_grid(bias_mu_noOut, bias_pi_noOut, MSE_mu_noOut, MSE_pi_noOut,
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2, align = "h")
-save_plot("../../paper/bias_mse_allParam.pdf",
+save_plot("figuresPaper_plots/bias_mse_allParam_figure6.pdf",
           p1, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
-# save figure S10
+# save figure S24
 p2 = plot_grid(bias_mu, bias_pi, MSE_mu, MSE_pi, align = "h",
                labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/bias_mse_allParam_outliers.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
+save_plot("figuresPaper_plots/bias_mse_allParam_outliers_figureS24.png",device = 'png', p2, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 
-# save figure S11
+# save figure S25
 p3 = plot_grid(variance_mu, variance_pi, variance_mu_noOut, variance_pi_noOut,
                align = "h", labels = c("a", "b", "c", "d"), ncol = 2, nrow = 2)
-save_plot("../../paper/variance_allParam.png",device ='png',
+save_plot("figuresPaper_plots/variance_allParam_figureS25.png",device ='png',
           p3, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 ```
 
 # Mean Difference (figure S12)
 ```{r figS12}
-
-# Allegedly S12, but must have changed before publication as this is actually now S26
-# From the Supplementary Material figure S26 caption: 
-# Mean-difference plot of estimated vs. true zero inflation probability, fî ≠ fi vs. (fi + fî)/2.
-# The estimates are based on one of the B = 10 datasets simulated from our ZINB-WaVE model, based on
-# the S1/CA1 dataset and with n = 1, 000 cells, J = 1, 000 genes, scaling of one for the ratio of within to
-# between-cluster sums of squares (b 2 = 1), and zero fraction of about 80%. The following values were used for
-# both simulating the data and fitting the ZINB-WaVE model to these data: K = 2 unknown factors, X = 1 n ,
-# cell-level intercept (V = 1 J ), and genewise dispersion
 load('figS12/simZeisel_nc1000_ratio1_offs2_fitted.rda')
 load('figS12/simZeisel_nc1000_ratio1_offs2.rda')
-zz = fittedSim[[2]][[2]][[2]][[1]]
+zz = fittedSim
 fittedMu = getLogMu(zz)
 fittedPi = getPi(zz)
 trueMu = getLogMu(simModel)[,keep]
@@ -296,10 +300,6 @@ dev.off()
 
 # Asymptotically unbiased (figure S9)
 ```{r consistency}
-
-# For figure S22, despite being referred to as figure S9 below
-# I have only swapped keep and keepCells around in certain calls, not sure about the first two, fittedSim might have the right conformation
-
 computeBias <- function(fittedSim, keep, simModel, simData){
   keepCells = lapply(1:length(simData), function(i){
     rowSums(simData[[i]]$counts) != 0
@@ -320,8 +320,9 @@ computeBias <- function(fittedSim, keep, simModel, simData){
     getPi(fittedSim[[i]])[keepCells[kk], ]
   })
   piHat <- Reduce("+", tmp)/length(tmp)
-  return(list(biasMu = logMuHat - as.vector(getLogMu(simModel)[keep,keepCells]),
-	biasPi = piHat - as.vector(getPi(simModel)[keep,keepCells])))
+  
+  return(list(biasMu = as.vector(logMuHat - getLogMu(simModel)[keepCells,keep]),
+              biasPi = as.vector(piHat - getPi(simModel)[keepCells,keep])))
 }
 
 computeVariance <- function(fittedSim, keep, simModel, simData){
@@ -336,13 +337,13 @@ computeVariance <- function(fittedSim, keep, simModel, simData){
   n = length(simData)
   tmp <- lapply(seq_along(fittedSim), function(i) {
     kk = rowSums(simData[[i]]$counts) != 0
-    (getLogMu(fittedSim[[i]])[keepCells[kk], ] - as.vector(getLogMu(simModel)[keep,keepCells]))^2
+    (getLogMu(fittedSim[[i]])[keepCells[kk], ] - getLogMu(simModel)[keepCells,keep])^2
   })
   logMuHat <- Reduce("+", tmp)/(n-1)
   
   tmp <- lapply(seq_along(fittedSim), function(i) {
     kk = rowSums(simData[[i]]$counts) != 0
-    (getPi(fittedSim[[i]])[keepCells[kk], ] - as.vector(getPi(simModel)[keep,keepCells]))^2
+    (getPi(fittedSim[[i]])[keepCells[kk], ] - getPi(simModel)[keepCells,keep])^2
   })
   piHat <- Reduce("+", tmp)/(n-1)
   
@@ -387,7 +388,7 @@ bias_MSE_ncells= ggplot(plotMolten, aes(x = nc, y = value)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 bias_MSE_ncells
 # save figure S9
-ggsave(filename="../../paper/bias_mse_ncells.png",
+ggsave(filename="../../paper/6680489mtyrjx/bias_mse_ncells.png",
        plot =bias_MSE_ncells,
        device = 'png', width = 8, height = 6)
 ```
@@ -613,7 +614,7 @@ legend <- get_legend(silAllen)
 p4 <- plot_grid(p4, legend, rel_widths = c(3, .6))
 p4
 # save figure S13
-save_plot("../../paper/corrSilh.png", device = 'png',
+save_plot("../../paper/6680489mtyrjx/corrSilh.png", device = 'png',
           p4, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 ```
 
@@ -657,7 +658,7 @@ legend <- get_legend(silAllen)
 cs <- plot_grid(cs, legend, rel_widths = c(3, .6))
 cs
 # save figure 6, panels a-d
-save_plot("../../paper/corrSilh_boxplots.png", device = 'png',
+save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 ```
 
@@ -736,7 +737,7 @@ legend <- get_legend(s1)
 cs <- plot_grid(cs, legend, rel_widths = c(3, .6))
 cs
 # save Figure S14
-save_plot("../../paper/corrSilh_boxplots_10000.png", device = 'png',
+save_plot("../../paper/6680489mtyrjx/corrSilh_boxplots_10000.png", device = 'png',
          cs, ncol = 2, nrow = 2, base_aspect_ratio = 1.3)
 ```
 
@@ -870,7 +871,7 @@ silLun = ggplot(silMolt,
   scale_color_manual(values=mycol[c(2,5:length(mycol))])
 silLun
 # save figure 6, panels e-g
-ggsave(filename="../../paper/silhouetteLun.pdf", plot = silLun,
+ggsave(filename="../../paper/6680489mtyrjx/silhouetteLun.pdf", plot = silLun,
        width = 8, height = 5)
 ```
 
@@ -911,7 +912,7 @@ legend <- get_legend(silAllen)
 csss <- plot_grid(css, legend, rel_widths = c(3, .6))
 csss
 # save figure 6
-save_plot("../../paper/corrSilh_combined.png", device = 'png',
+save_plot("../../paper/6680489mtyrjx/corrSilh_combined.png", device = 'png',
          csss, ncol = 3, nrow = 3, base_aspect_ratio = 1.3)
 
 ```
