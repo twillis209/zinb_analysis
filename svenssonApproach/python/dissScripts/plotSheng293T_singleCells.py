@@ -4,12 +4,13 @@ import anndata
 sys.path.append('..')
 from svenssonCode import *
 
-datasets = [anndata.read('../../Data/output/sheng/293T_singleCell_%s.h5ad' % x) for x in ['exonR', 'exonU']]
+exonRad = anndata.read('../../Data/output/sheng/293T_singleCell_exonR.h5ad')
+exonUad = anndata.read('../../Data/output/sheng/293T_singleCell_exonU.h5ad')
 
 annotations = ["Read counts (exonic)", "UMI counts (exonic)"]
 
-makePlotOfNBFits(datasets, annotations, "../../Figures/sheng293T_singleCell.pdf", title="HEK293T single cells, Sheng et al. 2017", figSize=(30,25))
+exonRad.uns['name'] = "Sheng et al. 2017 (MATQ-seq)"
+exonUad.uns['name'] = "Sheng et al. 2017 (MATQ-seq)"
 
-datasets = [anndata.read('../../Data/output/sheng/noFilter293T_singleCell_%s.h5ad' % x) for x in ['exonR', 'exonU']]
-
-makePlotOfNBFits(datasets, annotations, "../../Figures/noFilterSheng293T_singleCell.pdf", title="HEK293T single cells, Sheng et al. 2017", figSize=(30,25))
+makePlotOfNBFits([exonRad], ["HEK293T read counts (exonic)"], outputPath="../../Figures/sheng293T_singleCell_exonR.pdf", figSize=(8,8), limits=(1e-3, 1e4), nrows=1, ncols=1)
+makePlotOfNBFits([exonUad], ["HEK293T UMI counts (exonic)"], outputPath="../../Figures/sheng293T_singleCell_exonU.pdf",figSize=(8,8), limits=(1e-3, 1e4), nrows=1, ncols=1)

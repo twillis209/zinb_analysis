@@ -680,6 +680,8 @@ We could resimulate things *without* filtering?
 
 Pressing forward at the moment and trying to get a result for everything, after which I will take stock.
 
+Now working on the mean-difference code below the comment `# Mean difference...`. Argument type is incorrect for a `getLogMu` call with ZW version 1.10 on the cluster (works for version 1.08 on my laptop).
+
 ##### S9 code
 
 	[1] 50
@@ -1015,4 +1017,6 @@ Seems a lack of labelled data sets; probably hard to do if cell type labels, rat
 	* `real_data/espresso_plots/espresso_fig2bis.pdf`
 	* `real_data/patel_plots/patel_det_cov.pdf` 
 * Figure 6: 
-	*
+	* `sims/figures/figuresPaper_plots/bias_mse_allParam_outliers_figureS24.png`
+* Figure 7: 
+	* 

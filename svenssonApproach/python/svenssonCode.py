@@ -110,13 +110,16 @@ def fitNBModels(adata):
 							    adata.var['genewise_dispersion'])
 	return
 
-def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, pLimits=(10e-3, 10e4)):
+def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, pLimits=(10e-3, 10e4), titleFontSize=16, axesFontSize=14, legendFontSize=10):
 	"""
 	"""
 	
 	fig = plt.figure(figsize=figSize)
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
+
+	titleFont={'fontsize' : titleFontSize}
+	axesFont={'fontsize' : axesFontSize}
 
 	for i,adata in enumerate(datasets):
 	    
@@ -128,7 +131,7 @@ def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), n
 
 		ax = fig.add_subplot(inner_grid[0])
 
-		ax.set_title('Poisson')
+		ax.set_title('Poisson', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=pLimits[0], right=pLimits[1])
@@ -140,9 +143,9 @@ def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), n
 		       adata.var['poisson_zero_fraction'],
 		       ec='w', c='grey', label='Expected', rasterized=True);
 
-		ax.set_ylabel('Fraction zeros')
+		ax.set_ylabel('Fraction zeros', fontdict=axesFont)
 
-		ax.legend(title='Genes', loc='upper left', scatterpoints=3, fontsize=8)
+		ax.legend(title='Genes', loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -160,10 +163,10 @@ def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), n
 		       difference,
 		       c='k', marker='.', label='Genes', rasterized=True)
 
-		ax.set_ylabel('Difference \n(Observed - Expected)')
-		ax.set_xlabel('Mean')
+		ax.set_ylabel('Difference \n(Observed - Expected)', fontdict=axesFont)
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
-		ax.legend(loc='lower left', scatterpoints=3)
+		ax.legend(loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -172,18 +175,18 @@ def makePlotOfPoissonFits(datasets, annotations, outputPath, figSize=(40, 25), n
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.035
+		y = bbox.y1 + 0.04
 
 		if title:
 			figTitle = title
 		else: 
 			figTitle = adata.uns['name']
 
-		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontdict=titleFont)
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2, 10e3)):
+def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2, 10e3), titleFontSize=16, axesFontSize=14, legendFontSize=10):
 	"""
 	Makes common and genewise dispersion NB plots in the same manner as the Svensson publication, i.e. no ZI fit.
 	"""
@@ -203,6 +206,9 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
 
+	titleFont={'fontsize' : titleFontSize}
+	axesFont={'fontsize' : axesFontSize}
+
 	for i,adata in enumerate(datasets):
 	    
 		grid_box = outer_grid[i]
@@ -214,7 +220,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 
 		ax = fig.add_subplot(inner_grid[0])
 
-		ax.set_title('Common dispersion')
+		ax.set_title('Common dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -226,9 +232,9 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		       adata.var['global_zero_fraction'],
 		       ec='w', c='grey', label='Expected', rasterized=True);
 
-		ax.set_ylabel('Fraction zeros')
+		ax.set_ylabel('Fraction zeros', fontdict=axesFont)
 
-		ax.legend(title='Genes', loc='lower left', scatterpoints=3, fontsize=8)
+		ax.legend(title='Genes', loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -246,20 +252,19 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		       difference,
 		       c='k', marker='.', label='Genes', rasterized=True)
 
-		ax.set_ylabel('Difference \n(Observed - Expected)')
-		ax.set_xlabel('Mean')
+		ax.set_ylabel('Difference \n(Observed - Expected)', fontdict=axesFont)
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
-		ax.legend(loc='lower left', scatterpoints=3)
+		ax.legend(loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
-
 
 		# -- Genewise --
 
 		ax = fig.add_subplot(inner_grid[1])
 
-		ax.set_title('Gene-wise dispersion')
+		ax.set_title('Gene-wise dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -287,7 +292,7 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -296,18 +301,18 @@ def makePlotOfNBFits(datasets, annotations, outputPath, figSize=(40, 25), nrows=
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.035
+		y = bbox.y1 + 0.05
 
 		if title:
 			figTitle = title
 		else:
 			figTitle = adata.uns['name']
 
-		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontdict=titleFont)
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, pLimits=None, nbLimits=None):
+def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, pLimits=None, nbLimits=None, titleFontSize=16, axesFontSize=14, legendFontSize=10):
 	"""
 	Combines Poisson, and common and genewise dispersion NB plots.
 	"""
@@ -328,6 +333,9 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
 
+	titleFont={'fontsize' : titleFontSize}
+	axesFont={'fontsize' : axesFontSize}
+
 	for i,adata in enumerate(datasets):
 	    
 		grid_box = outer_grid[i]
@@ -340,7 +348,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 		ax = fig.add_subplot(inner_grid[0])
 
-		ax.set_title('Poisson')
+		ax.set_title('Poisson', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=pLimits[0], right=pLimits[1])
@@ -352,9 +360,9 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       adata.var['poisson_zero_fraction'],
 		       ec='w', c='grey', label='Expected', rasterized=True);
 
-		ax.set_ylabel('Fraction zeros')
+		ax.set_ylabel('Fraction zeros', fontdict=axesFont)
 
-		ax.legend(title='Genes', loc='upper left', scatterpoints=3, fontsize=8)
+		ax.legend(title='Genes', loc='upper left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -372,10 +380,10 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       difference,
 		       c='k', marker='.', label='Genes', rasterized=True)
 
-		ax.set_ylabel('Difference \n(Observed - Expected)')
-		ax.set_xlabel('Mean')
+		ax.set_ylabel('Difference \n(Observed - Expected)', fontdict=axesFont)
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
-		ax.legend(loc='lower left', scatterpoints=3)
+		ax.legend(loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -384,7 +392,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 		ax = fig.add_subplot(inner_grid[1])
 
-		ax.set_title('Common dispersion')
+		ax.set_title('Common dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=nbLimits[0], right=nbLimits[1])
@@ -412,7 +420,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       difference,
 		       c='k', marker='.', label='Genes', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -422,7 +430,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 		ax = fig.add_subplot(inner_grid[2])
 
-		ax.set_title('Gene-wise dispersion')
+		ax.set_title('Gene-wise dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=nbLimits[0], right=nbLimits[1])
@@ -450,7 +458,7 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -459,18 +467,18 @@ def makePlotOfPoissonAndNB(datasets, annotations, outputPath, figSize=(40, 25), 
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.035
+		y = bbox.y1 + 0.04
 
 		if title:
 			figTitle = title
 		else: 
 			figTitle = adata.uns['name']
 
-		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontdict=titleFont)
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2,10e4)):
+def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2,10e4), titleFontSize=16, axesFontSize=14, legendFontSize=10):
 	"""
 	Makes plots with genewise and ZI fits.
 	"""	
@@ -490,18 +498,20 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
 
+	titleFont={'fontsize' : titleFontSize}
+	axesFont={'fontsize' : axesFontSize}
+
 	for i,adata in enumerate(datasets):
 	    
 		grid_box = outer_grid[i]
 
 		inner_grid = grid_box.subgridspec(2, 2)
 
-
 		# -- Genewise --
 
 		ax = fig.add_subplot(inner_grid[0])
 
-		ax.set_title('Gene-wise dispersion')
+		ax.set_title('Gene-wise dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -513,7 +523,7 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       adata.var['genewise_zero_fraction'],
 		       ec='w', c='grey', rasterized=True);
 
-		ax.set_ylabel('Fraction zeros')
+		ax.set_ylabel('Fraction zeros', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -531,8 +541,8 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_ylabel('Difference \n(Observed - Expected)')
-		ax.set_xlabel('Mean')
+		ax.set_ylabel('Difference \n(Observed - Expected)', fontdict=axesFont)
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -541,7 +551,7 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		ax = fig.add_subplot(inner_grid[1])
 
-		ax.set_title('ZINB')
+		ax.set_title('ZINB', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -569,7 +579,7 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -578,18 +588,19 @@ def makePlotOfGDWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.035
+		y = bbox.y1 + 0.04
 
 		if title:
 			figTitle = title
 		else: 
 			figTitle = adata.uns['name']
 
-		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontdict=titleFont)
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 
-def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2,10e4)):
+def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrows=4, ncols=4, title=None, limits=(10e-2,10e4), titleFontSize=16, axesFontSize=14, legendFontSize=10):
+
 	"""
 	Makes plots with genewise ZI fits.
 	"""	
@@ -609,6 +620,9 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 	outer_grid = fig.add_gridspec(nrows=nrows, ncols=ncols, hspace=0.3, wspace=0.2)
 
+	titleFont={'fontsize' : titleFontSize}
+	axesFont={'fontsize' : axesFontSize}
+
 	for i,adata in enumerate(datasets):
 	    
 		grid_box = outer_grid[i]
@@ -620,7 +634,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		ax = fig.add_subplot(inner_grid[0])
 
-		ax.set_title('Common dispersion')
+		ax.set_title('Common dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -632,7 +646,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       adata.var['global_zero_fraction'],
 		       ec='w', c='grey', label='Expected', rasterized=True);
 
-		ax.set_ylabel('Fraction zeros')
+		ax.set_ylabel('Fraction zeros', fontdict=axesFont)
 
 		ax.legend(title='Genes', loc='lower left', scatterpoints=3, fontsize=8)
 
@@ -652,10 +666,10 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       difference,
 		       c='k', marker='.', label='Genes', rasterized=True)
 
-		ax.set_ylabel('Difference \n(Observed - Expected)')
-		ax.set_xlabel('Mean')
+		ax.set_ylabel('Difference \n(Observed - Expected)', fontdict=axesFont)
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
-		ax.legend(loc='lower left', scatterpoints=3)
+		ax.legend(loc='lower left', scatterpoints=3, fontsize=legendFontSize)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -665,7 +679,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		ax = fig.add_subplot(inner_grid[1])
 
-		ax.set_title('Gene-wise dispersion')
+		ax.set_title('Gene-wise dispersion', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -693,7 +707,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -702,7 +716,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		ax = fig.add_subplot(inner_grid[2])
 
-		ax.set_title('ZINB')
+		ax.set_title('ZINB', fontdict=titleFont)
 
 		ax.set_xscale('log')
 		ax.set_xlim(left=limits[0], right=limits[1])
@@ -730,7 +744,7 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 		       difference,
 		       c='k', marker='.', rasterized=True)
 
-		ax.set_xlabel('Mean')
+		ax.set_xlabel('Mean', fontdict=axesFont)
 
 		ax.spines['top'].set_visible(False)
 		ax.spines['right'].set_visible(False)
@@ -739,14 +753,14 @@ def makePlotOfNBWithZi(datasets, annotations, outputPath, figSize=(40, 25), nrow
 
 		bbox = grid_box.get_position(fig)
 		x = (bbox.x0 + bbox.x1) / 2
-		y = bbox.y1 + 0.035
+		y = bbox.y1 + 0.04
 
 		if title:
 			figTitle = title
 		else: 
 			figTitle = adata.uns['name']
 
-		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontsize=12)
+		fig.text(x, y, figTitle + '\n' + annotations[i], ha='center', fontdict=titleFont)
 	    
 	fig.savefig(outputPath, dpi=500, bbox_inches='tight')
 

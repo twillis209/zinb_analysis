@@ -18,6 +18,6 @@ annotations = [
 	'\'2i\' medium, batch 1'
 ]
 
-datasets[0].uns['name'] =  'Kolodziejczyk et al. 2015'
+datasets[0].uns['name'] =  'Kolodziejczyk et al. 2015 (Smart-seq)'
 
-makePlotOfGDWithZi(datasets, annotations, outputPath="../../Figures/kolodHomoZi.pdf", nrows=1, ncols=1, figSize=(8,8), limits=(10e-3, 10e3))
+makePlotOfNBWithZi(datasets, annotations, outputPath="../../Figures/kolodHomoZi.pdf", nrows=1, ncols=1, figSize=(12,8), limits=(10e-3, 10e3))

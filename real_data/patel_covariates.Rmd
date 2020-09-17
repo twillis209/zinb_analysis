@@ -29,6 +29,11 @@ library(digest)
 library(edgeR)
 library(DESeq2)
 
+theme_set(theme_bw()+theme(
+  axis.title = element_text(size=16),
+  plot.title=element_text(hjust=0.5, size=20))
+  )
+
 source('../R/utilityFunctions.R')
 
 set.seed(8283)
@@ -196,29 +201,76 @@ vargenes2 <- names(vars)[1:1000]
 
 # Fits ZW to the (filtered) MGH26 data without batch as a covariate
 zinb_sub1 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, epsilon=1e3)
-# Batch
+# No batch
 plot(zinb_sub1@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
-# Tumour subtype
+# Tumour as colour
 plot(zinb_sub1@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
 
 # Fits ZW to the (filtered) MGH26 data with batch as a covariate
 zinb_sub2 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~batch[subset]), epsilon=1e3, sampleCovLabel="batch")
-# Batch
+# With batch
 plot(zinb_sub2@W, pch=19, col=col1[droplevels(batch[subset])], main="ZINB")
-# Tumor subtype
+# Tumor subtype as colour
 plot(zinb_sub2@W, pch=19, col=col2[droplevels(level2[subset])], main="ZINB")
+
+# Tumour subtype as a covariate
+zinb_sub3 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~factor(level2[subset])), epsilon=1e3, sampleCovLabel="tumour_subtype")
+plot(zinb_sub3@W, pch=19, col=batch[subset])
+mm = model.matrix(~subtype+batch, data.frame(subtype=factor(level2[subset]), batch=factor(batch[subset])))
+# Tumour subtype and batch as covariates
+zinb_sub4 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=mm, epsilon=1e3, sampleCovLabel="tumour_subtype_batch")
+plot(zinb_sub4@W, pch=19, col=batch[subset])
+# Detection rate
+zinb_sub5 <- fitZinbAndCache(raw[vargenes2, subset], K = 2, X=model.matrix(~detection_rate[subset]), epsilon=1e3, sampleCovLabel="subset_detection_rate")
 ```
 Detection rate was taken as the number of genes/features with one or more reads (no division).
 
 ```{r zinb_detection_rate}
 
 zinb_det <- fitZinbAndCache(raw[vargenes,], K = 2, X=model.matrix(~detection_rate), epsilon=1e3, sampleCovLabel = "detRate")
-plot(zinb_det@W, pch=19, col=colMerged, main="ZINB with det. rate as covariate")
+plot(zinb_det@W, pch=19, col=colMerged, main="ZINB with det. rate as covariate", xlab="W1", ylab="W2")
 # To show MGH26 and MGH26-2 as in figure 5e
 plot(zinb_det@W, pch=19, col=batch, main="ZINB with detection rate as covariate")
-plot(zinb@W, pch=19, col=batch, main="ZINB")
+plot(zinb@W, pch=19, col=colMerged, main="ZINB")
 ```
+```{r presPlots}
+setwd("/home/tom/diss/zinb_analysis/real_data/patel_plots")
 
+pl1<-ggplot(data=data.frame(zinb@W, Batch=batch), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Intercept-only model")+theme(aspect.ratio=1)
+pl1
+
+ggsave(pl1, file="interceptOnly_zw.pdf", width=5, height=5)
+
+pl2<-ggplot(data=data.frame(zinb_det@W, Batch=batch), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Detection rate as a covariate")+theme(aspect.ratio=1)
+pl2
+
+ggsave(pl2, file="detRate_zw.pdf", width=5, height=5)
+
+pl3<-ggplot(data=data.frame(zinb_sub1@W, Batch=factor(batch[subset])), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Intercept-only model")+theme(aspect.ratio=1, legend.position="None")
+pl3
+
+ggsave(pl3, file="mgh26_interceptOnly_zw.pdf", width=5, height=5)
+
+pl4<-ggplot(data=data.frame(zinb_sub2@W, Batch=factor(batch[subset])), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Batch as covariate")+theme(aspect.ratio=1, legend.position="None")
+pl4
+
+ggsave(pl4, file="mgh26_batch_zw.pdf", width=5, height=5)
+
+pl5<-ggplot(data=data.frame(zinb_sub3@W, Batch=factor(batch[subset])), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Tumour subtype as covariate")+theme(aspect.ratio=1, legend.position="None")
+pl5
+
+ggsave(pl5, file="mgh26_tumour_zw.pdf", width=5, height=5)
+
+pl6<-ggplot(data=data.frame(zinb_sub4@W, Batch=factor(batch[subset])), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Batch and tumour subtype as covariates")+theme(aspect.ratio=1)
+pl6
+
+ggsave(pl6, file="mgh26_tumour_batch_zw.pdf", width=5, height=5)
+
+pl7<-ggplot(data=data.frame(zinb_sub5@W, Batch=factor(batch[subset])), aes(x=X1, y=X2, col=Batch))+geom_point()+xlab("W1")+ylab("W2")+ggtitle("Detection rate as covariate")+theme(aspect.ratio=1, legend.position="None")
+pl7
+
+ggsave(pl7, file="mgh26_detRate_zw.pdf", width=5, height=5)
+```
 
 # Gene-level covariates
 
