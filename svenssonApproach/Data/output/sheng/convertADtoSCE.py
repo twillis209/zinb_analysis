@@ -20,18 +20,6 @@ sexp=anndata2ri.py2rpy(ad)
 
 robjects.r.assign(name, sexp)
 
-robjects.r("save({},file=\'test.RData\')".format(name,args.rdataFilePath))
+robjects.r("save({},file=\'{}\')".format(name,args.rdataFilePath))
 
 anndata2ri.deactivate()
-
-"""
-import anndata
-import anndata2ri
-import argparse
-import os
-from rpy2 import robjects
-ad=anndata.read('293T_singleCell_exonU.h5ad')
-sexp=anndata2ri.py2rpy(ad)
-robjects.r.assign('my_df', sexp) 
-robjects.r("save(`my_df`,file='test.RData')")
-"""
